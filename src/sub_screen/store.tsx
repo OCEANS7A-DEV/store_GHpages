@@ -267,6 +267,14 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
           nullset.push(`${rownumber}つ目のデータ、選択肢があるのに、商品詳細が選ばれていません。`);
           cancelcount ++
         }
+        if (row.業者 == "" && row.商品名 !== ""){
+          nullset.push(`${rownumber}つ目のデータ、商品名はあるが、業者名が入力されていません。`);
+          cancelcount ++
+        }
+        if ((row.商品名 !== "" || row.商品コード !== "" ) && row.数量 == "") {
+          nullset.push(`${rownumber}つ目のデータ、商品名もしくは商品ナンバーはあるが、数量が入力されていません。`);
+          cancelcount ++
+        }
       }
       if (cancelcount >= 1) {
         setDialogOpen(false);
