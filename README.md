@@ -16,3 +16,8 @@ clasp deploy --deploymentId AKfycbyzFig3cgYpdipQY0jXwVq0AiF0AE-a2sPZCB-UIel6cgZb
 
 rm -rf node_modules
 npm install
+コードを変更したら
+1, npm run build
+2, commit
+3, push
+4, npm run deploy
