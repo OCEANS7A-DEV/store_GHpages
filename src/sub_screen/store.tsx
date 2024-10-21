@@ -271,10 +271,11 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
           nullset.push(`${rownumber}つ目のデータ、商品名はあるが、業者名が入力されていません。`);
           cancelcount ++
         }
-        if ((row.商品名 !== "" || row.商品コード !== "" ) && row.数量 == "") {
-          nullset.push(`${rownumber}つ目のデータ、商品名もしくは商品ナンバーはあるが、数量が入力されていません。`);
-          cancelcount ++
+        if ((row.商品名 !== "" || row.商品コード !== "") && (!row.数量 || row.数量.trim() === "")) {
+          nullset.push(`${rownumber}つ目のデータで、商品名または商品コードは入力されていますが、数量が入力されていません。`);
+          cancelcount++;
         }
+        
       }
       if (cancelcount >= 1) {
         setDialogOpen(false);
