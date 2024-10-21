@@ -1,0 +1,43 @@
+
+
+.historyvendor {
+  min-width: 75px;
+  max-width: 75px;
+  overflow: hidden;
+}
+
+.historycode {
+  text-align: right;
+  width: 75px;
+  min-width: 75px;
+}
+
+.historyname {
+  max-width: 225px;
+  overflow: hidden;
+  min-width: 225px;
+}
+
+.historypersonal {
+  max-width: 80px;
+  min-width: 80px;
+}
+.historyquantity {
+  text-align: right;
+  max-width: 80px;
+}
+
+.historydetail {
+  max-width: 90px;
+  min-width: 90px;
+}
+
+.historyremarks {
+  max-width: 100px;
+  min-width: 100px;
+}
+
+.historyprogress {
+  max-width: 80px;
+  min-width: 80px;
+}
