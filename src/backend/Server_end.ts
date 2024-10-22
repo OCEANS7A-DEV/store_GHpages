@@ -1,3 +1,5 @@
+import { localStorageSet } from "./WebStorage";
+
 //const URL_STRING = "https://script.google.com/macros/s/AKfycbyRS05mlz_rc_cLfqvXtNuC_syN5n3IfJJv-5Iwq1w/exec";
 const URL_STRING = "https://script.google.com/macros/s/AKfycbyzFig3cgYpdipQY0jXwVq0AiF0AE-a2sPZCB-UIel6cgZb5VrExHpzhIVKvZrRkHnZ/exec";
 export default async function main() {};
@@ -286,6 +288,30 @@ export const ExplanationImageGet = async(
       throw new Error(`HTTP error! status: ${response.status}`)
     }
     const result = await response.json();
+    return result;
+  }catch(e){
+    return (e);
+  }
+};
+
+export const processlistGet = async () => {
+  try {
+    const response = await fetch(
+      URL_STRING,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          action: 'processlistGet',
+          sub_action: 'get',
+          sheetName: 'その他一覧',
+        })
+      },
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const result = await response.json();
+    localStorage.setItem('processlist', JSON.stringify(result));
     return result;
   }catch(e){
     return (e);

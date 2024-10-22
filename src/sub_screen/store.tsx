@@ -1,8 +1,8 @@
-import React, { useState, useRef, ChangeEvent } from 'react';
+import React, { useState, useRef, ChangeEvent, useEffect } from 'react';
 import Select from 'react-select';
 import '../css/store.css';
 import ReactDOM from 'react-dom';
-import { InventorySearch, ColorListGet, GASPostInsertStore,TESTPOST, judgmentPOST } from '../backend/Server_end';
+import { InventorySearch, ColorListGet, GASPostInsertStore,TESTPOST, judgmentPOST, processlistGet } from '../backend/Server_end';
 import ConfirmDialog from './orderDialog';
 import { searchStr, FormDataKeepSet, KeepFormDataGet } from '../backend/WebStorage';
 import WordSearch from './ProductSearchWord';
@@ -442,6 +442,10 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
   const clickcheckpage = () => {
     setCurrentPage('History');
   };
+
+  useEffect(() => {
+    processlistGet();
+  }, []);
 
   return (
     <div className="window_area">

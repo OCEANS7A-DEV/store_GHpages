@@ -72,6 +72,8 @@ export default function OrderHistory({ setCurrentPage }: SettingProps) {
   const [historydate, sethistorydate] = useState<string>('');
   const message = `${historydate}の発注です`;
   const [explanationIMAGE, setexplanationIMAGE] = useState<string>('');
+  const [processlist, setprocesslist] = useState([]);
+  const [progressmax, setprogressmax] = useState<number>(0);
 
   const handleyearChange = (selectedOption: SelectOption | null) => {
     setyears(selectedOption);
@@ -112,30 +114,12 @@ export default function OrderHistory({ setCurrentPage }: SettingProps) {
   };
 
   const processingdata = (data) => {
-    let processing = '';
-    if (data === "未印刷"){
-      processing = '発注済';
-    }else if (data === "印刷済"){
-      processing = '処理中';
-    }else if (data === "出荷済"){
-      processing = '配送中';
-    }else if (data === "入庫済"){
-      processing = '納品済'
-    }
+    let processing = processlist[data][0];
     return processing;
   };
 
   const progress = (data) => {
-    let processing = 0;
-    if (data === "未印刷"){
-      processing = 1;
-    }else if (data === "印刷済"){
-      processing = 2;
-    }else if (data === "出荷済"){
-      processing = 3;
-    }else if (data === "入庫済"){
-      processing = 4;
-    }
+    let processing = processlist[data][1];
     return processing;
   };
 
@@ -152,7 +136,9 @@ export default function OrderHistory({ setCurrentPage }: SettingProps) {
       setexplanationIMAGE(ImageURL);
     };
     Explanationimageset();
-
+    const processlistdata = localStorage.getItem('processlist');
+    setprocesslist(JSON.parse(processlistdata));
+    setprogressmax(Object.keys(JSON.parse(processlistdata)).length);
   },[])
   return (
     <div className="history-window">
@@ -208,8 +194,8 @@ export default function OrderHistory({ setCurrentPage }: SettingProps) {
                     isOpen={historyDialogOpen}
                   />
                   <td className="history-progress">
-                    <p className="progress">{progress(historydata[key][0][historydata[key][0].length - 1])}/4</p>
-                    <progress value={progress(historydata[key][0][historydata[key][0].length - 1])} max="4"/>
+                    <p className="progress">{progress(historydata[key][0][historydata[key][0].length - 1])}/{progressmax}</p>
+                    <progress value={progress(historydata[key][0][historydata[key][0].length - 1])} max={progressmax}/>
                   </td>
                   <td className="history-processing">{processingdata(historydata[key][0][historydata[key][0].length - 1])}</td>
                 </tr>

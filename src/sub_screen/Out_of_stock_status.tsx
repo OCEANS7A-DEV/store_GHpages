@@ -1,6 +1,7 @@
 // ConfirmDialog.tsx
-import React,{ useEffect } from 'react';
+import React,{ useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
+
 
 import '../css/ProductDetailDialog.css';
 import '../css/history_detail.css';
@@ -18,22 +19,15 @@ interface ConfirmDialogProps {
 
 const OutOfStockStatus: React.FC<ConfirmDialogProps> = ({ title, message, tableData, onConfirm, onCancel, isOpen }) => {
   if (!isOpen) return null;
+  const [processlist, setprocesslist] = useState([]);
   const processingdata = (data) => {
-    let processing = '';
-    if (data === "未印刷"){
-      processing = '発注済';
-    }else if (data === "印刷済"){
-      processing = '処理中';
-    }else if (data === "出荷済"){
-      processing = '配送中';
-    }else if (data === "入庫済"){
-      processing = '納品済'
-    }
+    let processing = processlist[data][0];
     return processing;
   };
 
   useEffect(() => {
-    console.log(tableData)
+    const processlistdata = localStorage.getItem('processlist');
+    setprocesslist(JSON.parse(processlistdata));
   },[])
 
   return ReactDOM.createPortal(
@@ -73,16 +67,15 @@ const OutOfStockStatus: React.FC<ConfirmDialogProps> = ({ title, message, tableD
                   <td className='historyname'>{row[4]}</td>
                   <td className='historydetail'>{row[5]?.label || '-'}</td>
                   <td className='historyquantity'>{row[6]}</td>
-                  <td className='historypersonal'>{row[9]}</td>
-                  <td className='historyremarks'>{row[10]}</td>
-                  <td className='historyprogress'>{processingdata(row[11])}</td>
+                  <td className='historypersonal'>{row[10]}</td>
+                  <td className='historyremarks'>{row[11]}</td>
+                  <td className='historyprogress'>{processingdata(row[12])}</td>
                 </tr>
               ))}
             </tbody>
           </table>
           <div className='confirm-dialog-button'>
             <button onClick={onConfirm}>OK</button>
-            {/* <button onClick={onCancel}>キャンセル</button> */}
           </div>
         </div>
       </div>
