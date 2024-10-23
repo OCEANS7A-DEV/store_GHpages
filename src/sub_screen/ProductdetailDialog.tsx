@@ -1,5 +1,5 @@
 // ConfirmDialog.tsx
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
 import '../css/ProductDetailDialog.css';
@@ -14,19 +14,45 @@ interface DetailDialogProps {
   insert: (data: any) => void;
   nextDatail: () => void;
   beforeDatail: () => void;
+  searchDataIndex: number;
+  searchtabledata: any;
 }
 
-const DetailDialog: React.FC<DetailDialogProps> = ({ title, message, Data, onConfirm, isOpen, image, insert, nextDatail, beforeDatail}) => {
+const DetailDialog: React.FC<DetailDialogProps> = ({ title, message, Data, onConfirm, isOpen, image, insert, searchtabledata, searchDataIndex, nextDatail, beforeDatail}) => {
   if (!isOpen) return null;
+  const [isNextButton, setisNextButton] = useState(false);
+  const [isBeforeButton, setisBeforeButton] = useState(false);
+
+  useEffect(() => {
+    const index = searchtabledata.findIndex(subArray =>
+      subArray.length === Data.length &&
+      subArray.every((value, i) => value === Data[i])
+    );
+    console.log(searchtabledata)
+    console.log(index)
+    if (index > 0){
+      setisBeforeButton(true);
+    }
+    if (index < searchtabledata.length - 1){
+      setisNextButton(true);
+    }
+  },[])
+
 
   return ReactDOM.createPortal(
     <div className="detail-dialog-overlay">
       <div className="detail-dialog">
         <div className="detail-top">
           <div className='detail-title'>
-            <button onClick={beforeDatail}>前の商品へ</button>
+            <button disabled={!isBeforeButton} onClick={beforeDatail} style={{
+              backgroundColor: isBeforeButton ? '#4CAF50' : 'gray', // 状態に応じて色を変更
+              cursor: isBeforeButton ? 'pointer' : 'not-allowed', // 無効時のカーソルを変更
+            }}>前の商品へ</button>
             <h2>{title}</h2>
-            <button onClick={nextDatail}>次の商品へ</button>
+            <button disabled={!isNextButton} onClick={nextDatail} style={{
+              backgroundColor: isNextButton ? '#4CAF50' : 'gray', // 状態に応じて色を変更
+              cursor: isNextButton ? 'pointer' : 'not-allowed', // 無効時のカーソルを変更
+            }}>次の商品へ</button>
           </div>
           <div className="detail-top-main">
             <p>

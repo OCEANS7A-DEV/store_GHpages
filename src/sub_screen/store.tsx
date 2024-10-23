@@ -104,7 +104,7 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
   const [checkDialogOpen, setcheckDialogOpen] = useState(false);
   const [checkData, setcheckData] = useState<any>([]);
   const [searchtabledata, setsearchtabledata] = useState<any>([]);
-  const [searchDataIndex, setsearchDataIndex] = useState<number>(0);
+  const [searchDataIndex, setsearchDataIndex] = useState(null);
 
 
 
@@ -522,6 +522,7 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
             insert={DetailhandleConfirmAdd}
             nextDatail={nextDatail}
             beforeDatail={beforeDatail}
+            searchtabledata={searchtabledata}
           />
           <LoadingDisplay isLoading={isLoading}/>
         <div className='in-area'>
