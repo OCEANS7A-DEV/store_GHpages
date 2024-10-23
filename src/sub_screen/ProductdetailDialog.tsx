@@ -12,9 +12,11 @@ interface DetailDialogProps {
   isOpen: boolean;
   image?: string;
   insert: (data: any) => void;
+  nextDatail: () => void;
+  beforeDatail: () => void;
 }
 
-const DetailDialog: React.FC<DetailDialogProps> = ({ title, message, Data, onConfirm, isOpen, image, insert}) => {
+const DetailDialog: React.FC<DetailDialogProps> = ({ title, message, Data, onConfirm, isOpen, image, insert, nextDatail, beforeDatail}) => {
   if (!isOpen) return null;
 
   return ReactDOM.createPortal(
@@ -22,7 +24,9 @@ const DetailDialog: React.FC<DetailDialogProps> = ({ title, message, Data, onCon
       <div className="detail-dialog">
         <div className="detail-top">
           <div className='detail-title'>
+            <button onClick={beforeDatail}>前の商品へ</button>
             <h2>{title}</h2>
+            <button onClick={nextDatail}>次の商品へ</button>
           </div>
           <div className="detail-top-main">
             <p>

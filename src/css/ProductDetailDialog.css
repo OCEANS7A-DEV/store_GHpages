@@ -11,9 +11,10 @@
   flex-shrink: 0;
 }
 
-.detail-dialog-button button {
-  margin-left: 10px;
-  padding: 10px 20px;
+.detail-dialog button {
+  height: 45px;
+  white-space: nowrap;
+  padding: 10px 15px;
   background-color: #4CAF50;
   color: white;
   border: none;
@@ -79,6 +80,7 @@
 }
 .detail-title {
   text-align: center;
+  display: flex;
 }
 
 

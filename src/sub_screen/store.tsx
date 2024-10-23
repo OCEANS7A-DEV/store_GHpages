@@ -87,19 +87,14 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
   const storename = localStorage.getItem('StoreSetName');
   const [productData, setProductData] = useState<InventoryDataType[]>([
     {業者: '', 商品コード: '', 商品名: '', 商品単価: ''}])
-    const codeRefs = useRef([]);
-    const quantityRefs = useRef([]);
-    const personalRefs = useRef([]);
-    const remarksRefs = useRef([]);
+  const codeRefs = useRef([]);
+  const quantityRefs = useRef([]);
+  const personalRefs = useRef([]);
+  const remarksRefs = useRef([]);
   const message = "注文内容は以下の通りです\n以下の内容でよろしければOKをクリックしてください\n内容の変更がある場合にはキャンセルをクリックしてください";
   const [SaveMessage, setSaveMessage] = useState<string>('');
   const [SaveisDialogOpen, setSaveDialogOpen] = useState(false);
   const [Savetype, setSavetype] = useState<string>('');
-  const clickpage = () => {
-    localStorage.removeItem('StoreSetName');
-    setCurrentPage('topPage');
-  };
-
   const [searchData, setsearchData] = useState<any>([]);
   const [Detailtype, setDetailtype] = useState<string>('');
   const DetailMessage = `業者名: ${searchData[0] || ''}　　||　　商品ナンバー: ${searchData[1] || ''}\n商品単価: ${(searchData[3] !== undefined && searchData[3] !== null) ? searchData[3].toLocaleString() : ''}円　　||　　店販価格: ${(searchData[5] !== undefined && searchData[5] !== null) ? searchData[5].toLocaleString() : ''}`
@@ -108,7 +103,15 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
   const [isLoading, setisLoading] = useState(false);
   const [checkDialogOpen, setcheckDialogOpen] = useState(false);
   const [checkData, setcheckData] = useState<any>([]);
+  const [searchtabledata, setsearchtabledata] = useState<any>([]);
+  const [searchDataIndex, setsearchDataIndex] = useState<number>(0);
 
+
+
+  const clickpage = () => {
+    localStorage.removeItem('StoreSetName');
+    setCurrentPage('topPage');
+  };
 
   const handleChange = (
     index: number,
@@ -272,7 +275,7 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
           cancelcount ++
         }
         if ((row.商品名 !== "" || row.商品コード !== "") && (!row.数量 || row.数量.trim() === "")) {
-          nullset.push(`${rownumber}つ目のデータで、商品名または商品コードは入力されていますが、数量が入力されていません。`);
+          nullset.push(`${rownumber}つ目のデータで、商品名または商品ナンバーは入力されていますが、数量が入力されていません。`);
           cancelcount++;
         }
         
@@ -443,6 +446,36 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
     setCurrentPage('History');
   };
 
+  const nextDatail = async () => {
+    const updateindex = searchDataIndex + 1
+    setDetailisDialogOpen(false);
+    setsearchDataIndex(updateindex);
+    setisLoading(true);
+    var match = 'https://drive.google.com/file/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFhbm/preview';// 画像がないとき用のURL
+    const image = await InventorySearch(searchtabledata[updateindex][1],"商品コード","商品画像");// 商品画像検索
+    if (image[2] !== ''){// 商品画像のURLがあればそのURLを上書き
+      match = image[2];
+    }
+    await setDetailIMAGE(match);//画像をセット
+    await setsearchData(searchtabledata[updateindex]);
+    await setDetailisDialogOpen(true);
+    setisLoading(false);
+  };
+  const beforeDatail = async () => {
+    const updateindex = searchDataIndex - 1
+    setDetailisDialogOpen(false);
+    setsearchDataIndex(updateindex);
+    setisLoading(true);
+    var match = 'https://drive.google.com/file/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFhbm/preview';// 画像がないとき用のURL
+    const image = await InventorySearch(searchtabledata[updateindex][1],"商品コード","商品画像");// 商品画像検索
+    if (image[2] !== ''){// 商品画像のURLがあればそのURLを上書き
+      match = image[2];
+    }
+    await setDetailIMAGE(match);//画像をセット
+    await setsearchData(searchtabledata[updateindex]);
+    await setDetailisDialogOpen(true);
+    setisLoading(false);
+  };
   useEffect(() => {
     processlistGet();
   }, []);
@@ -470,7 +503,15 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
         />
       </div>
       <div className='form_area'>
-        <WordSearch className="searcharea" setsearchData={setsearchData} setDetailisDialogOpen={setDetailisDialogOpen} setDetailIMAGE={setDetailIMAGE} setisLoading={setisLoading}/>
+        <WordSearch className="searcharea"
+          setsearchData={setsearchData}
+          setDetailisDialogOpen={setDetailisDialogOpen}
+          setDetailIMAGE={setDetailIMAGE}
+          setisLoading={setisLoading}
+          setsearchtabledata={setsearchtabledata}
+          searchtabledata={searchtabledata}
+          setsearchDataIndex={setsearchDataIndex}
+          searchDataIndex={searchDataIndex}/>
           <DetailDialog
             Data={searchData}
             title={searchData[2]}
@@ -479,6 +520,8 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
             isOpen={DetailisDialogOpen}
             image={DetailIMAGE}
             insert={DetailhandleConfirmAdd}
+            nextDatail={nextDatail}
+            beforeDatail={beforeDatail}
           />
           <LoadingDisplay isLoading={isLoading}/>
         <div className='in-area'>
