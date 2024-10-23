@@ -276,6 +276,9 @@ export const ExplanationImageGet = async(
       URL_STRING,
       {
         method: 'POST',
+        headers: {
+          "Content-Type" : "application/x-www-form-urlencoded",
+        },
         body: JSON.stringify({
           action: 'Explanation',
           sub_action: 'get',
@@ -315,5 +318,35 @@ export const processlistGet = async () => {
     return result;
   }catch(e){
     return (e);
+  }
+};
+
+
+export const proccessReceiving = async (
+  date: any,
+  StoreName: any
+) => {
+  try {
+    const response = await fetch(
+      URL_STRING,
+      {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          "Content-Type" : "application/x-www-form-urlencoded",
+        },
+        body: JSON.stringify({
+          action: 'processReceiving',
+          sub_action: 'post',
+          sheetName: '店舗へ',
+          storename: StoreName,
+          dateset: date,
+        }),
+      },
+    );
+    const result = await response.json()
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
   }
 };

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import '../css/store.css';
 import '../css/order_history.css';
-import { HistoryGet, ExplanationImageGet } from '../backend/Server_end.ts';
+import { HistoryGet, ExplanationImageGet, proccessReceiving } from '../backend/Server_end.ts';
 import OutOfStockStatus from './Out_of_stock_status.tsx';
 
 
@@ -123,6 +123,14 @@ export default function OrderHistory({ setCurrentPage }: SettingProps) {
     return processing;
   };
 
+  const ExecuteGoodsReceipt = async () => {
+    console.log(historydate, storename)
+    const test = await proccessReceiving(historydate, storename)
+    console.log(test);
+    sethistoryDialogOpen(false);
+    historysearch();
+  };
+
 
 
   useEffect(() => {
@@ -140,6 +148,7 @@ export default function OrderHistory({ setCurrentPage }: SettingProps) {
     setprocesslist(JSON.parse(processlistdata));
     setprogressmax(Object.keys(JSON.parse(processlistdata)).length);
   },[])
+
   return (
     <div className="history-window">
       <div className="history-select-area">
@@ -192,6 +201,8 @@ export default function OrderHistory({ setCurrentPage }: SettingProps) {
                     tableData={orderdata}
                     onConfirm={historyhandleConfirm}
                     isOpen={historyDialogOpen}
+                    processlistdata={processlist}
+                    ExecuteGoodsReceipt={ExecuteGoodsReceipt}
                   />
                   <td className="history-progress">
                     <p className="progress">{progress(historydata[key][0][historydata[key][0].length - 1])}/{progressmax}</p>

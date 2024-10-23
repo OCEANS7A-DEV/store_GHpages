@@ -35,9 +35,9 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
     }
     getLocalStorageSize()
     const cashdata = localStorage.getItem('StoreSetName');
-    if (cashdata !== null){
-      autoSelectStore();
-    }
+    // if (cashdata !== null){
+    //   autoSelectStore();
+    // }
   }, []);
   
   const handleStoreChange = (selectedOption: SelectOption | null) => {
@@ -60,9 +60,9 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
     }
   };
 
-  const autoSelectStore = () => {
-    setCurrentPage('storePage');
-  };
+  // const autoSelectStore = () => {
+  //   setCurrentPage('storePage');
+  // };
 
   return (
     <div className="top-window">

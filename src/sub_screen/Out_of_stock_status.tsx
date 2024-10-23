@@ -11,40 +11,40 @@ interface ConfirmDialogProps {
   message: string;
   tableData: Array<any>;
   onConfirm: () => void;
-  onCancel: () => void;
   isOpen: boolean;
+  processlistdata: any;
+  ExecuteGoodsReceipt: () => void;
 }
 
 
 
-const OutOfStockStatus: React.FC<ConfirmDialogProps> = ({ title, message, tableData, onConfirm, onCancel, isOpen }) => {
+const OutOfStockStatus: React.FC<ConfirmDialogProps> = ({ title, message, tableData, onConfirm, isOpen, processlistdata, ExecuteGoodsReceipt }) => {
   if (!isOpen) return null;
-  const [processlist, setprocesslist] = useState([]);
+
   const processingdata = (data) => {
-    let processing = processlist[data][0];
+    let processing = processlistdata[data][0];
     return processing;
   };
-
-  useEffect(() => {
-    const processlistdata = localStorage.getItem('processlist');
-    setprocesslist(JSON.parse(processlistdata));
-  },[])
 
   return ReactDOM.createPortal(
     <div className="confirm-dialog-overlay">
       <div className="confirm-dialog">
-        <div className="confirm-top">
-          <h2>{title}</h2>
-          <p>
-            {message.split('\n').map((line, index) => (
-              <React.Fragment key={index}>
-                {line}
-                <br />
-              </React.Fragment>
-            ))}
-          </p>
+        <div className="OutOfStockStatus-top">
+          <div className="confirm-top">
+            <h2>{title}</h2>
+            <p>
+              {message.split('\n').map((line, index) => (
+                <React.Fragment key={index}>
+                  {line}
+                  <br />
+                </React.Fragment>
+              ))}
+            </p>
+          </div>
+          <div className="button">
+            <button type="button" className="OutOfStockStatus-button" onClick={ExecuteGoodsReceipt}>入庫実行</button>
+          </div>
         </div>
-        {/* テーブルを表示 */}
         <div className="dialog-table">
           <table className='data-table'>
             <thead>
@@ -74,9 +74,9 @@ const OutOfStockStatus: React.FC<ConfirmDialogProps> = ({ title, message, tableD
               ))}
             </tbody>
           </table>
-          <div className='confirm-dialog-button'>
-            <button onClick={onConfirm}>OK</button>
-          </div>
+        </div>
+        <div className='confirm-dialog-button'>
+          <button onClick={onConfirm}>OK</button>
         </div>
       </div>
     </div>,
