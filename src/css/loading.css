@@ -1,3 +1,18 @@
+.loading-display-overlay {
+  position: fixed; /* 画面全体に表示 */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* 半透明の背景色 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000; /* 最前面に表示 */
+}
+
 .loading {
-  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

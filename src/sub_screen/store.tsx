@@ -188,6 +188,7 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
   };
 
   const insertPost = async () => {
+    console.log(formData)
     await GASPostInsertStore('insert', '店舗へ', formData, storename);
   };
 
@@ -253,6 +254,7 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
   };
 
   const handleConfirm = async () => {
+    setisLoading(true);
     const judgment = await judgmentPOST();
     if (judgment === '発注不可'){
       alert('今回の注文は締め切られています\n次回の注文日で再度お願いします');
@@ -278,7 +280,6 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
           nullset.push(`${rownumber}つ目のデータで、商品名または商品ナンバーは入力されていますが、数量が入力されていません。`);
           cancelcount++;
         }
-        
       }
       if (cancelcount >= 1) {
         setDialogOpen(false);
@@ -286,12 +287,15 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
         return;
       }
       insertPost();
-      alert('発注が完了しました\n保存してあるデータは自動で削除されます');
       setDialogOpen(false);
+      setisLoading(false);
+      alert('発注が完了しました\n保存してあるデータは自動で削除されます');
       localStorage.setItem('Already_ordered', JSON.stringify(formData));
       setFormData(initialFormData);
       localStorage.removeItem(storename);
+      
     }
+    setisLoading(false);
   };
 
   const handleCancel = () => {
@@ -509,9 +513,7 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
           setDetailIMAGE={setDetailIMAGE}
           setisLoading={setisLoading}
           setsearchtabledata={setsearchtabledata}
-          searchtabledata={searchtabledata}
-          setsearchDataIndex={setsearchDataIndex}
-          searchDataIndex={searchDataIndex}/>
+          searchtabledata={searchtabledata}/>
           <DetailDialog
             Data={searchData}
             title={searchData[2]}
@@ -522,7 +524,7 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
             insert={DetailhandleConfirmAdd}
             nextDatail={nextDatail}
             beforeDatail={beforeDatail}
-            searchtabledata={searchtabledata}
+            searchtabledata={searchtabledata} searchDataIndex={0}
           />
           <LoadingDisplay isLoading={isLoading}/>
         <div className='in-area'>
