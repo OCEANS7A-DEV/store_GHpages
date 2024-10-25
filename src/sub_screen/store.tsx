@@ -490,7 +490,7 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
         <a className="buttonUnderlineSt" type="button" onClick={() => handleSaveConfirmMessage('set')}>
           保存データを反映
         </a>
-        <h2 className='store_name'>{storename}</h2>
+        <h2 className='store_name'>注文商品入力: {storename} 店</h2>
         <a className="buttonUnderlineSt" type="button" onClick={() => handleSaveConfirmMessage('save')}>
           データを保存
         </a>

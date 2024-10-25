@@ -494,7 +494,7 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
   return (
     <div className="window_area">
       <div className='window_top'>
-        <h2 className='store_name'>{storename}</h2>
+        <h2 className='store_name'>使用商品入力: {storename} 店</h2>
         <SaveConfirmDialog
           title="確認"
           message={SaveMessage}
