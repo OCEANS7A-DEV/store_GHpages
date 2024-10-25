@@ -26,14 +26,23 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
 
   useEffect(() => {
     localStorageSet();
+
     const getLocalStorageSize = async () => {
       const cachedData = localStorage.getItem('storeData');
-      setSelectOptions(JSON.parse(cachedData));
-      await localStoreSet(cachedData);
-      const cachedData2 = localStorage.getItem('storeData');
-      setSelectOptions(JSON.parse(cachedData2));
-    }
-    getLocalStorageSize()
+      if (cachedData) {
+        const parsedData = JSON.parse(cachedData);
+        await setSelectOptions(parsedData);  // `selectOptions`にキャッシュデータを設定
+        await localStoreSet(parsedData);
+
+        // `selectOptions`の設定が完了後に`storeSelect`を設定
+        const setStore = localStorage.getItem('StoreSetName');
+        if (setStore) {
+          const initialOption = parsedData.find((option: SelectOption) => option.value === setStore);
+          setStoreSelect(initialOption || null);
+        }
+      }
+    };
+    getLocalStorageSize();
   }, []);
   
   const handleStoreChange = (selectedOption: SelectOption | null) => {
