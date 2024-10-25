@@ -125,7 +125,7 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
 
 
   const clickpage = () => {
-    localStorage.removeItem('StoreSetName');
+    //localStorage.removeItem('StoreSetName');
     setCurrentPage('topPage');
   };
 
@@ -265,7 +265,7 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
   };
 
   const handleOpenDialog = () => {
-    console.log(usedformData)
+    //console.log(usedformData)
     setusedDialogOpen(true);
   };
 
@@ -608,7 +608,7 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
         <a className="buttonUnderlineSt" type="button" onClick={clickcheckpage}>
           履歴へ
         </a>
-        <a className="buttonUnderlineSt" type="button" onClick={handleOpenDialog}>使用商品 ＞＞</a>
+        <a className="buttonUnderlineSt" type="button" onClick={handleOpenDialog}>使用商品送信 ＞＞</a>
         <UsedDialog
           title="確認"
           message={message}

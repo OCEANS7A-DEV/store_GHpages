@@ -109,7 +109,7 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
 
 
   const clickpage = () => {
-    localStorage.removeItem('StoreSetName');
+    //localStorage.removeItem('StoreSetName');
     setCurrentPage('topPage');
   };
 
