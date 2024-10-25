@@ -327,7 +327,7 @@ export const proccessReceiving = async (
   StoreName: any
 ) => {
   try {
-    const response = await fetch(
+    await fetch(
       URL_STRING,
       {
         method: 'POST',
@@ -344,7 +344,6 @@ export const proccessReceiving = async (
         }),
       },
     );
-    const result = await response.json()
   } catch (error) {
     console.error('Error:', error);
     throw error;

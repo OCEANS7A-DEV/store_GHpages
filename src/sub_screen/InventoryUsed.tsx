@@ -1,39 +1,37 @@
 import React, { useState, useRef, ChangeEvent, useEffect } from 'react';
 import Select from 'react-select';
-import '../css/store.css';
+//import '../css/store.css';
 import '../css/InventoryUsed.css';
 import ReactDOM from 'react-dom';
-import { InventorySearch, ColorListGet, GASPostInsertStore,TESTPOST, judgmentPOST, processlistGet, ProcessingMethodGet } from '../backend/Server_end';
-import ConfirmDialog from './orderDialog';
-import { searchStr, FormDataKeepSet, KeepFormDataGet } from '../backend/WebStorage';
+import { InventorySearch, GASPostInsertStore, processlistGet, ProcessingMethodGet } from '../backend/Server_end';
+import UsedDialog from './usedDialog';
+import { FormDataKeepSet, KeepFormDataGet } from '../backend/WebStorage';
 import WordSearch from './ProductSearchWord';
 import SaveConfirmDialog from './SaveConfirmDialog';
 import DetailDialog from './ProductdetailDialog.tsx';
 import LoadingDisplay from './loading.tsx';
-import OutOfStockStatus from './Out_of_stock_status.tsx';
 
 
 
-interface InsertData {
+interface UsedInsertData {
   月日: string;
   商品コード: string;
   商品名: string;
-  商品詳細: { value: string; label: string } | null;
   数量: string;
   個人購入: string;
   備考: string;
   使用方法: { value: string; label: string } | null;
-  selectOptions: { value: string; label: string; id: number }[];
   ProcessingMethod: { value: string; label: string; id: number }[];
   商品単価: string;
+  業者: string,
 }
 
 interface SettingProps {
   setCurrentPage: (page: string) => void;
 }
 
-interface InventoryDataType {
-  業者: string;
+interface UsedInventoryDataType {
+  月日: string;
   商品コード: string;
   商品名: string;
   商品単価: string;
@@ -60,7 +58,7 @@ const colorlistGet = async (code: any) => {
   return returnData;
 };
 
-const fieldDataList = ['月日',　'商品コード', '商品名', '商品詳細', '数量', '個人購入', '備考'];
+const fieldDataList = ['月日',　'商品コード', '商品名', '商品詳細', '数量', '使用方法', '個人購入', '備考'];
 
 const productSearch = (code: number) => {
   const storageGet = JSON.parse(sessionStorage.getItem('data'));
@@ -80,36 +78,35 @@ const ProcessingMethodList = async () => {
     };
     ProcessingMethod.push(DefAsArray);
   }
-  //console.log(ProcessingMethod);
+  console.log(MethodList)
 };
 
 
 
 export default function InventoryUsed({ setCurrentPage }: SettingProps) {
-  const [isDialogOpen, setDialogOpen] = useState(false);
+  const [isusedDialogOpen, setusedDialogOpen] = useState(false);
   const initialRowCount = 20;
-  const initialFormData = Array.from({ length: initialRowCount }, () => ({
+  const initialusedFormData = Array.from({ length: initialRowCount }, () => ({
     月日: '',
     商品コード: '',
     商品名: '',
-    商品詳細: null,
     数量: '',
     使用方法: null,
     個人購入: '',
     備考: '',
-    selectOptions: [],
     ProcessingMethod: [],
-    商品単価: ''
+    商品単価: '',
+    業者: ''
   }));
-  const [formData, setFormData] = useState<InsertData[]>(initialFormData);
+  const [usedformData, setusedFormData] = useState<UsedInsertData[]>(initialusedFormData);
   const storename = localStorage.getItem('StoreSetName');
-  const [productData, setProductData] = useState<InventoryDataType[]>([
-    {業者: '', 商品コード: '', 商品名: '', 商品単価: ''}])
+  const [productData, setProductData] = useState<UsedInventoryDataType[]>([
+    {月日: '', 商品コード: '', 商品名: '', 商品単価: ''}])
   const codeRefs = useRef([]);
   const quantityRefs = useRef([]);
   const personalRefs = useRef([]);
   const remarksRefs = useRef([]);
-  const message = "注文内容は以下の通りです\n以下の内容でよろしければOKをクリックしてください\n内容の変更がある場合にはキャンセルをクリックしてください";
+  const message = "使用商品は以下の通りです\n以下の内容でよろしければOKをクリックしてください\n内容の変更がある場合にはキャンセルをクリックしてください";
   const [SaveMessage, setSaveMessage] = useState<string>('');
   const [SaveisDialogOpen, setSaveDialogOpen] = useState(false);
   const [Savetype, setSavetype] = useState<string>('');
@@ -122,7 +119,8 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
   const [checkDialogOpen, setcheckDialogOpen] = useState(false);
   const [checkData, setcheckData] = useState<any>([]);
   const [searchtabledata, setsearchtabledata] = useState<any>([]);
-  const [searchDataIndex, setsearchDataIndex] = useState(null);
+  const [searchDataIndex, setsearchDataIndex] = useState<number>(0);
+
 
 
 
@@ -133,52 +131,49 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
 
   const handleChange = (
     index: number,
-    field: keyof InsertData,
+    field: keyof UsedInsertData,
     event: ChangeEvent<HTMLInputElement>,
   ) => {
-    const newFormData = [...formData];
+    console.log(event.target.value)
+    const newFormData = [...usedformData];
     newFormData[index][field] = event.target.value;
-    setFormData(newFormData);
+    setusedFormData(newFormData);
   };
 
   const addNewForm = () => {
-    const newFormData = [...formData];
+    const newFormData = [...usedformData];
     for (let i = 0; i < 20; i++) {
       newFormData.push({
         月日: '',
         商品コード: '',
         商品名: '',
-        商品詳細: null,
         数量: '',
         使用方法: null,
         個人購入: '',
         備考: '',
-        selectOptions: [],
         ProcessingMethod: [],
-        商品単価: ''
+        商品単価: '',
+        業者: ''
       });
     }
-    setFormData(newFormData);
+    setusedFormData(newFormData);
   };
 
 
-  const searchDataChange = async (
+  const usedsearchDataChange = async (
     index: number,
     value: any
   ) => {
     const searchresult = productSearch(value);
-    const newFormData = [...formData];
+    const newFormData = [...usedformData];
     const updateFormData = (ResultData: any) => {
+      console.log(ResultData)
       if (ResultData !== null) {
         newFormData[index] = {
           ...newFormData[index],
-          ...ResultData.slice(0, 4).reduce((obj, item, i) => ({
-            ...obj,
-            [fieldDataList[i]]: item,
-          }), {}),
+          商品コード: ResultData[1],
+          商品名: ResultData[2],
           商品単価: ResultData[3],
-          商品詳細: null,
-          使用方法: null,
         };
       }
     };
@@ -188,45 +183,44 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
         colorlistGet(Number(value)),
       ]);
       updateFormData(ResultData);
-      newFormData[index].selectOptions = options || nullData;
     } catch (error) {
       const ResultData = await productSearch(Number(value));
       updateFormData(ResultData);
-      newFormData[index].selectOptions = nullData;
     }
-    setFormData(newFormData);
+    setusedFormData(newFormData);
   };
 
   const numberchange = async (
     index: number,
-    field: keyof InsertData,
+    field: keyof UsedInsertData,
     event: ChangeEvent<HTMLInputElement>,
   ) => {
     const CodeValue = event.target.value.replace(/[^0-9]/g, '');
-    const newFormData = [...formData];
+    const newFormData = [...usedformData];
     newFormData[index][field] = CodeValue;
-    setFormData(newFormData);
+    setusedFormData(newFormData);
   };
 
   const insertPost = async () => {
-    console.log(formData)
-    await GASPostInsertStore('insert', '店舗へ', formData, storename);
+    console.log(usedformData)
+    await GASPostInsertStore('usedinsert', '店舗使用', usedformData, storename);
   };
 
   const removeForm = (index: number) => {
-    const newFormData = formData.filter((_, i) => i !== index);
+    const newFormData = usedformData.filter((_, i) => i !== index);
     newFormData.push({
       月日: '',
       商品コード: '',
       商品名: '',
-      商品詳細: null,
       数量: '',
+      使用方法: null,
       個人購入: '',
       備考: '',
-      selectOptions: [],
-      商品単価: ''
+      ProcessingMethod: [],
+      商品単価: '',
+      業者: ''
     });
-    setFormData(newFormData);
+    setusedFormData(newFormData);
     codeRefs.current.splice(index, 1);
     quantityRefs.current.splice(index, 1);
   };
@@ -248,7 +242,7 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
         }
       } else if (fieldType === '備考') {
         const nextIndex = index + 1;
-        if (nextIndex < formData.length) {
+        if (nextIndex < usedformData.length) {
           if (codeRefs.current[nextIndex]) {
             codeRefs.current[nextIndex].focus();
           }
@@ -265,63 +259,57 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
   };
 
   const handleBlur = (index: number, fieldType: '商品コード') => {
-    if (formData[index][fieldType]) {
-      searchDataChange(index, formData[index][fieldType]);
+    if (usedformData[index][fieldType]) {
+      usedsearchDataChange(index, usedformData[index][fieldType]);
     }
   };
 
   const handleOpenDialog = () => {
-    setDialogOpen(true);
+    console.log(usedformData)
+    setusedDialogOpen(true);
   };
 
   const handleConfirm = async () => {
     setisLoading(true);
-    const judgment = await judgmentPOST();
-    if (judgment === '発注不可'){
-      alert('今回の注文は締め切られています\n次回の注文日で再度お願いします');
-      setDialogOpen(false);
-    }else{
-      var nullset = ['注文データのエラー']
-      var cancelcount = 0
-      var rownumber = 1
-      for (const row of formData) {
-        if (row.商品名 !== "" && row.商品コード == "") {
-          nullset.push(`${rownumber}つ目のデータ、商品名はあるが、商品ナンバーが入力されていません。`);
-          cancelcount ++
-        }
-        if (row.selectOptions.length > 0 && !row.商品詳細) {
-          nullset.push(`${rownumber}つ目のデータ、選択肢があるのに、商品詳細が選ばれていません。`);
-          cancelcount ++
-        }
-        if (row.月日 == "" && row.商品名 !== ""){
-          nullset.push(`${rownumber}つ目のデータ、商品名はあるが、月日が入力されていません。`);
-          cancelcount ++
-        }
-        if ((row.商品名 !== "" || row.商品コード !== "") && (!row.数量 || row.数量.trim() === "")) {
-          nullset.push(`${rownumber}つ目のデータで、商品名または商品ナンバーは入力されていますが、数量が入力されていません。`);
-          cancelcount++;
-        }
+    var nullset = ['注文データのエラー']
+    var cancelcount = 0
+    var rownumber = 1
+    for (const row of usedformData) {
+      if (row.商品名 !== "" && row.商品コード == "") {
+        nullset.push(`${rownumber}つ目のデータ、商品名はあるが、商品ナンバーが入力されていません。`);
+        cancelcount ++
       }
-      if (cancelcount >= 1) {
-        setDialogOpen(false);
-        alert(nullset.join('\n'));
-        return;
+      if (row.selectOptions.length > 0 && !row.商品詳細) {
+        nullset.push(`${rownumber}つ目のデータ、選択肢があるのに、商品詳細が選ばれていません。`);
+        cancelcount ++
       }
-      insertPost();
-      setDialogOpen(false);
-      setisLoading(false);
-      alert('発注が完了しました\n保存してあるデータは自動で削除されます');
-      localStorage.setItem('Already_ordered', JSON.stringify(formData));
-      setFormData(initialFormData);
-      localStorage.removeItem(storename);
-      
+      if (row.月日 == "" && row.商品名 !== ""){
+        nullset.push(`${rownumber}つ目のデータ、商品名はあるが、月日が入力されていません。`);
+        cancelcount ++
+      }
+      if ((row.商品名 !== "" || row.商品コード !== "") && (!row.数量 || row.数量.trim() === "")) {
+        nullset.push(`${rownumber}つ目のデータで、商品名または商品ナンバーは入力されていますが、数量が入力されていません。`);
+        cancelcount++;
+      }
     }
+    if (cancelcount >= 1) {
+      setusedDialogOpen(false);
+      alert(nullset.join('\n'));
+      return;
+    }
+    insertPost();
+    setusedDialogOpen(false);
+    setisLoading(false);
+    alert('発注が完了しました\n保存してあるデータは自動で削除されます');
+    localStorage.setItem('Already_ordered', JSON.stringify(usedformData));
+    setusedFormData(initialusedFormData);
+    localStorage.removeItem(storename);
     setisLoading(false);
   };
 
   const handleCancel = () => {
     alert('キャンセルされました');
-    setDialogOpen(false);
+    setusedDialogOpen(false);
   };
 
   const handleSaveConfirmMessage = (action: string) => {
@@ -337,7 +325,7 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
   const handleConfirmSave = async () => {
     const result = Savetype;
     if (result === 'save') {
-      FormDataKeepSet(formData, storename);
+      FormDataKeepSet(usedformData, storename);
     } else {
       const Data = KeepFormDataGet(storename);
       const saveData: any[] = [];
@@ -382,7 +370,7 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
           });
         }
       }
-      setFormData(saveData);
+      setusedFormData(saveData);
     }
     setSaveDialogOpen(false);
   };
@@ -408,7 +396,7 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
         colordata = nullData;
       }
       const pushdata = {
-        月日: null,  // searchresult が期待通りの構造か要確認
+        月日: '',  // searchresult が期待通りの構造か要確認
         商品コード: data[1],
         商品名: data[2],
         商品詳細: null,
@@ -421,12 +409,12 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
       returnData.push(pushdata);
     };
     let count = 0;
-    for (let i = 0; i < formData.length; i++){
-      if (formData[i].商品コード !== '') {
-        returnData.push(formData[i])
+    for (let i = 0; i < usedformData.length; i++){
+      if (usedformData[i].商品コード !== '') {
+        returnData.push(usedformData[i])
         count++
         continue
-      }else if (formData[i].商品コード === ''){
+      }else if (usedformData[i].商品コード === ''){
         count++
         await Datapush();
         break
@@ -437,7 +425,7 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
         break
       }
     }
-    for (let i = 0; i < (formData.length - count); i++){
+    for (let i = 0; i < (usedformData.length - count); i++){
       let pushnullData = {
         月日: '',  // searchresult が期待通りの構造か要確認
         商品コード: '',
@@ -452,7 +440,7 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
       returnData.push(pushnullData);
     }
     console.log(returnData);
-    setFormData(returnData);
+    setusedFormData(returnData);
     setDetailisDialogOpen(false);
   };
 
@@ -509,17 +497,7 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
   return (
     <div className="window_area">
       <div className='window_top'>
-        <div className='a-button-bg'>
-          <a className="buttonUnderlineS" type="button" onClick={() => handleSaveConfirmMessage('set')}>
-            保存データを反映
-          </a>
-        </div>
         <h2 className='store_name'>{storename}</h2>
-        <div className='a-button-bg'>
-          <a className="buttonUnderlineS" type="button" onClick={() => handleSaveConfirmMessage('save')}>
-            データを保存
-          </a>
-        </div>
         <SaveConfirmDialog
           title="確認"
           message={SaveMessage}
@@ -550,7 +528,7 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
           />
           <LoadingDisplay isLoading={isLoading}/>
         <div className='in-area'>
-          {formData.map((data, index) => (
+          {usedformData.map((data, index) => (
           <div key={index} className="insert_area">
             <input
               type="date"
@@ -578,19 +556,6 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
               value={data.商品名}
               onChange={(e) => handleChange(index, '商品名', e)}
             />
-            <Select
-              className="insert_Select"
-              key={index}
-              options={data.selectOptions}
-              value={data.商品詳細 || null}
-              isSearchable={false}
-              onChange={(selectedOption) => {
-                const newFormData = [...formData];
-                newFormData[index].商品詳細 = selectedOption || null;
-                setFormData(newFormData);
-              }}
-              placeholder="詳細を選択"
-            />
             <input
               type="text"
               pattern="^[0-9]+$"
@@ -609,9 +574,9 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
               value={data.使用方法 || null}
               isSearchable={false}
               onChange={(ProcessingMethod) => {
-                const newFormData = [...formData];
-                newFormData[index].使用方法 = ProcessingMethod || null;
-                setFormData(newFormData);
+                const newFormData = [...usedformData];
+                newFormData[index].使用方法 = ProcessingMethod;
+                setusedFormData(newFormData);
               }}
               placeholder="方法を選択"
             />
@@ -647,13 +612,13 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
           履歴へ
         </a>
         <a className="buttonUnderlineS" type="button" onClick={handleOpenDialog}>使用商品 ＞＞</a>
-        <ConfirmDialog
+        <UsedDialog
           title="確認"
           message={message}
-          tableData={formData}
+          tableData={usedformData}
           onConfirm={handleConfirm}
           onCancel={handleCancel}
-          isOpen={isDialogOpen}
+          isOpen={isusedDialogOpen}
         />
       </div>
       </div>

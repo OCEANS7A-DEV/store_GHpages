@@ -4,6 +4,7 @@ import '../css/store.css';
 import '../css/order_history.css';
 import { HistoryGet, ExplanationImageGet, proccessReceiving } from '../backend/Server_end.ts';
 import OutOfStockStatus from './Out_of_stock_status.tsx';
+import LoadingDisplay from './loading.tsx';
 
 
 const Yearlist = () => {
@@ -74,6 +75,8 @@ export default function OrderHistory({ setCurrentPage }: SettingProps) {
   const [explanationIMAGE, setexplanationIMAGE] = useState<string>('');
   const [processlist, setprocesslist] = useState([]);
   const [progressmax, setprogressmax] = useState<number>(0);
+  const [Dialogmaxprocess, setDialogmaxprocess] = useState<number>(0);
+  const [isLoading, setisLoading] = useState(false);
 
   const handleyearChange = (selectedOption: SelectOption | null) => {
     setyears(selectedOption);
@@ -88,11 +91,13 @@ export default function OrderHistory({ setCurrentPage }: SettingProps) {
   };
 
   const historysearch = async () => {
+    setisLoading(true)
     const searchDate = `${years.value}/${months.value}`;
     const result = await HistoryGet(searchDate, storename, '店舗へ')
     const groupeddata = groupDataByFirstColumn(result);
     console.log(groupeddata);
-    sethistorydata(groupeddata);
+    await sethistorydata(groupeddata);
+    setisLoading(false);
   };
 
   const handleOpenhistoryDialog = (date) => {
@@ -124,10 +129,11 @@ export default function OrderHistory({ setCurrentPage }: SettingProps) {
   };
 
   const ExecuteGoodsReceipt = async () => {
-    console.log(historydate, storename)
-    const test = await proccessReceiving(historydate, storename)
-    console.log(test);
-    sethistoryDialogOpen(false);
+    setisLoading(true)
+    await proccessReceiving(historydate, storename)
+    await sethistoryDialogOpen(false);
+    setisLoading(false);
+    alert('入庫処理をしました')
     historysearch();
   };
 
@@ -172,6 +178,7 @@ export default function OrderHistory({ setCurrentPage }: SettingProps) {
         <a className="buttonUnderlineH" id="main_back" type="button" onClick={historysearch}>
           検索
         </a>
+        <LoadingDisplay isLoading={isLoading}/>
       </div>
       <div className="history-area">
         <div className="historys">
@@ -203,6 +210,8 @@ export default function OrderHistory({ setCurrentPage }: SettingProps) {
                     isOpen={historyDialogOpen}
                     processlistdata={processlist}
                     ExecuteGoodsReceipt={ExecuteGoodsReceipt}
+                    Dialogmaxprocess={progressmax}
+                    progressdata={progress(historydata[key][0][historydata[key][0].length - 1])}
                   />
                   <td className="history-progress">
                     <p className="progress">{progress(historydata[key][0][historydata[key][0].length - 1])}/{progressmax}</p>

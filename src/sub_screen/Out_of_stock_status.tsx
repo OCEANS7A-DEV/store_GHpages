@@ -14,12 +14,27 @@ interface ConfirmDialogProps {
   isOpen: boolean;
   processlistdata: any;
   ExecuteGoodsReceipt: () => void;
+  Dialogmaxprocess: number;
+  progressdata: number;
 }
 
 
 
-const OutOfStockStatus: React.FC<ConfirmDialogProps> = ({ title, message, tableData, onConfirm, isOpen, processlistdata, ExecuteGoodsReceipt }) => {
+const OutOfStockStatus: React.FC<ConfirmDialogProps> = ({ title, message, tableData, onConfirm, isOpen, processlistdata, ExecuteGoodsReceipt, Dialogmaxprocess, progressdata }) => {
   if (!isOpen) return null;
+  const [isEnabled, setIsEnabled] = useState(false);
+  const [buttontext, setbuttontext] = useState('');
+
+  useEffect(() => {
+    if (progressdata !== Dialogmaxprocess){
+      setIsEnabled(true)
+      setbuttontext('入庫実行')
+    }else{
+      setIsEnabled(false)
+      
+      setbuttontext('入庫済み')
+    }
+  })
 
   const processingdata = (data) => {
     let processing = processlistdata[data][0];
@@ -42,7 +57,7 @@ const OutOfStockStatus: React.FC<ConfirmDialogProps> = ({ title, message, tableD
             </p>
           </div>
           <div className="button">
-            <button type="button" className="OutOfStockStatus-button" onClick={ExecuteGoodsReceipt}>入庫実行</button>
+            <a type="button" className={` ${isEnabled ? 'buttonUnderline' : 'not-button'}`} onClick={isEnabled ? ExecuteGoodsReceipt : undefined}>{buttontext}</a>
           </div>
         </div>
         <div className="dialog-table">
