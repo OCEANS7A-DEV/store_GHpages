@@ -2,3 +2,35 @@
   width: 120px;
   margin-right: 10px;
 }
+
+a {
+  color: inherit;
+  text-decoration: none;
+  background-color: #fff;
+}
+
+.buttonUnderlineSt {
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #222;
+  border-radius: 20px;
+  border:1px solid #1B85FB;
+  background-color: #fff;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+  margin: auto;
+  padding: 10px 15px;
+}
+
+.buttonUnderlineSt:hover {
+  color: #fff;
+  border:1px solid #1B85FB;
+  background-color: #1B85FB;
+}
+
+.buttonUnderlineSt:active {
+  transform: scale(0.9);
+}

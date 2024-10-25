@@ -5,6 +5,7 @@ import React, { useRef } from 'react';
 import StorePage from './sub_screen/store.tsx';
 import OrderHistory from './sub_screen/order_history.tsx';
 import InventoryUsed from './sub_screen/InventoryUsed.tsx';
+import UsedHistory from './sub_screen/UsedHistory.tsx';
 
 
 
@@ -26,6 +27,8 @@ export default function App() {
         return <OrderHistory setCurrentPage={setCurrentPage}/>;
       case 'used':
         return <InventoryUsed setCurrentPage={setCurrentPage}/>;
+      case 'usedHistory':
+        return <UsedHistory setCurrentPage={setCurrentPage}/>;
       default:
         return null;
     }

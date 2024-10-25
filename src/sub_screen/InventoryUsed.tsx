@@ -279,12 +279,8 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
         nullset.push(`${rownumber}つ目のデータ、商品名はあるが、商品ナンバーが入力されていません。`);
         cancelcount ++
       }
-      if (row.selectOptions.length > 0 && !row.商品詳細) {
-        nullset.push(`${rownumber}つ目のデータ、選択肢があるのに、商品詳細が選ばれていません。`);
-        cancelcount ++
-      }
-      if (row.月日 == "" && row.商品名 !== ""){
-        nullset.push(`${rownumber}つ目のデータ、商品名はあるが、月日が入力されていません。`);
+      if (row.月日 == "" && (row.商品名 !== "" || row.商品コード!== "")){
+        nullset.push(`${rownumber}つ目のデータ、月日が入力されていません。`);
         cancelcount ++
       }
       if ((row.商品名 !== "" || row.商品コード !== "") && (!row.数量 || row.数量.trim() === "")) {
@@ -295,6 +291,7 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
     if (cancelcount >= 1) {
       setusedDialogOpen(false);
       alert(nullset.join('\n'));
+      setisLoading(false);
       return;
     }
     insertPost();
@@ -456,7 +453,7 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
   };
 
   const clickcheckpage = () => {
-    setCurrentPage('History');
+    setCurrentPage('usedHistory');
   };
 
   const nextDatail = async () => {
@@ -605,13 +602,13 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
         ))}
       </div>
       <div className="button_area">
-        <a className="buttonUnderlineS" id="main_back" type="button" onClick={clickpage}>
+        <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>
           ＜＜ 店舗選択へ
         </a>
-        <a className="buttonUnderlineS" type="button" onClick={clickcheckpage}>
+        <a className="buttonUnderlineSt" type="button" onClick={clickcheckpage}>
           履歴へ
         </a>
-        <a className="buttonUnderlineS" type="button" onClick={handleOpenDialog}>使用商品 ＞＞</a>
+        <a className="buttonUnderlineSt" type="button" onClick={handleOpenDialog}>使用商品 ＞＞</a>
         <UsedDialog
           title="確認"
           message={message}

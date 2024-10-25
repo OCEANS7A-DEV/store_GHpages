@@ -228,7 +228,7 @@ export default function OrderHistory({ setCurrentPage }: SettingProps) {
         </div>
       </div>
       <div className="button_area">
-        <a className="buttonUnderlineS" id="main_back" type="button" onClick={clickpage}>
+        <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>
           ＜＜ 発注ページへ
         </a>
       </div>

@@ -1,7 +1,11 @@
 html {
+  padding: 0px;
   background-color: #bce2e8;
   min-width: 1150px;
 }
 body {
   margin: 0;
+}
+.root{
+  
 }
