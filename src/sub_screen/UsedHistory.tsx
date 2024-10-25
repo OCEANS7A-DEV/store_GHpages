@@ -89,7 +89,7 @@ export default function UsedHistory({ setCurrentPage }: SettingProps) {
   const historysearch = async () => {
     setisLoading(true)
     const searchDate = `${years.value}/${months.value}`;
-    const result = await HistoryGet(searchDate, storename, '店舗使用')
+    const result = await HistoryGet(searchDate, storename, '店舗使用商品')
     console.log(result);
     await sethistorydata(result);
     setisLoading(false);

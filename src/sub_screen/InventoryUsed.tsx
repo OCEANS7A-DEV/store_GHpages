@@ -203,7 +203,7 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
 
   const insertPost = async () => {
     console.log(usedformData)
-    await GASPostInsertStore('usedinsert', '店舗使用', usedformData, storename);
+    await GASPostInsertStore('usedinsert', '店舗使用商品', usedformData, storename);
   };
 
   const removeForm = (index: number) => {
