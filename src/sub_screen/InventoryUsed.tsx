@@ -1,8 +1,9 @@
 import React, { useState, useRef, ChangeEvent, useEffect } from 'react';
 import Select from 'react-select';
 import '../css/store.css';
+import '../css/InventoryUsed.css';
 import ReactDOM from 'react-dom';
-import { InventorySearch, ColorListGet, GASPostInsertStore,TESTPOST, judgmentPOST, processlistGet } from '../backend/Server_end';
+import { InventorySearch, ColorListGet, GASPostInsertStore,TESTPOST, judgmentPOST, processlistGet, ProcessingMethodGet } from '../backend/Server_end';
 import ConfirmDialog from './orderDialog';
 import { searchStr, FormDataKeepSet, KeepFormDataGet } from '../backend/WebStorage';
 import WordSearch from './ProductSearchWord';
@@ -14,14 +15,16 @@ import OutOfStockStatus from './Out_of_stock_status.tsx';
 
 
 interface InsertData {
-  業者: string;
+  月日: string;
   商品コード: string;
   商品名: string;
   商品詳細: { value: string; label: string } | null;
   数量: string;
   個人購入: string;
   備考: string;
+  使用方法: { value: string; label: string } | null;
   selectOptions: { value: string; label: string; id: number }[];
+  ProcessingMethod: { value: string; label: string; id: number }[];
   商品単価: string;
 }
 
@@ -54,11 +57,10 @@ const colorlistGet = async (code: any) => {
     };
     returnData.push(DefAsArray);
   }
-  //console.log(returnData);
   return returnData;
 };
 
-const fieldDataList = ['業者',　'商品コード', '商品名', '商品詳細', '数量', '個人購入', '備考'];
+const fieldDataList = ['月日',　'商品コード', '商品名', '商品詳細', '数量', '個人購入', '備考'];
 
 const productSearch = (code: number) => {
   const storageGet = JSON.parse(sessionStorage.getItem('data'));
@@ -66,21 +68,37 @@ const productSearch = (code: number) => {
   return product;
 };
 
+const ProcessingMethod = [];
+
+const ProcessingMethodList = async () => {
+  const MethodList = await ProcessingMethodGet();
+  for (let i = 0; i < MethodList.length; i++) {
+    const DefAsArray = {
+      value: MethodList[i],
+      label: MethodList[i],
+      id: i,
+    };
+    ProcessingMethod.push(DefAsArray);
+  }
+  //console.log(ProcessingMethod);
+};
 
 
 
-export default function StorePage({ setCurrentPage }: SettingProps) {
+export default function InventoryUsed({ setCurrentPage }: SettingProps) {
   const [isDialogOpen, setDialogOpen] = useState(false);
   const initialRowCount = 20;
   const initialFormData = Array.from({ length: initialRowCount }, () => ({
-    業者: '',
+    月日: '',
     商品コード: '',
     商品名: '',
     商品詳細: null,
     数量: '',
+    使用方法: null,
     個人購入: '',
     備考: '',
     selectOptions: [],
+    ProcessingMethod: [],
     商品単価: ''
   }));
   const [formData, setFormData] = useState<InsertData[]>(initialFormData);
@@ -127,14 +145,16 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
     const newFormData = [...formData];
     for (let i = 0; i < 20; i++) {
       newFormData.push({
-        業者: '',
+        月日: '',
         商品コード: '',
         商品名: '',
         商品詳細: null,
         数量: '',
+        使用方法: null,
         個人購入: '',
         備考: '',
         selectOptions: [],
+        ProcessingMethod: [],
         商品単価: ''
       });
     }
@@ -158,6 +178,7 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
           }), {}),
           商品単価: ResultData[3],
           商品詳細: null,
+          使用方法: null,
         };
       }
     };
@@ -195,7 +216,7 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
   const removeForm = (index: number) => {
     const newFormData = formData.filter((_, i) => i !== index);
     newFormData.push({
-      業者: '',
+      月日: '',
       商品コード: '',
       商品名: '',
       商品詳細: null,
@@ -272,8 +293,8 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
           nullset.push(`${rownumber}つ目のデータ、選択肢があるのに、商品詳細が選ばれていません。`);
           cancelcount ++
         }
-        if (row.業者 == "" && row.商品名 !== ""){
-          nullset.push(`${rownumber}つ目のデータ、商品名はあるが、業者名が入力されていません。`);
+        if (row.月日 == "" && row.商品名 !== ""){
+          nullset.push(`${rownumber}つ目のデータ、商品名はあるが、月日が入力されていません。`);
           cancelcount ++
         }
         if ((row.商品名 !== "" || row.商品コード !== "") && (!row.数量 || row.数量.trim() === "")) {
@@ -336,7 +357,7 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
             colordata = nullData;
           }
           const pushdata = {
-            業者: searchresult[0],  // searchresult が期待通りの構造か要確認
+            月日: Data[i].月日,  // searchresult が期待通りの構造か要確認
             商品コード: Data[i].商品コード,
             商品名: searchresult[2],
             商品詳細: Data[i].商品詳細,
@@ -349,7 +370,7 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
           saveData.push(pushdata);
         }else{
           saveData.push({
-            業者: '',
+            月日: '',
             商品コード: '',
             商品名: '',
             商品詳細: null,
@@ -387,7 +408,7 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
         colordata = nullData;
       }
       const pushdata = {
-        業者: data[0],  // searchresult が期待通りの構造か要確認
+        月日: null,  // searchresult が期待通りの構造か要確認
         商品コード: data[1],
         商品名: data[2],
         商品詳細: null,
@@ -418,7 +439,7 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
     }
     for (let i = 0; i < (formData.length - count); i++){
       let pushnullData = {
-        業者: '',  // searchresult が期待通りの構造か要確認
+        月日: '',  // searchresult が期待通りの構造か要確認
         商品コード: '',
         商品名: '',
         商品詳細: null,
@@ -482,18 +503,23 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
   };
   useEffect(() => {
     processlistGet();
+    ProcessingMethodList();
   }, []);
 
   return (
     <div className="window_area">
       <div className='window_top'>
-        <a className="buttonUnderlineSt" type="button" onClick={() => handleSaveConfirmMessage('set')}>
-          保存データを反映
-        </a>
+        <div className='a-button-bg'>
+          <a className="buttonUnderlineS" type="button" onClick={() => handleSaveConfirmMessage('set')}>
+            保存データを反映
+          </a>
+        </div>
         <h2 className='store_name'>{storename}</h2>
-        <a className="buttonUnderlineSt" type="button" onClick={() => handleSaveConfirmMessage('save')}>
-          データを保存
-        </a>
+        <div className='a-button-bg'>
+          <a className="buttonUnderlineS" type="button" onClick={() => handleSaveConfirmMessage('save')}>
+            データを保存
+          </a>
+        </div>
         <SaveConfirmDialog
           title="確認"
           message={SaveMessage}
@@ -509,8 +535,7 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
           setDetailIMAGE={setDetailIMAGE}
           setisLoading={setisLoading}
           setsearchtabledata={setsearchtabledata}
-          searchtabledata={searchtabledata}
-          setsearchDataIndex={setsearchDataIndex}/>
+          searchtabledata={searchtabledata}/>
           <DetailDialog
             Data={searchData}
             title={searchData[2]}
@@ -528,11 +553,10 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
           {formData.map((data, index) => (
           <div key={index} className="insert_area">
             <input
-              type="text"
-              placeholder="業者"
-              className="insert_vendor"
-              value={data.業者}
-              onChange={(e) => handleChange(index, '業者', e)}
+              type="date"
+              className="insert_date"
+              value={data.月日}
+              onChange={(e) => handleChange(index, '月日', e)}
             />
             <input
               title="入力は半角のみです"
@@ -578,6 +602,19 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
               onChange={(e) => numberchange(index, '数量', e)}
               onKeyDown={(e) => handleKeyDown(index, e, '数量')}
             />
+            <Select
+              className="insert_Select"
+              key={index}
+              options={ProcessingMethod}
+              value={data.使用方法 || null}
+              isSearchable={false}
+              onChange={(ProcessingMethod) => {
+                const newFormData = [...formData];
+                newFormData[index].使用方法 = ProcessingMethod || null;
+                setFormData(newFormData);
+              }}
+              placeholder="方法を選択"
+            />
             <input
               type="text"
               placeholder="個人購入"
@@ -603,16 +640,13 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
         ))}
       </div>
       <div className="button_area">
-        <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>
+        <a className="buttonUnderlineS" id="main_back" type="button" onClick={clickpage}>
           ＜＜ 店舗選択へ
         </a>
-        <a className="buttonUnderlineSt" type="button" onClick={addNewForm}>
-          注文枠追加
+        <a className="buttonUnderlineS" type="button" onClick={clickcheckpage}>
+          履歴へ
         </a>
-        <a className="buttonUnderlineSt" type="button" onClick={clickcheckpage}>
-          発注履歴へ
-        </a>
-        <a className="buttonUnderlineSt" type="button" onClick={handleOpenDialog}>本部へ注文 ＞＞</a>
+        <a className="buttonUnderlineS" type="button" onClick={handleOpenDialog}>使用商品 ＞＞</a>
         <ConfirmDialog
           title="確認"
           message={message}

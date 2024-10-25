@@ -16,50 +16,34 @@
 a {
   color: inherit;
   text-decoration: none;
-  background-color: #ebf6f7;
 }
 
-.buttonUnderlineS {
-  cursor: pointer;
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  height: 30px;
-  padding: 0 18px;
-  overflow: hidden;
+.buttonUnderlineSe {
   font-size: 15px;
-  color: #222;
+  padding-top: 2px;
+  cursor: pointer;
+  display: inline-block;
+  width: 75px;
   text-align: center;
-  overflow-wrap: anywhere;
-  background: transparent;
-  white-space: nowrap;
+  text-decoration: none;
+  outline: none;
+  color: #222;
+  border-radius: 20px;
+  border:1px solid #1B85FB;
+  background-color: #fff;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+  margin: 2px;
 }
 
-.buttonUnderlineS::after {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  display: block;
-  width: 100%;
-  height: 2px;
-  content: "";
-  background-color: #6fa24a;
-  transform: scaleX(0);
-  transform-origin: right top;
+.buttonUnderlineSe:hover {
+  color: #fff;
+  border:1px solid #1B85FB;
+  background-color: #1B85FB;
 }
 
-@media (any-hover: hover) {
-  .buttonUnderlineS::after {
-    transition: transform 0.2s cubic-bezier(0.19, 1, 0.22, 1);
-  }
-
-  .buttonUnderlineS:hover::after {
-    transition: transform 0.4s cubic-bezier(0.9, 0, 0, 1);
-    transform: scaleX(1);
-    transform-origin: left top;
-  }
+.buttonUnderlineSe:active {
+  transform: scale(0.9);
 }
 
 .search-data-table th, .search-data-table td {
@@ -179,6 +163,10 @@ a {
   background-color: #6fa24a;
   transform: scaleX(0);
   transform-origin: right top;
+}
+
+.buttonUnderlineD:active {
+  transform: scale(0.9);
 }
 
 @media (any-hover: hover) {

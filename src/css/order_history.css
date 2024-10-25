@@ -6,6 +6,8 @@
 .history-select-area {
   display: flex;
   margin: 20px;
+  justify-items: center;
+  align-items: center;
 }
 .year_Select {
   width: 150px;
@@ -40,40 +42,32 @@ a {
 }
 
 .buttonUnderlineH {
-  background-color: white;
   cursor: pointer;
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  height: 38px;
-  width: 80px;
-  margin: 0 10px;
-  padding: 0 18px;
-  overflow: hidden;
-  font-size: 15px;
-  color: #222;
+  display: inline-block;
+  width: 125px;
   text-align: center;
-  overflow-wrap: anywhere;
-  white-space: nowrap;
-  margin: 0 0px; /* 左右に適度なスペース */
+  text-decoration: none;
+  line-height: 40px;
+  outline: none;
+  color: #222;
+  border-radius: 20px;
+  border:1px solid #1B85FB;
+  background-color: #fff;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+  margin: 4px;
 }
 
-.buttonUnderlineH::after {
-  bottom: 0;
-  left: 0;
-  position: absolute;
-  display: block;
-  width: 100%;
-  height: 2px;
-  content: "";
-  background-color: #6fa24a;
-  transform: scaleX(0);
-  transform-origin: right top;
+.buttonUnderlineH:hover {
+  color: #fff;
+  border:1px solid #1B85FB;
+  background-color: #1B85FB;
+}
+.buttonUnderlineH:active {
+  transform: scale(0.9);
 }
 
-@media (any-hover: hover) {
+/* @media (any-hover: hover) {
   .buttonUnderlineH::after {
     transition: transform 0.2s cubic-bezier(0.19, 1, 0.22, 1);
   }
@@ -83,7 +77,7 @@ a {
     transform: scaleX(1);
     transform-origin: left top;
   }
-}
+} */
 
 
 .buttonUnderlineS {

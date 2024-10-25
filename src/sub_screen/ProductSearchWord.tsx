@@ -13,7 +13,7 @@ interface SearchProps {
   setisLoading: (loading: boolean) => void;
   setsearchtabledata: (tabledata:any) => void;
   searchtabledata: any;
-  setsearchDataIndex: (numberdata: number) => void;
+  setsearchDataIndex: (numberdata: any) => void;
   searchDataIndex: number,
 }
 
@@ -35,8 +35,7 @@ export default function WordSearch({ setsearchData, setDetailisDialogOpen, setDe
 
 
   const handleOpenDetailDialog = async (index: any) => {
-    setsearchDataIndex(index);
-    console.log(searchtabledata[index])
+    setsearchDataIndex(index);//ここでエラー
     setisLoading(true);
     var match = 'https://drive.google.com/file/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFhbm/preview';// 画像がないとき用のURL
     const image = await InventorySearch(searchtabledata[index][1],"商品コード","商品画像");// 商品画像検索
@@ -62,7 +61,7 @@ export default function WordSearch({ setsearchData, setDetailisDialogOpen, setDe
           onChange={handlewordchange}
           placeholder="検索ワードを入力"
         />
-        <a className="buttonUnderlineS" type="button" onClick={productReSearch}>
+        <a className="buttonUnderlineSe" onClick={productReSearch}>
           検索
         </a>
       </div>

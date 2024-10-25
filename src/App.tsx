@@ -4,7 +4,7 @@ import './App.css';
 import React, { useRef } from 'react';
 import StorePage from './sub_screen/store.tsx';
 import OrderHistory from './sub_screen/order_history.tsx';
-import InventoryProcessingSelection from './sub_screen/PageSelect.tsx';
+import InventoryUsed from './sub_screen/InventoryUsed.tsx';
 
 
 
@@ -24,8 +24,8 @@ export default function App() {
         return <StorePage setCurrentPage={setCurrentPage}/>;
       case 'History':
         return <OrderHistory setCurrentPage={setCurrentPage}/>;
-      case 'pageSelect':
-        return <InventoryProcessingSelection setCurrentPage={setCurrentPage}/>;
+      case 'used':
+        return <InventoryUsed setCurrentPage={setCurrentPage}/>;
       default:
         return null;
     }

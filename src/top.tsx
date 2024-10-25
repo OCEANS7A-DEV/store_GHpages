@@ -34,25 +34,15 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
       setSelectOptions(JSON.parse(cachedData2));
     }
     getLocalStorageSize()
-    const cashdata = localStorage.getItem('StoreSetName');
-    // if (cashdata !== null){
-    //   autoSelectStore();
-    // }
   }, []);
   
   const handleStoreChange = (selectedOption: SelectOption | null) => {
     setStoreSelect(selectedOption);
   };
 
-  const setPage = () => {
+  const setPage = (pageName) => {
     if (storeSelect) {
       const set = storeSelect.value;
-      let pageName = '';
-      if (set === '本部') {
-        pageName = 'HQPage';
-      } else {
-        pageName = 'storePage';
-      }
       localStorage.setItem('StoreSetName', set);
       setCurrentPage(pageName);
     } else {
@@ -60,9 +50,6 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
     }
   };
 
-  // const autoSelectStore = () => {
-  //   setCurrentPage('storePage');
-  // };
 
   return (
     <div className="top-window">
@@ -77,7 +64,10 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
             onChange={handleStoreChange}
             options={selectOptions}
           />
-          <a className="buttonUnderline" type="button" onClick={setPage}>決定</a>
+          <div className="SelectMethod">
+            <a className="buttonUnderline" type="button" onClick={() => {setPage('storePage')}}>商品発注</a>
+            <a className="buttonUnderline" type="button" onClick={() => {setPage('used')}}>使用商品</a>
+          </div>
         </div>
       </div>
     </div>
