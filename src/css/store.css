@@ -39,6 +39,7 @@
   margin-left: 20px;
   margin-right: 20px;
   margin-bottom: 10px; /* 各行の間にスペースを追加 */
+  
 }
 .in-area{
   overflow-x: visible;
@@ -183,6 +184,7 @@ a {
   transition: all .3s;
   margin: auto;
   padding: 10px 15px;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, .5);
 }
 
 .buttonUnderlineSt:hover {
@@ -193,6 +195,7 @@ a {
 
 .buttonUnderlineSt:active {
   transform: scale(0.9);
+  box-shadow: 0 0 0px 0 rgba(0, 0, 0, .5);
 }
 
 /* @media (any-hover: hover) {

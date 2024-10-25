@@ -33,6 +33,7 @@
 
 .usedhistory-area{
   margin: 10px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, .5);
 }
 
 .usedhistory-table {
@@ -110,6 +111,7 @@ a {
   transition: all .3s;
   margin: auto;
   padding: 10px 15px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, .5);
 }
 
 .buttonUnderlineSt:hover {
@@ -120,4 +122,5 @@ a {
 
 .buttonUnderlineSt:active {
   transform: scale(0.9);
+  box-shadow: 0 0 0px 0 rgba(0, 0, 0, .5);
 }

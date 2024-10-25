@@ -1,11 +1,12 @@
 html {
   padding: 0px;
-  background-color: #bce2e8;
   min-width: 1150px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  background: #a1d4f7;
 }
 body {
   margin: 0;
 }
-.root{
-  
-}
+
