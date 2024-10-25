@@ -2,7 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import '../css/orderDialog.css';
+import '../css/usedDialog.css';
 
 interface UsedDialogProps {
   title: string;
@@ -52,7 +52,11 @@ const UsedDialog: React.FC<UsedDialogProps> = ({ title, message, tableData, onCo
                 })
                 .map((row, index) => (
                   <tr key={index}>
-                    <td className='dtvendor'>{row.月日}</td>
+                    <td className='dtvendor'>{new Date(row.月日).toLocaleDateString('ja-JP', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit'
+                    })}</td>
                     <td className='dtcode'>{row.商品コード}</td>
                     <td className='dtname'>{row.商品名}</td>
                     <td className='dtquantity'>{row.数量}</td>
