@@ -569,7 +569,7 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
               onKeyDown={(e) => handleKeyDown(index, e, '数量')}
             />
             <Select
-              className="used_Select"
+              className="insert_Select"
               key={index}
               options={ProcessingMethod}
               value={data.使用方法 || null}
