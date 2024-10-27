@@ -78,7 +78,6 @@ const ProcessingMethodList = async () => {
     };
     ProcessingMethod.push(DefAsArray);
   }
-  console.log(MethodList)
 };
 
 
@@ -119,7 +118,7 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
   const [checkDialogOpen, setcheckDialogOpen] = useState(false);
   const [checkData, setcheckData] = useState<any>([]);
   const [searchtabledata, setsearchtabledata] = useState<any>([]);
-  const [searchDataIndex, setsearchDataIndex] = useState<number>(0);
+  const [searchDataIndex, setsearchDataIndex] = useState<any>(null);
 
 
 
@@ -471,6 +470,7 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
     await setDetailisDialogOpen(true);
     setisLoading(false);
   };
+
   const beforeDatail = async () => {
     const updateindex = searchDataIndex - 1
     setDetailisDialogOpen(false);
@@ -486,6 +486,7 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
     await setDetailisDialogOpen(true);
     setisLoading(false);
   };
+
   useEffect(() => {
     processlistGet();
     ProcessingMethodList();
@@ -510,7 +511,8 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
           setDetailIMAGE={setDetailIMAGE}
           setisLoading={setisLoading}
           setsearchtabledata={setsearchtabledata}
-          searchtabledata={searchtabledata}/>
+          searchtabledata={searchtabledata}
+          setsearchDataIndex={setsearchDataIndex}/>
           <DetailDialog
             Data={searchData}
             title={searchData[2]}
@@ -522,6 +524,7 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
             nextDatail={nextDatail}
             beforeDatail={beforeDatail}
             searchtabledata={searchtabledata} searchDataIndex={0}
+            addButtonName='使用商品に追加'
           />
           <LoadingDisplay isLoading={isLoading}/>
         <div className='in-area'>

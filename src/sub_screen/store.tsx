@@ -522,6 +522,7 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
             nextDatail={nextDatail}
             beforeDatail={beforeDatail}
             searchtabledata={searchtabledata} searchDataIndex={0}
+            addButtonName='注文に追加'
           />
           <LoadingDisplay isLoading={isLoading}/>
         <div className='in-area'>

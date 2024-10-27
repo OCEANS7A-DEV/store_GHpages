@@ -18,7 +18,7 @@ interface SettingProps {
 
 
 
-
+const sleep = (time: number) => new Promise<void>((r) => setTimeout(r, time));
 
 export default function TopPage({ setCurrentPage }: SettingProps) {
   const [storeSelect, setStoreSelect] = useState<SelectOption | null>(null);
@@ -30,18 +30,17 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
       const cachedData = localStorage.getItem('storeData');
       await setSelectOptions(JSON.parse(cachedData));
       await localStoreSet(cachedData);
-      const cachedData2 = localStorage.getItem('storeData');
-      await setSelectOptions(JSON.parse(cachedData2));
-      const setStore = await localStorage.getItem('StoreSetName');
-      if (setStore){
-        const initialOption = selectOptions.find(selectOptions => selectOptions.value === setStore);
-        setStoreSelect(initialOption || null);
-      }
     }
     getLocalStorageSize()
+    const setStore = localStorage.getItem('StoreSetName');
+    const setSelect = {
+      value: setStore, label: setStore
+    }
+    setStoreSelect(setSelect);
   }, []);
-  
+
   const handleStoreChange = (selectedOption: SelectOption | null) => {
+    console.log(selectedOption)
     setStoreSelect(selectedOption);
   };
 
@@ -54,7 +53,6 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
       alert('店舗を選択してください。');
     }
   };
-
 
   return (
     <div className="top-window">

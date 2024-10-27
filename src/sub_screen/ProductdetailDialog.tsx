@@ -16,9 +16,10 @@ interface DetailDialogProps {
   beforeDatail: () => void;
   searchDataIndex: number;
   searchtabledata: any;
+  addButtonName: string;
 }
 
-const DetailDialog: React.FC<DetailDialogProps> = ({ title, message, Data, onConfirm, isOpen, image, insert, searchtabledata, searchDataIndex, nextDatail, beforeDatail}) => {
+const DetailDialog: React.FC<DetailDialogProps> = ({ title, message, Data, onConfirm, isOpen, image, insert, searchtabledata, searchDataIndex, nextDatail, beforeDatail, addButtonName}) => {
   if (!isOpen) return null;
   const [isNextButton, setisNextButton] = useState(false);
   const [isBeforeButton, setisBeforeButton] = useState(false);
@@ -64,7 +65,7 @@ const DetailDialog: React.FC<DetailDialogProps> = ({ title, message, Data, onCon
               ))}
             </p>
             <div className='detail-dialog-button'>
-              <button onClick={() => {insert(Data)}}>注文に追加</button>
+              <button onClick={() => {insert(Data)}}>{addButtonName}</button>
             </div>
           </div>
         </div>

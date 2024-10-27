@@ -13,7 +13,7 @@ interface SearchProps {
   setisLoading: (loading: boolean) => void;
   setsearchtabledata: (tabledata:any) => void;
   searchtabledata: any;
-  setsearchDataIndex: (numberdata: any) => void;
+  setsearchDataIndex: (numberdata: number) => void;
   searchDataIndex: number,
 }
 
@@ -35,6 +35,7 @@ export default function WordSearch({ setsearchData, setDetailisDialogOpen, setDe
 
 
   const handleOpenDetailDialog = async (index: any) => {
+    console.log(index)
     setsearchDataIndex(index);//ここでエラー
     setisLoading(true);
     var match = 'https://drive.google.com/file/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFhbm/preview';// 画像がないとき用のURL
@@ -58,6 +59,7 @@ export default function WordSearch({ setsearchData, setDetailisDialogOpen, setDe
         <input
           type="text"
           value={SWord}
+          pattern='^[ぁ-ん]+$'
           onChange={handlewordchange}
           placeholder="検索ワードを入力"
         />
