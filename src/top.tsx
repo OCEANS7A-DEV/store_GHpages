@@ -30,6 +30,9 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
       const cachedData = localStorage.getItem('storeData');
       await setSelectOptions(JSON.parse(cachedData));
       await localStoreSet(cachedData);
+      const cachedData2 = localStorage.getItem('storeData');
+      await setSelectOptions(JSON.parse(cachedData2));
+      await localStoreSet(cachedData2);
     }
     getLocalStorageSize()
     const setStore = localStorage.getItem('StoreSetName');
