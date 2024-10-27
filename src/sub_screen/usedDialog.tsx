@@ -40,6 +40,7 @@ const UsedDialog: React.FC<UsedDialogProps> = ({ title, message, tableData, onCo
                 <th>商品ナンバー</th>
                 <th>商品名</th>
                 <th>数量</th>
+                <th>使用方法</th>
                 <th>個人購入</th>
                 <th>備考</th>
               </tr>
@@ -60,6 +61,7 @@ const UsedDialog: React.FC<UsedDialogProps> = ({ title, message, tableData, onCo
                     <td className='dtcode'>{row.商品コード}</td>
                     <td className='dtname'>{row.商品名}</td>
                     <td className='dtquantity'>{row.数量}</td>
+                    <td className='dused'>{row.使用方法}</td>
                     <td className='dtpersonal'>{row.個人購入}</td>
                     <td className='dtremarks'>{row.備考}</td>
                   </tr>

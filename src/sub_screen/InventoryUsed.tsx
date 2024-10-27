@@ -69,6 +69,7 @@ const productSearch = (code: number) => {
 const ProcessingMethod = [];
 
 const ProcessingMethodList = async () => {
+  ProcessingMethod.length = 0;
   const MethodList = await ProcessingMethodGet();
   for (let i = 0; i < MethodList.length; i++) {
     const DefAsArray = {
@@ -568,7 +569,7 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
               onKeyDown={(e) => handleKeyDown(index, e, '数量')}
             />
             <Select
-              className="insert_Select"
+              className="used_Select"
               key={index}
               options={ProcessingMethod}
               value={data.使用方法 || null}
