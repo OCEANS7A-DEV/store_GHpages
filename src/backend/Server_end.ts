@@ -133,12 +133,15 @@ export const GASPostInsertStore = async (
   datail: any,
   store: any,
 ) => {
-  console.log(datail);
   try {
-    const response = await fetch(
+    await fetch(
       URL_STRING,
       {
         method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          "Content-Type" : "application/x-www-form-urlencoded",
+        },
         body: JSON.stringify({
           action: actionName,
           sub_action: 'get',
@@ -148,9 +151,7 @@ export const GASPostInsertStore = async (
         }),
       },
     );
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+
   } catch (error) {
     console.error('Error:', error);
     throw error;
@@ -375,3 +376,4 @@ export const ProcessingMethodGet = async (
     throw error;
   }
 };
+

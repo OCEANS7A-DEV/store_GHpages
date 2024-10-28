@@ -10,6 +10,7 @@ import SaveConfirmDialog from './SaveConfirmDialog';
 import DetailDialog from './ProductdetailDialog.tsx';
 import LoadingDisplay from './loading.tsx';
 import OutOfStockStatus from './Out_of_stock_status.tsx';
+import NonConfirmDialog from './NonOrderDialog.tsx';
 
 
 
@@ -86,7 +87,8 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
   const [formData, setFormData] = useState<InsertData[]>(initialFormData);
   const storename = localStorage.getItem('StoreSetName');
   const [productData, setProductData] = useState<InventoryDataType[]>([
-    {業者: '', 商品コード: '', 商品名: '', 商品単価: ''}])
+    {業者: '', 商品コード: '', 商品名: '', 商品単価: ''}]);
+  const nonOrderData = [{業者: '-', 商品コード: '-', 商品名: '-', 商品詳細: '-', 数量: '-', 商品単価: '-', 個人購入: '-', 備考: '-'}];
   const codeRefs = useRef([]);
   const quantityRefs = useRef([]);
   const personalRefs = useRef([]);
@@ -105,6 +107,7 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
   const [checkData, setcheckData] = useState<any>([]);
   const [searchtabledata, setsearchtabledata] = useState<any>([]);
   const [searchDataIndex, setsearchDataIndex] = useState(null);
+  const [NonisDialogOpen, setNonisDialogOpen] = useState(false);
 
 
 
@@ -293,7 +296,6 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
       localStorage.setItem('Already_ordered', JSON.stringify(formData));
       setFormData(initialFormData);
       localStorage.removeItem(storename);
-      
     }
     setisLoading(false);
   };
@@ -465,6 +467,7 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
     await setDetailisDialogOpen(true);
     setisLoading(false);
   };
+
   const beforeDatail = async () => {
     const updateindex = searchDataIndex - 1
     setDetailisDialogOpen(false);
@@ -480,6 +483,23 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
     await setDetailisDialogOpen(true);
     setisLoading(false);
   };
+
+  const NonhandleOpenDialog = () => {
+    setNonisDialogOpen(true);
+  };
+
+  const NonhandleConfirm = async () => {
+    await setisLoading(true);
+    await GASPostInsertStore('Noninsert', '店舗へ', nonOrderData, storename);
+    setNonisDialogOpen(false);
+    setisLoading(false);
+    alert('注文無しで送信されました\n注文がある場合はこのまま注文してください');
+  };
+
+  const NonhandleCancel = () => {
+    setNonisDialogOpen(false);
+  };
+
   useEffect(() => {
     processlistGet();
   }, []);
@@ -613,6 +633,9 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
         <a className="buttonUnderlineSt" type="button" onClick={clickcheckpage}>
           発注履歴へ
         </a>
+        <a className="buttonUnderlineSt" type="button" onClick={NonhandleOpenDialog}>
+          注文無しの場合
+        </a>
         <a className="buttonUnderlineSt" type="button" onClick={handleOpenDialog}>本部へ注文 ＞＞</a>
         <ConfirmDialog
           title="確認"
@@ -621,6 +644,13 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
           onConfirm={handleConfirm}
           onCancel={handleCancel}
           isOpen={isDialogOpen}
+        />
+        <NonConfirmDialog
+          title="確認"
+          message={new Date().toLocaleDateString("ja-JP", {year: "numeric",month: "2-digit",day: "2-digit"})}
+          onConfirm={NonhandleConfirm}
+          onCancel={NonhandleCancel}
+          isOpen={NonisDialogOpen}
         />
       </div>
       </div>
