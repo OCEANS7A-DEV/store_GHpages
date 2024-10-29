@@ -129,6 +129,10 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
     setCurrentPage('topPage');
   };
 
+  const clickInventorypage = () => {
+    setCurrentPage('storeinventory');
+  };
+
   const handleChange = (
     index: number,
     field: keyof UsedInsertData,
@@ -611,6 +615,9 @@ export default function InventoryUsed({ setCurrentPage }: SettingProps) {
         </a>
         <a className="buttonUnderlineSt" type="button" onClick={clickcheckpage}>
           履歴へ
+        </a>
+        <a className="buttonUnderlineSt" type="button" onClick={clickInventorypage}>
+          店舗在庫一覧
         </a>
         <a className="buttonUnderlineSt" type="button" onClick={handleOpenDialog}>使用商品送信 ＞＞</a>
         <UsedDialog

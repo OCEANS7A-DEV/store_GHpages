@@ -6,6 +6,7 @@ import StorePage from './sub_screen/store.tsx';
 import OrderHistory from './sub_screen/order_history.tsx';
 import InventoryUsed from './sub_screen/InventoryUsed.tsx';
 import UsedHistory from './sub_screen/UsedHistory.tsx';
+import StoreInventoryList from './sub_screen/StoreInventoryList.tsx'
 
 
 
@@ -29,6 +30,8 @@ export default function App() {
         return <InventoryUsed setCurrentPage={setCurrentPage}/>;
       case 'usedHistory':
         return <UsedHistory setCurrentPage={setCurrentPage}/>;
+      case 'storeinventory':
+        return <StoreInventoryList setCurrentPage={setCurrentPage}/>;
       default:
         return null;
     }

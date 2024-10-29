@@ -151,7 +151,6 @@ export const GASPostInsertStore = async (
         }),
       },
     );
-
   } catch (error) {
     console.error('Error:', error);
     throw error;
@@ -262,6 +261,7 @@ export const HistoryGet = async(
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
+    console.log(response)
     const result = await response.json();
     return result;
   }catch(e){
@@ -374,6 +374,37 @@ export const ProcessingMethodGet = async (
   } catch (error) {
     console.error('Error:', error);
     throw error;
+  }
+};
+
+
+export const StoreInventoryGet = async(
+  store: string,
+) => {
+  try {
+    const response = await fetch(
+      URL_STRING,
+      {
+        method: 'POST',
+        headers: {
+          "Content-Type" : "application/x-www-form-urlencoded",
+        },
+        body: JSON.stringify({
+          action: 'StoreInventoryListGet',
+          sub_action: 'get',
+          sheetName: '同期在庫',
+          storeName: store,
+        })
+      },
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const result = await response.json();
+    console.log(result)
+    return result;
+  }catch(e){
+    return (e);
   }
 };
 
