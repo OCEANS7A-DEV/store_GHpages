@@ -84,7 +84,6 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
           </table>
         </div>
       </div>
-      
       <div className="button_area">
         <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>
           ＜＜ 使用商品入力へ
