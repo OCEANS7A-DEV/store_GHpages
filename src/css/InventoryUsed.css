@@ -1,0 +1,226 @@
+
+
+.window_area {
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* フォームエリアを上に寄せる */
+  text-align: center;
+  overflow: nowrap;
+}
+
+.window_top {
+  width: 100vw;
+  height: auto;
+  display: flex;
+  vertical-align: middle;
+  justify-content:center;
+  justify-content: space-around;
+}
+
+
+.store_name {
+  min-width: 80px;
+  text-align: center;
+}
+.form_area {
+  display: flex;
+  width: auto;
+  /* flex-grow: 1; 残りのスペースを占有するように */
+  height: calc(100vh - 160px);
+  text-align: center;
+}
+.searcharea{
+  overflow-x: visible;
+  overflow-y: auto;
+}
+.insert_area {
+  white-space: nowrap;
+  display: flex;
+  justify-content:center;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 10px; /* 各行の間にスペースを追加 */
+  
+}
+.in-area{
+  overflow-x: visible;
+  overflow-y: auto;
+}
+
+.button_area {
+  display: flex; /* フレックスボックスを適用 */
+  justify-content: space-around; /* ボタン間のスペースを均等に配置 */
+  position: fixed;
+  bottom: 0;
+  width: 100vw; /* ウィンドウ全体の幅を占有 */
+  height: 60px;
+  background-color: white; /* ボタンエリアの背景色 */
+  align-items: center; /* ボタンを上下中央に配置 */
+  text-align: center;
+  border-top: 1px solid #ccc; /* 上部に区切り線 */
+  box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1); /* ボックスに影を追加 */
+}
+
+.button_area a {
+  font-size: 14px;
+}
+
+/* ダイアログの背後のオーバーレイ */
+.confirm-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* 半透明の黒 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* ダイアログ本体 */
+.confirm-dialog {
+  display: flex;
+  flex-direction: column; /* 上から下に要素を配置 */
+  justify-content: space-between; /* 上部と下部にスペースを配置 */
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 900px;
+  max-height: calc(100vh - 60px); /* 高さ制限を設定 */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  z-index: 1001;
+}
+
+
+
+
+.confirm-dialog h2 {
+  margin-bottom: 15px;
+}
+
+.confirm-dialog p {
+  margin-bottom: 20px;
+}
+
+.insert_vendor,
+.insert_code,
+.insert_name,
+.insert_quantity,
+.insert_Select,
+.personal,
+.remarks {
+  margin-right: 10px; /* フィールド間のスペースを調整 */
+}
+
+.delete_button {
+  width: 60px;
+}
+
+.insert_vendor {
+  width: 100px;
+}
+
+.insert_code {
+  width: 100px;
+}
+
+.insert_name {
+  width: 200px;
+}
+
+.insert_quantity {
+  width: 100px;
+}
+
+.used_Select {
+  width: 150px;
+}
+.css-13cymwt-control {
+  width: 150px; /* 固定したい幅に変更 */
+}
+
+
+.personal {
+  width: 100px;
+}
+
+.remarks {
+  width: 200px;
+}
+
+
+
+a {
+  color: inherit;
+  text-decoration: none;
+  background-color: #fff;
+}
+
+.buttonUnderlineSt {
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #222;
+  border-radius: 20px;
+  border:1px solid #1B85FB;
+  background-color: #fff;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+  margin: auto;
+  padding: 10px 15px;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, .5);
+}
+
+.buttonUnderlineSt:hover {
+  color: #fff;
+  border:1px solid #1B85FB;
+  background-color: #1B85FB;
+}
+
+.buttonUnderlineSt:active {
+  transform: scale(0.9);
+  box-shadow: 0 0 0px 0 rgba(0, 0, 0, .5);
+}
+.insert_date {
+  width: 120px;
+  margin-right: 10px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  background-color: #fff;
+}
+
+.buttonUnderlineSt {
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #222;
+  border-radius: 20px;
+  border:1px solid #1B85FB;
+  background-color: #fff;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+  margin: auto;
+  padding: 10px 15px;
+}
+
+.buttonUnderlineSt:hover {
+  color: #fff;
+  border:1px solid #1B85FB;
+  background-color: #1B85FB;
+}
+
+.buttonUnderlineSt:active {
+  transform: scale(0.9);
+}

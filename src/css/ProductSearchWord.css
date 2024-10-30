@@ -1,0 +1,207 @@
+.WordSearch-area {
+  margin-left: 18px;
+  background-color: white;
+  padding: 5px;
+  border-radius: 4px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, .5);
+}
+
+.search-input{
+  font-size: 20px;
+  height: 30px;
+  display: flex;
+  margin-bottom: 5px;
+}
+
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.buttonUnderlineSe {
+  font-size: 15px;
+  padding-top: 2px;
+  cursor: pointer;
+  display: inline-block;
+  width: 75px;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #222;
+  border-radius: 20px;
+  border:1px solid #1B85FB;
+  background-color: #fff;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+  margin: 2px;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, .5);
+}
+
+.buttonUnderlineSe:hover {
+  color: #fff;
+  border:1px solid #1B85FB;
+  background-color: #1B85FB;
+}
+
+.buttonUnderlineSe:active {
+  transform: scale(0.9);
+  box-shadow: 0 0 0px 0 rgba(0, 0, 0, .5);
+}
+
+.search-data-table th, .search-data-table td {
+  max-width: 260px;
+  white-space: nowrap;
+  border: 1px solid #ddd; /* 境界線 */
+  padding: 8px;           /* セルの内側に余白 */
+}
+
+.search-data-table th {
+  background-color: #f2f2f2; /* ヘッダーの背景色 */
+  font-weight: bold;         /* ヘッダーの太字 */
+}
+
+.search-data-table tr:nth-child(even) {
+  background-color: #f9f9f9; /* 偶数行の背景色を変更 */
+}
+.search-table {
+  height: calc(100vh - 245px); /* 高さを固定 */
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 310px; /* 親要素の幅いっぱいに */
+  border: 1px double darkgray;
+}
+
+
+.search-data-table {
+  width: 100%;
+  border-collapse: collapse; /* テーブルの境界線を結合 */
+  table-layout: fixed; /* テーブル内の列幅を固定 */
+}
+
+.search-data-table td {
+  white-space: nowrap;
+  overflow: hidden;
+  border: 1px solid #ddd; /* 境界線 */
+  padding: 4px;           /* セルの内側に余白 */
+  padding-top: 8px;
+  padding-right: 10px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2; /* ヘッダーの背景色 */
+  font-weight: bold;         /* ヘッダーの太字 */
+}
+
+.search-data-table tr:nth-child(even) {
+  background-color: #f9f9f9; /* 偶数行の背景色を変更 */
+}
+
+.scode {
+  text-align: right !important;
+  white-space: nowrap; /* テキストの折り返しを防ぐ */
+  overflow: hidden; /* 長いテキストを隠す */
+  text-overflow: ellipsis; /* 長いテキストは「...」で省略 */
+}
+
+
+.sname {
+  display: flex;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;  /* 長いテキストは「...」で省略 */
+}
+
+.scode{
+  font-size: 14px;
+  width: 75px;
+}
+.sname{
+  display: flex;
+  width: 182px;
+  white-space: nowrap;
+  overflow: hidden;
+  height: 28px;
+}
+
+.confirm-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* 半透明の黒 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+
+.buttonUnderlineD {
+  flex: 1; /* 各ボタンが同じ幅を持つようにする */
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: left;
+  justify-content: left;
+  height: 30px;
+  padding: 0 18px;
+  overflow: hidden;
+  font-size: 15px;
+  color: #222;
+  text-align: left;
+  overflow-wrap: anywhere;
+  background: transparent;
+  white-space: nowrap;
+  margin: 0 0px; /* 左右に適度なスペース */
+}
+
+.buttonUnderlineD::after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 2px;
+  content: "";
+  background-color: #6fa24a;
+  transform: scaleX(0);
+  transform-origin: right top;
+}
+
+.buttonUnderlineD:active {
+  transform: scale(0.9);
+}
+
+@media (any-hover: hover) {
+  .buttonUnderlineD::after {
+    transition: transform 0.2s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+
+  .buttonUnderlineD:hover::after {
+    transition: transform 0.4s cubic-bezier(0.9, 0, 0, 1);
+    transform: scaleX(1);
+    transform-origin: left top;
+  }
+}
+
+.stcode {
+  font-size: 13px;
+}
+.stname {
+  width: 190px;
+}
+
+.search-head{
+  border-collapse: collapse;
+}
+
+th {
+  table-layout: fixed; /* テーブル内の列幅を固定 */
+  padding: 4px;
+  white-space: nowrap;
+  border: 1px solid darkgray;
+}

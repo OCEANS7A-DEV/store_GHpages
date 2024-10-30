@@ -1,0 +1,126 @@
+.usedhistory-window {
+  width: 100%;
+}
+
+
+.usedDate {
+  width: 100px;
+}
+
+.usedCode {
+  width: 90px;
+}
+
+.usedName {
+  text-align: left;
+  width: 350px;
+}
+
+.usedNumber{
+  width: 30px;
+}
+
+.usedMethod{
+  width: 60px;
+}
+
+.usedIndividual{
+  width: 200px;
+}
+.usedremarks{
+  width: 200px;
+}
+
+.usedhistory-area{
+  margin: 10px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, .5);
+}
+
+.usedhistory-table {
+  background-color: white;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.usedhistory-table th, .usedhistory-table td {
+  max-width: 400px;
+  white-space: nowrap;
+  border: 1px solid #222; /* 境界線 */
+  padding: 8px;           /* セルの内側に余白 */
+}
+
+.usedhistory-table th {
+  background-color: #f2f2f2; /* ヘッダーの背景色 */
+  font-weight: bold;         /* ヘッダーの太字 */
+}
+
+
+
+.usedhistory-table tr:nth-child(even) {
+  background-color: #f9f9f9; /* 偶数行の背景色を変更 */
+}
+
+.usedhistorys {
+  height: calc(100vh - 200px);
+}
+
+.usedhistory-table {
+
+  border-collapse: collapse; /* テーブルの境界線を結合 */
+  table-layout: fixed; /* テーブル内の列幅を固定 */
+}
+
+.usedhistory-table th, .history-table td {
+  white-space: nowrap;
+  border: 1px solid #222; /* 境界線 */
+  padding: 8px;           /* セルの内側に余白 */
+}
+
+.usedhistory-table th {
+  background-color: #f2f2f2; /* ヘッダーの背景色 */
+  font-weight: bold;         /* ヘッダーの太字 */
+}
+
+.usedhistory-table tr:nth-child(even) {
+  background-color: #f9f9f9; /* 偶数行の背景色を変更 */
+}
+
+
+.history-area {
+  display: flex;
+}
+
+
+a {
+  color: inherit;
+  text-decoration: none;
+  background-color: #fff;
+}
+
+.buttonUnderlineSt {
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #222;
+  border-radius: 20px;
+  border:1px solid #1B85FB;
+  background-color: #fff;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+  margin: auto;
+  padding: 10px 15px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, .5);
+}
+
+.buttonUnderlineSt:hover {
+  color: #fff;
+  border:1px solid #1B85FB;
+  background-color: #1B85FB;
+}
+
+.buttonUnderlineSt:active {
+  transform: scale(0.9);
+  box-shadow: 0 0 0px 0 rgba(0, 0, 0, .5);
+}
