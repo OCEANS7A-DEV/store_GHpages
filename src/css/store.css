@@ -5,6 +5,8 @@
   justify-content: flex-start; /* フォームエリアを上に寄せる */
   text-align: center;
   overflow: nowrap;
+  position: relative;
+  z-index: 1;
 }
 
 .window_top {
@@ -28,10 +30,12 @@
   height: calc(100vh - 160px);
   text-align: center;
 }
+
 .searcharea{
   overflow-x: visible;
   overflow-y: auto;
 }
+
 .insert_area {
   white-space: nowrap;
   display: flex;
@@ -39,8 +43,8 @@
   margin-left: 20px;
   margin-right: 20px;
   margin-bottom: 10px; /* 各行の間にスペースを追加 */
-  
 }
+
 .in-area{
   overflow-x: visible;
   overflow-y: auto;
@@ -65,21 +69,22 @@
 }
 
 /* ダイアログの背後のオーバーレイ */
-.confirm-dialog-overlay {
+.order-confirm-dialog-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5); /* 半透明の黒 */
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 10;
 }
 
 /* ダイアログ本体 */
-.confirm-dialog {
+.order-confirm-dialog {
+  position: fixed;
   display: flex;
   flex-direction: column; /* 上から下に要素を配置 */
   justify-content: space-between; /* 上部と下部にスペースを配置 */
@@ -91,28 +96,19 @@
   max-height: calc(100vh - 60px); /* 高さ制限を設定 */
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  z-index: 1001;
-}
-
-.loading-display-overlay{
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5); /* 半透明の黒 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1005;
+  z-index: 100;
 }
 
 
-.confirm-dialog h2 {
+
+
+
+
+.order-confirm-dialog h2 {
   margin-bottom: 15px;
 }
 
-.confirm-dialog p {
+.order-confirm-dialog p {
   margin-bottom: 20px;
 }
 

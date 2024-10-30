@@ -24,6 +24,11 @@ input {
   text-align: center
 }
 
+.Loadingarea {
+  position: absolute;
+  z-index: 9999;
+}
+
 /* フェードインのアニメーション */
 .fade-enter {
   opacity: 0;

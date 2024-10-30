@@ -1,4 +1,6 @@
 .store-inventory-window {
+  position: fixed;
+  z-index: 100;
 }
 .inventory-table-area{
   margin: 20px;

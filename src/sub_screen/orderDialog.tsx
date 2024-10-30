@@ -17,9 +17,9 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ title, message, tableData
   if (!isOpen) return null;
 
   return ReactDOM.createPortal(
-    <div className="confirm-dialog-overlay">
-      <div className="confirm-dialog">
-        <div className="confirm-top">
+    <div className="order-confirm-dialog-overlay">
+      <div className="order-confirm-dialog">
+        <div className="order-confirm-top">
           <h2>{title}</h2>
           <p>
             {message.split('\n').map((line, index) => (
@@ -31,8 +31,8 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ title, message, tableData
           </p>
         </div>
         {/* テーブルを表示 */}
-        <div className="dialog-table">
-          <table className='data-table'>
+        <div className="order-dialog-table">
+          <table className='order-data-table'>
             <thead>
               <tr>
                 <th>業者</th>
@@ -52,18 +52,18 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ title, message, tableData
                 })
                 .map((row, index) => (
                   <tr key={index}>
-                    <td className='dtvendor'>{row.業者}</td>
-                    <td className='dtcode'>{row.商品コード}</td>
-                    <td className='dtname'>{row.商品名}</td>
-                    <td className='dtdetail'>{row.商品詳細?.label || '-'}</td>
-                    <td className='dtquantity'>{row.数量}</td>
-                    <td className='dtpersonal'>{row.個人購入}</td>
-                    <td className='dtremarks'>{row.備考}</td>
+                    <td className='order-dtvendor'>{row.業者}</td>
+                    <td className='order-dtcode'>{row.商品コード}</td>
+                    <td className='order-dtname'>{row.商品名}</td>
+                    <td className='order-dtdetail'>{row.商品詳細?.label || '-'}</td>
+                    <td className='order-dtquantity'>{row.数量}</td>
+                    <td className='order-dtpersonal'>{row.個人購入}</td>
+                    <td className='order-dtremarks'>{row.備考}</td>
                   </tr>
                 ))}
             </tbody>
           </table>
-          <div className='confirm-dialog-button'>
+          <div className='order-confirm-dialog-button'>
             <button onClick={onConfirm}>OK</button>
             <button onClick={onCancel}>キャンセル</button>
           </div>

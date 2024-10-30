@@ -8,8 +8,6 @@ import { searchStr, FormDataKeepSet, KeepFormDataGet } from '../backend/WebStora
 import WordSearch from './ProductSearchWord';
 import SaveConfirmDialog from './SaveConfirmDialog';
 import DetailDialog from './ProductdetailDialog.tsx';
-import LoadingDisplay from './loading.tsx';
-import OutOfStockStatus from './Out_of_stock_status.tsx';
 import NonConfirmDialog from './NonOrderDialog.tsx';
 
 
@@ -28,6 +26,7 @@ interface InsertData {
 
 interface SettingProps {
   setCurrentPage: (page: string) => void;
+  setisLoading: (value: boolean) => void;
 }
 
 interface InventoryDataType {
@@ -70,7 +69,7 @@ const productSearch = (code: number) => {
 
 
 
-export default function StorePage({ setCurrentPage }: SettingProps) {
+export default function StorePage({ setCurrentPage, setisLoading }: SettingProps) {
   const [isDialogOpen, setDialogOpen] = useState(false);
   const initialRowCount = 20;
   const initialFormData = Array.from({ length: initialRowCount }, () => ({
@@ -102,7 +101,7 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
   const DetailMessage = `業者名: ${searchData[0] || ''}　　||　　商品ナンバー: ${searchData[1] || ''}\n商品単価: ${(searchData[3] !== undefined && searchData[3] !== null) ? searchData[3].toLocaleString() : ''}円　　||　　店販価格: ${(searchData[5] !== undefined && searchData[5] !== null) ? searchData[5].toLocaleString() : ''}`
   const [DetailisDialogOpen, setDetailisDialogOpen] = useState(false);
   const [DetailIMAGE, setDetailIMAGE] = useState<string>('');
-  const [isLoading, setisLoading] = useState(false);
+  //const [isLoading, setisLoading] = useState(false);
   const [checkDialogOpen, setcheckDialogOpen] = useState(false);
   const [checkData, setcheckData] = useState<any>([]);
   const [searchtabledata, setsearchtabledata] = useState<any>([]);
@@ -530,21 +529,21 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
           setisLoading={setisLoading}
           setsearchtabledata={setsearchtabledata}
           searchtabledata={searchtabledata}
-          setsearchDataIndex={setsearchDataIndex}/>
-          <DetailDialog
-            Data={searchData}
-            title={searchData[2]}
-            message={DetailMessage}
-            onConfirm={DetailhandleConfirm}
-            isOpen={DetailisDialogOpen}
-            image={DetailIMAGE}
-            insert={DetailhandleConfirmAdd}
-            nextDatail={nextDatail}
-            beforeDatail={beforeDatail}
-            searchtabledata={searchtabledata} searchDataIndex={0}
-            addButtonName='注文に追加'
-          />
-          <LoadingDisplay isLoading={isLoading}/>
+          setsearchDataIndex={setsearchDataIndex}
+        />
+        <DetailDialog
+          Data={searchData}
+          title={searchData[2]}
+          message={DetailMessage}
+          onConfirm={DetailhandleConfirm}
+          isOpen={DetailisDialogOpen}
+          image={DetailIMAGE}
+          insert={DetailhandleConfirmAdd}
+          nextDatail={nextDatail}
+          beforeDatail={beforeDatail}
+          searchtabledata={searchtabledata} searchDataIndex={0}
+          addButtonName='注文に追加'
+        />
         <div className='in-area'>
           {formData.map((data, index) => (
           <div key={index} className="insert_area">
@@ -621,7 +620,8 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
               削除
             </button>
           </div>
-        ))}
+          ))}
+        </div>
       </div>
       <div className="button_area">
         <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>
@@ -652,7 +652,6 @@ export default function StorePage({ setCurrentPage }: SettingProps) {
           onCancel={NonhandleCancel}
           isOpen={NonisDialogOpen}
         />
-      </div>
       </div>
     </div>
   );

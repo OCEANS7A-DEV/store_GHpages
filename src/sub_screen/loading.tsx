@@ -9,11 +9,11 @@ interface LoadingProps {
 export const LoadingDisplay: React.FC<LoadingProps> = ({isLoading}) => {
   if (!isLoading) return null;
   return (
-    <div className="loading-display-overlay">
+    <div className="loading-overlay">
       <div className="loading">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="120" height="120">
           <circle cx="12" cy="12" r="10" fill="none" stroke="#2ee7ff"
-                  stroke-width="2" stroke-dasharray="63" stroke-linecap="round">
+                  strokeWidth="2" strokeDasharray="63" strokeLinecap="round">
               <animate attributeName="stroke-dashoffset" values="63;16;63" keyTimes="0;.5;1"
                       keySplines=".42 0 .58 1;.42 0 .58 1;" calcMode="spline"
                       dur="1.4s" repeatCount="indefinite"/>

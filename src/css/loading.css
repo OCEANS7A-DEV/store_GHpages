@@ -1,4 +1,4 @@
-.loading-display-overlay {
+.loading-overlay {
   position: fixed; /* 画面全体に表示 */
   top: 0;
   left: 0;
@@ -8,7 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1005; /* 最前面に表示 */
+  z-index: calc(infinity); /* 最前面に表示 */
 }
 
 .loading {

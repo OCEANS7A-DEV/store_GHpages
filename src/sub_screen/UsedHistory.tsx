@@ -5,7 +5,6 @@ import '../css/store.css';
 import '../css/order_history.css';
 import '../css/usedHistory.css';
 import { HistoryGet, ExplanationImageGet } from '../backend/Server_end.ts';
-import LoadingDisplay from './loading.tsx';
 
 
 const Yearlist = () => {
@@ -47,6 +46,7 @@ interface SelectOption {
 
 interface SettingProps {
   setCurrentPage: (page: string) => void;
+  setisLoading: (value: boolean) => void;
 }
 
 function groupDataByFirstColumn(data) {
@@ -62,7 +62,7 @@ function groupDataByFirstColumn(data) {
 }
 
 
-export default function UsedHistory({ setCurrentPage }: SettingProps) {
+export default function UsedHistory({ setCurrentPage, setisLoading }: SettingProps) {
   const [years, setyears] = useState<SelectOption | null>(null);
   const [yearsOptions, setyearsOptions] = useState<SelectOption[]>([]);
   const [months, setmonths] = useState<SelectOption | null>(null);
@@ -72,7 +72,6 @@ export default function UsedHistory({ setCurrentPage }: SettingProps) {
   const [explanationIMAGE, setexplanationIMAGE] = useState<string>('');
   const [processlist, setprocesslist] = useState([]);
   const [progressmax, setprogressmax] = useState<number>(0);
-  const [isLoading, setisLoading] = useState(false);
 
   const handleyearChange = (selectedOption: SelectOption | null) => {
     setyears(selectedOption);
@@ -127,7 +126,6 @@ export default function UsedHistory({ setCurrentPage }: SettingProps) {
         <a className="buttonUnderlineH" id="main_back" type="button" onClick={historysearch}>
           検索
         </a>
-        <LoadingDisplay isLoading={isLoading}/>
       </div>
       <div className="usedhistory-area">
         <table className="usedhistory-table">

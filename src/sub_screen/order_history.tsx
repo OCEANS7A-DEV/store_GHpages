@@ -4,7 +4,6 @@ import '../css/store.css';
 import '../css/order_history.css';
 import { HistoryGet, ExplanationImageGet, proccessReceiving } from '../backend/Server_end.ts';
 import OutOfStockStatus from './Out_of_stock_status.tsx';
-import LoadingDisplay from './loading.tsx';
 
 
 const Yearlist = () => {
@@ -46,6 +45,7 @@ interface SelectOption {
 
 interface SettingProps {
   setCurrentPage: (page: string) => void;
+  setisLoading: (value: boolean) => void;
 }
 
 function groupDataByFirstColumn(data) {
@@ -61,7 +61,7 @@ function groupDataByFirstColumn(data) {
 }
 
 
-export default function OrderHistory({ setCurrentPage }: SettingProps) {
+export default function OrderHistory({ setCurrentPage, setisLoading }: SettingProps) {
   const [years, setyears] = useState<SelectOption | null>(null);
   const [yearsOptions, setyearsOptions] = useState<SelectOption[]>([]);
   const [months, setmonths] = useState<SelectOption | null>(null);
@@ -76,7 +76,6 @@ export default function OrderHistory({ setCurrentPage }: SettingProps) {
   const [processlist, setprocesslist] = useState([]);
   const [progressmax, setprogressmax] = useState<number>(0);
   const [Dialogmaxprocess, setDialogmaxprocess] = useState<number>(0);
-  const [isLoading, setisLoading] = useState(false);
 
   const handleyearChange = (selectedOption: SelectOption | null) => {
     setyears(selectedOption);
@@ -120,12 +119,22 @@ export default function OrderHistory({ setCurrentPage }: SettingProps) {
 
   const processingdata = (data) => {
     let processing = processlist[data][0];
+    
     return processing;
   };
 
   const progress = (data) => {
     let processing = processlist[data][1];
     return processing;
+  };
+
+  const progressMax = (data) => {
+    let processing = processlist[data][1];
+    if (processing == 0){
+      return processing;
+    }else{
+      return progressmax - 1;
+    }
   };
 
   const ExecuteGoodsReceipt = async () => {
@@ -178,7 +187,6 @@ export default function OrderHistory({ setCurrentPage }: SettingProps) {
         <a className="buttonUnderlineH" id="main_back" type="button" onClick={historysearch}>
           検索
         </a>
-        <LoadingDisplay isLoading={isLoading}/>
       </div>
       <div className="history-area">
         <div className="historys">
@@ -214,8 +222,11 @@ export default function OrderHistory({ setCurrentPage }: SettingProps) {
                     progressdata={progress(historydata[key][0][historydata[key][0].length - 1])}
                   />
                   <td className="history-progress">
-                    <p className="progress">{progress(historydata[key][0][historydata[key][0].length - 1])}/{progressmax}</p>
-                    <progress value={progress(historydata[key][0][historydata[key][0].length - 1])} max={progressmax}/>
+                    <p className="progress">
+                      {progress(historydata[key][0][historydata[key][0].length - 1])}
+                      /
+                      {progressMax(historydata[key][0][historydata[key][0].length - 1])}</p>
+                    <progress value={progress(historydata[key][0][historydata[key][0].length - 1])} max={progressMax(historydata[key][0][historydata[key][0].length - 1])}/>
                   </td>
                   <td className="history-processing">{processingdata(historydata[key][0][historydata[key][0].length - 1])}</td>
                 </tr>

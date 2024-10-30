@@ -3,11 +3,11 @@ import Select from 'react-select';
 import '../css/store.css';
 import { StoreInventoryGet, HistoryGet } from '../backend/Server_end.ts';
 import '../css/StoreInventory.css';
-import LoadingDisplay from './loading.tsx';
 
 
 interface SettingProps {
   setCurrentPage: (page: string) => void;
+  setisLoading: (value: boolean) => void;
 }
 
 interface InventoryRow {
@@ -16,9 +16,8 @@ interface InventoryRow {
   DInumber: number;
 }
 
-export default function StoreInventoryList({ setCurrentPage }: SettingProps) {
+export default function StoreInventoryList({ setCurrentPage, setisLoading }: SettingProps) {
   const [InventoryData, setInventoryData] = useState<InventoryRow[]>([]);
-  const [isLoading, setisLoading] = useState(false);
   const clickpage = () => {
     setCurrentPage('used');
   };
@@ -26,12 +25,17 @@ export default function StoreInventoryList({ setCurrentPage }: SettingProps) {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const data = await StoreInventoryGet('西条東');
-        setInventoryData(data);
-      } catch (error) {
-        console.error("在庫データの取得中にエラーが発生しました:", error);
-      }
+      setisLoading(false);
+      const dataget = async () => {
+        try {
+          const data = await StoreInventoryGet('西条東');
+          setInventoryData(data);
+        } catch (error) {
+          console.error("在庫データの取得中にエラーが発生しました:", error);
+        }
+      };
+      await dataget();
+      setisLoading(false);
     };
     fetchData();
   }, []);
@@ -39,7 +43,6 @@ export default function StoreInventoryList({ setCurrentPage }: SettingProps) {
   return (
     <div className="store-inventory-window">
       <div className="inventory-table-area">
-        <LoadingDisplay isLoading={isLoading}/>
         <table className="inventory-table">
           <thead>
             <tr>

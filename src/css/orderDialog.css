@@ -1,21 +1,21 @@
-.confirm-top {
+.order-confirm-top {
   height: 150px;
   flex-shrink: 0;
 }
 
 
-.dialog-table {
+.order-dialog-table {
   flex-grow: 1;
   overflow-y: auto; /* テーブルのコンテンツが多い場合にスクロール */
 }
 
-.data-table {
+.order-data-table {
   flex-shrink: 1;
   border-collapse: collapse; /* テーブルの境界線を結合 */
 }
 
 
-.confirm-dialog-button {
+.order-confirm-dialog-button {
   display: flex;
   justify-content: center; /* ボタンを中央に配置 */
   padding: 10px 0;
@@ -24,7 +24,7 @@
   flex-shrink: 0;
 }
 
-.confirm-dialog-button button {
+.order-confirm-dialog-button button {
   margin-left: 10px;
   padding: 10px 20px;
   background-color: #4CAF50;
@@ -36,7 +36,7 @@
 
 
 
-.data-table th, .data-table td {
+.order-data-table th, .order-data-table td {
 
   white-space: nowrap;
   border: 1px solid #222; /* 境界線 */
@@ -44,53 +44,53 @@
   text-align: left;       /* テキストを左揃え */
 }
 
-.data-table th {
+.order-data-table th {
   background-color: #f2f2f2; /* ヘッダーの背景色 */
   font-weight: bold;         /* ヘッダーの太字 */
 }
 
-.data-table tr:nth-child(even) {
+.order-data-table tr:nth-child(even) {
   background-color: #f9f9f9; /* 偶数行の背景色を変更 */
 }
 
-.dtvendor {
+.order-dtvendor {
   min-width: 80px;
   max-width: 80px;
   overflow: hidden;
 }
 
-.dtcode {
+.order-dtcode {
   text-align: right;
   width: 100px;
   min-width: 100px;
 }
 
-.dtname {
+.order-dtname {
   max-width: 208px;
   overflow: hidden;
   min-width: 208px;
 }
 
-.dtpersonal {
+.order-dtpersonal {
   max-width: 80px;
   min-width: 80px;
 }
-.dtquantity {
+.order-dtquantity {
   text-align: right;
   max-width: 80px;
 }
 
-.dtdetail {
+.order-dtdetail {
   max-width: 100px;
   min-width: 100px;
 }
 
-.dtremarks {
+.order-dtremarks {
   max-width: 180px;
   min-width: 180px;
 }
 
-.dprogress {
+.order-dprogress {
   max-width: 100px;
   min-width: 100px;
 }
