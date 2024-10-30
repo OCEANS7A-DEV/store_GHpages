@@ -53,7 +53,7 @@ td {
 th {
   white-space: nowrap;
   border: 1px solid #222; /* 境界線 */
-  padding: 8px; 
+  padding: 8px;
   background-color: #f2f2f2; /* ヘッダーの背景色 */
   font-weight: bold;         /* ヘッダーの太字 */
 }
@@ -96,14 +96,14 @@ th {
   min-width: 400px;
   font-size: 18px;
 }
-.thDIprenumber, .thDInumber, .thDIratio {
+.thDIprenumber, .thDInumber, .thDIratio, .thDIorder, .thDIused {
   text-align: center;
   max-width: 60px;
   min-width: 60px;
 }
 
 
-.DIprenumber, .DInumber, .DIratio {
+.DIprenumber, .DInumber, .DIratio, .DIorder, .DIused {
   max-width: 60px;
   min-width: 60px;
 }

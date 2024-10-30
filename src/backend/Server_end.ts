@@ -261,7 +261,6 @@ export const HistoryGet = async(
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
-    console.log(response)
     const result = await response.json();
     return result;
   }catch(e){

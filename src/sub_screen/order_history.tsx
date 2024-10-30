@@ -119,7 +119,6 @@ export default function OrderHistory({ setCurrentPage, setisLoading }: SettingPr
 
   const processingdata = (data) => {
     let processing = processlist[data][0];
-    
     return processing;
   };
 

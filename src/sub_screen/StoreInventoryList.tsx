@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../css/store.css';
-import { StoreInventoryGet, PeriodDateGet } from '../backend/Server_end.ts';
+import { StoreInventoryGet, PeriodDateGet, HistoryGet } from '../backend/Server_end.ts';
 import '../css/StoreInventory.css';
 
 
@@ -32,15 +32,50 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
     }
   };
 
+  const Arraymap = (array1, array2, column) => {
+    const array2Map = new Map(array2.map(item => [item[0], item]));
+    const mergedArray = array1.map(item => {
+      const number = item[3];
+      const quantityToAdd = item[6];
+      const matchingArray2 = array2Map.get(number);
+      if (matchingArray2) {
+        console.log(quantityToAdd)
+        console.log(matchingArray2)
+        matchingArray2[column] += quantityToAdd;
+      }
+      return item;
+    });
+    return Array.from(array2Map.values())
+  };
+
+  const ArrayUsedmap = (array1, array2, column) => {
+    const array2Map = new Map(array2.map(item => [item[0], item]));
+    const mergedArray = array1.map(item => {
+      const number = item[2];
+      const quantityToAdd = item[4];
+      const matchingArray2 = array2Map.get(number);
+      if (matchingArray2) {
+        console.log(quantityToAdd)
+        console.log(matchingArray2)
+        matchingArray2[column] += quantityToAdd;
+      }
+      return item;
+    });
+    return Array.from(array2Map.values())
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       const dataget = async () => {
         try {
           const Date = await PeriodDateGet();
           setPeriodDate(Date);
-          console.log(Date)
+          const orderData = await HistoryGet(`${Date[0]}/${Date[1]}`, storename, '店舗へ');
           const data = await StoreInventoryGet(storename);
-          setInventoryData(data);
+          const Ordermap = await Arraymap(orderData,data,5)
+          const UsedData = await HistoryGet(`${Date[0]}/${Date[1]}`, storename, '店舗使用商品');
+          const RESULTmap = ArrayUsedmap(UsedData,Ordermap,6)
+          setInventoryData(RESULTmap);
         } catch (error) {
           console.error("在庫データの取得中にエラーが発生しました:", error);
         }
@@ -63,6 +98,8 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
                 <th className="thDIname">商品名</th>
                 <th className="thDIprenumber">{periodDate[1]}月末</th>
                 <th className="thDInumber">現状在庫</th>
+                <th className="thDIorder">{periodDate[1]+1}月入</th>
+                <th className="thDIused">{periodDate[1]+1}月出</th>
                 <th className="thDIratio">{periodDate[1]}月比</th>
               </tr>
             </thead>
@@ -77,6 +114,8 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
                   <td className="DIname">{row[1]}</td>
                   <td className="DIprenumber">{row[2]}</td>
                   <td className="DInumber">{row[3]}</td>
+                  <td className="DIorder">{row[5]}</td>
+                  <td className="DIused">{row[6]}</td>
                   <td className="DIratio" style={{color: colorset(row[4])}}>{row[4]}</td>
                 </tr>
               ))}
