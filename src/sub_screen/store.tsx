@@ -105,7 +105,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   const [checkDialogOpen, setcheckDialogOpen] = useState(false);
   const [checkData, setcheckData] = useState<any>([]);
   const [searchtabledata, setsearchtabledata] = useState<any>([]);
-  const [searchDataIndex, setsearchDataIndex] = useState(null);
+  const [searchDataIndex, setsearchDataIndex] = useState<number>(0);
   const [NonisDialogOpen, setNonisDialogOpen] = useState(false);
 
 
@@ -522,7 +522,8 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
         />
       </div>
       <div className='form_area'>
-        <WordSearch className="searcharea"
+        <WordSearch
+          className="searcharea"
           setsearchData={setsearchData}
           setDetailisDialogOpen={setDetailisDialogOpen}
           setDetailIMAGE={setDetailIMAGE}

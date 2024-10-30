@@ -18,22 +18,33 @@ interface InventoryRow {
 
 export default function StoreInventoryList({ setCurrentPage, setisLoading }: SettingProps) {
   const [InventoryData, setInventoryData] = useState<InventoryRow[]>([]);
+  const storename = localStorage.getItem('StoreSetName');
+
+
   const clickpage = () => {
     setCurrentPage('used');
+  };
+
+  const colorset = (value) => {
+    if (value[0] == '+'){
+      return 'green';
+    }else if(value[0] == '-'){
+      return 'red';
+    }
   };
 
 
   useEffect(() => {
     const fetchData = async () => {
-      setisLoading(false);
       const dataget = async () => {
         try {
-          const data = await StoreInventoryGet('西条東');
+          const data = await StoreInventoryGet(storename);
           setInventoryData(data);
         } catch (error) {
           console.error("在庫データの取得中にエラーが発生しました:", error);
         }
       };
+      setisLoading(true);
       await dataget();
       setisLoading(false);
     };
@@ -42,21 +53,27 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
 
   return (
     <div className="store-inventory-window">
+      <table className="inventory-head">
+        <thead>
+          <tr>
+            <th className="DIcode">商品ナンバー</th>
+            <th className="DIname">商品名</th>
+            <th className="DIprenumber">前月在庫</th>
+            <th className="DInumber">現状在庫</th>
+            <th className="DIratio">前月比</th>
+          </tr>
+        </thead>
+      </table>
       <div className="inventory-table-area">
         <table className="inventory-table">
-          <thead>
-            <tr>
-              <th>商品ナンバー</th>
-              <th>商品名</th>
-              <th>現状在庫</th>
-            </tr>
-          </thead>
-          <tbody>
+          <tbody className="inventory-table-body">
             {InventoryData.map((row, index) => (
               <tr key={index}>
                 <td className="DIcode">{row[0]}</td>
                 <td className="DIname">{row[1]}</td>
-                <td className="DInumber">{row[2]}</td>
+                <td className="DIprenumber">{row[2]}</td>
+                <td className="DInumber">{row[3]}</td>
+                <td className="DIratio" style={{color: colorset(row[4])}}>{row[4]}</td>
               </tr>
             ))}
           </tbody>

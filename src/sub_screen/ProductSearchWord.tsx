@@ -18,8 +18,7 @@ interface SearchProps {
 }
 
 export default function WordSearch({ setsearchData, setDetailisDialogOpen, setDetailIMAGE, setisLoading, setsearchtabledata, searchtabledata, setsearchDataIndex ,searchDataIndex }: SearchProps) {
-  const [SWord, setSWord] = useState<string>(''); // 検索ワードの状態
-  const [tableData, setTableData] = useState<any[]>([]); // 検索結果を保存する状態
+  const [SWord, setSWord] = useState<string>('');
 
 
   // テキスト入力が変更されたときに実行される関数
@@ -59,7 +58,7 @@ export default function WordSearch({ setsearchData, setDetailisDialogOpen, setDe
         <input
           type="text"
           value={SWord}
-          pattern='^[ぁ-ん]+$'
+          pattern="^[ぁ-ん]+$"
           onChange={handlewordchange}
           placeholder="検索ワードを入力"
         />
@@ -67,25 +66,38 @@ export default function WordSearch({ setsearchData, setDetailisDialogOpen, setDe
           検索
         </a>
       </div>
-      <div className="search-table">
-        <table className="search-data-table">
+      <div className="search-head">
+        <table className="search-head">
           <thead>
             <tr>
-              <th className='stcode'>商品ナンバー</th>
-              <th className='stname'>商品名</th>
+              <th className="stcode">商品ナンバー</th>
+              <th className="stname">商品名</th>
             </tr>
           </thead>
-          <tbody className='datail'>
-            {searchtabledata.map((row, index) => (
-              <tr key={index}>
-                <td className="scode">{row[1]}</td>
-                <td className="sname">
-                  <a className="buttonUnderlineD"  role="button" href="#" onClick={() => handleOpenDetailDialog(index)}>{row[2]}</a>
-                </td>
-              </tr>
-            ))}
-          </tbody>
         </table>
+      </div>
+      <div className="search-table">
+        <div className="scrollable-table">
+          <table className="search-data-table">
+            <tbody className="datail">
+              {searchtabledata.map((row, index) => (
+                <tr key={index}>
+                  <td className="scode">{row[1]}</td>
+                  <td className="sname">
+                    <a
+                      className="buttonUnderlineD"
+                      role="button"
+                      href="#"
+                      onClick={() => handleOpenDetailDialog(index)}
+                    >
+                      {row[2]}
+                    </a>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
