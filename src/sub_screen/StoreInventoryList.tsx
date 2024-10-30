@@ -57,32 +57,37 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
 
   return (
     <div className="store-inventory-window">
-      <table className="inventory-head">
-        <thead>
-          <tr>
-            <th className="thDIcode">商品ナンバー</th>
-            <th className="thDIname">商品名</th>
-            <th className="thDIprenumber">{periodDate[1]}月末</th>
-            <th className="thDInumber">現状在庫</th>
-            <th className="thDIratio">{periodDate[1]}月比</th>
-          </tr>
-        </thead>
-      </table>
-      <div className="inventory-table-area">
-        <table className="inventory-table">
-          <tbody className="inventory-table-body">
-            {InventoryData.map((row, index) => (
-              <tr key={index}>
-                <td className="DIcode">{row[0]}</td>
-                <td className="DIname">{row[1]}</td>
-                <td className="DIprenumber">{row[2]}</td>
-                <td className="DInumber">{row[3]}</td>
-                <td className="DIratio" style={{color: colorset(row[4])}}>{row[4]}</td>
+      <div className="in-table-area">
+        <div>
+          <table className="inventory-head">
+            <thead>
+              <tr>
+                <th className="thDIcode">商品ナンバー</th>
+                <th className="thDIname">商品名</th>
+                <th className="thDIprenumber">{periodDate[1]}月末</th>
+                <th className="thDInumber">現状在庫</th>
+                <th className="thDIratio">{periodDate[1]}月比</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+          </table>
+        </div>
+        <div className="inventory-table-area">
+          <table className="inventory-table">
+            <tbody className="inventory-table-body">
+              {InventoryData.map((row, index) => (
+                <tr key={index}>
+                  <td className="DIcode">{row[0]}</td>
+                  <td className="DIname">{row[1]}</td>
+                  <td className="DIprenumber">{row[2]}</td>
+                  <td className="DInumber">{row[3]}</td>
+                  <td className="DIratio" style={{color: colorset(row[4])}}>{row[4]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
+      
       <div className="button_area">
         <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>
           ＜＜ 使用商品入力へ

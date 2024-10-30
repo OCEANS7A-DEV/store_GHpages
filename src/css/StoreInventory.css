@@ -2,9 +2,12 @@
   height: calc(100vh - 80px);
 }
 
+.in-table-area{
+  padding: 20px;
+}
 
 .inventory-table-area {
-  height: calc(100vh - 80px - 40px);
+  height: calc(100vh - 130px);
   overflow-y: scroll;
 }
 
@@ -83,6 +86,7 @@ th {
   width: 100px;
   min-width: 100px;
   max-width: 100px;
+  font-size: 16px;
 }
 
 .thDIname {
@@ -90,6 +94,7 @@ th {
   max-width: 400px;
   overflow: hidden;
   min-width: 400px;
+  font-size: 18px;
 }
 .thDIprenumber, .thDInumber, .thDIratio {
   text-align: center;
@@ -102,7 +107,6 @@ th {
   max-width: 60px;
   min-width: 60px;
 }
-
 
 td {
   text-align: right;
