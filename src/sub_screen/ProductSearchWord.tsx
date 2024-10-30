@@ -1,9 +1,8 @@
-import React, { useState, ChangeEvent, MouseEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import '../css/ProductSearchWord.css';
 //import '../css/store.css';
 import { searchStr } from '../backend/WebStorage';
-import DetailDialog from './ProductdetailDialog.tsx';
-import { IMAGEGET, InventorySearch } from '../backend/Server_end';
+import { InventorySearch } from '../backend/Server_end';
 
 
 interface SearchProps {

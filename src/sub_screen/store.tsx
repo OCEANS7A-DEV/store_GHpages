@@ -1,10 +1,9 @@
 import React, { useState, useRef, ChangeEvent, useEffect } from 'react';
 import Select from 'react-select';
 import '../css/store.css';
-import ReactDOM from 'react-dom';
-import { InventorySearch, ColorListGet, GASPostInsertStore,TESTPOST, judgmentPOST, processlistGet } from '../backend/Server_end';
+import { InventorySearch, GASPostInsertStore, judgmentPOST, processlistGet } from '../backend/Server_end';
 import ConfirmDialog from './orderDialog';
-import { searchStr, FormDataKeepSet, KeepFormDataGet } from '../backend/WebStorage';
+import { FormDataKeepSet, KeepFormDataGet } from '../backend/WebStorage';
 import WordSearch from './ProductSearchWord';
 import SaveConfirmDialog from './SaveConfirmDialog';
 import DetailDialog from './ProductdetailDialog.tsx';
@@ -85,8 +84,6 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   }));
   const [formData, setFormData] = useState<InsertData[]>(initialFormData);
   const storename = localStorage.getItem('StoreSetName');
-  const [productData, setProductData] = useState<InventoryDataType[]>([
-    {業者: '', 商品コード: '', 商品名: '', 商品単価: ''}]);
   const nonOrderData = [{業者: '-', 商品コード: '-', 商品名: '-', 商品詳細: '-', 数量: '-', 商品単価: '-', 個人購入: '-', 備考: '-'}];
   const codeRefs = useRef([]);
   const quantityRefs = useRef([]);
@@ -97,13 +94,9 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   const [SaveisDialogOpen, setSaveDialogOpen] = useState(false);
   const [Savetype, setSavetype] = useState<string>('');
   const [searchData, setsearchData] = useState<any>([]);
-  const [Detailtype, setDetailtype] = useState<string>('');
   const DetailMessage = `業者名: ${searchData[0] || ''}　　||　　商品ナンバー: ${searchData[1] || ''}\n商品単価: ${(searchData[3] !== undefined && searchData[3] !== null) ? searchData[3].toLocaleString() : ''}円　　||　　店販価格: ${(searchData[5] !== undefined && searchData[5] !== null) ? searchData[5].toLocaleString() : ''}`
   const [DetailisDialogOpen, setDetailisDialogOpen] = useState(false);
   const [DetailIMAGE, setDetailIMAGE] = useState<string>('');
-  //const [isLoading, setisLoading] = useState(false);
-  const [checkDialogOpen, setcheckDialogOpen] = useState(false);
-  const [checkData, setcheckData] = useState<any>([]);
   const [searchtabledata, setsearchtabledata] = useState<any>([]);
   const [searchDataIndex, setsearchDataIndex] = useState<number>(0);
   const [NonisDialogOpen, setNonisDialogOpen] = useState(false);
@@ -436,16 +429,6 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     setDetailisDialogOpen(false);
   };
 
-  const handleordercheckDialog = () => {
-    const checkData = JSON.parse(localStorage.getItem('Already_ordered'));
-    setcheckData(checkData);
-    console.log(checkData[0])
-    setcheckDialogOpen(true);
-  };
-
-  const checkhandleConfirm = () => {
-    setcheckDialogOpen(false);
-  };
 
   const clickcheckpage = () => {
     setCurrentPage('History');
