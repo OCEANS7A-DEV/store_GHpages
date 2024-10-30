@@ -1,5 +1,4 @@
-import React, { useState, useRef, ChangeEvent, useEffect } from 'react';
-import Select from 'react-select';
+import React, { useState, useEffect } from 'react';
 import '../css/store.css';
 import { StoreInventoryGet, PeriodDateGet } from '../backend/Server_end.ts';
 import '../css/StoreInventory.css';
@@ -21,7 +20,6 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
   const storename = localStorage.getItem('StoreSetName');
   const [periodDate, setPeriodDate] = useState([]);
 
-
   const clickpage = () => {
     setCurrentPage('used');
   };
@@ -33,7 +31,6 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
       return 'red';
     }
   };
-
 
   useEffect(() => {
     const fetchData = async () => {
