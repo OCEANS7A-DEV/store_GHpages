@@ -1,7 +1,7 @@
 import React, { useState, useRef, ChangeEvent, useEffect } from 'react';
 import Select from 'react-select';
 import '../css/store.css';
-import { StoreInventoryGet, HistoryGet } from '../backend/Server_end.ts';
+import { StoreInventoryGet, PeriodDateGet } from '../backend/Server_end.ts';
 import '../css/StoreInventory.css';
 
 
@@ -19,6 +19,7 @@ interface InventoryRow {
 export default function StoreInventoryList({ setCurrentPage, setisLoading }: SettingProps) {
   const [InventoryData, setInventoryData] = useState<InventoryRow[]>([]);
   const storename = localStorage.getItem('StoreSetName');
+  const [periodDate, setPeriodDate] = useState([]);
 
 
   const clickpage = () => {
@@ -38,6 +39,9 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
     const fetchData = async () => {
       const dataget = async () => {
         try {
+          const Date = await PeriodDateGet();
+          setPeriodDate(Date);
+          console.log(Date)
           const data = await StoreInventoryGet(storename);
           setInventoryData(data);
         } catch (error) {
@@ -56,11 +60,11 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
       <table className="inventory-head">
         <thead>
           <tr>
-            <th className="DIcode">商品ナンバー</th>
-            <th className="DIname">商品名</th>
-            <th className="DIprenumber">前月在庫</th>
-            <th className="DInumber">現状在庫</th>
-            <th className="DIratio">前月比</th>
+            <th className="thDIcode">商品ナンバー</th>
+            <th className="thDIname">商品名</th>
+            <th className="thDIprenumber">{periodDate[1]}月末</th>
+            <th className="thDInumber">現状在庫</th>
+            <th className="thDIratio">{periodDate[1]}月比</th>
           </tr>
         </thead>
       </table>

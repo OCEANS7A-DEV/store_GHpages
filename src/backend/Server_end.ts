@@ -408,3 +408,31 @@ export const StoreInventoryGet = async(
   }
 };
 
+
+export const PeriodDateGet = async () => {
+  try {
+    const response = await fetch(
+      URL_STRING,
+      {
+        method: 'POST',
+        headers: {
+          "Content-Type" : "application/x-www-form-urlencoded",
+        },
+        body: JSON.stringify({
+          action: 'PeriodDateGet',
+          sub_action: 'get',
+          sheetName: '期間在庫',
+        })
+      },
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const result = await response.json();
+    console.log(result)
+    return result;
+  }catch(e){
+    return (e);
+  }
+};
+

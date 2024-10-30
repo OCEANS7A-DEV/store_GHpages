@@ -72,9 +72,29 @@ th {
 }
 
 .DIname {
+  text-align: left;
   max-width: 400px;
   overflow: hidden;
   min-width: 400px;
+}
+
+.thDIcode {
+  text-align: center;
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+}
+
+.thDIname {
+  text-align: center;
+  max-width: 400px;
+  overflow: hidden;
+  min-width: 400px;
+}
+.thDIprenumber, .thDInumber, .thDIratio {
+  text-align: center;
+  max-width: 60px;
+  min-width: 60px;
 }
 
 
@@ -83,10 +103,7 @@ th {
   min-width: 60px;
 }
 
+
 td {
   text-align: right;
-}
-
-th {
-  text-align: center;
 }
