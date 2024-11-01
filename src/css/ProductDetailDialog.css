@@ -128,3 +128,11 @@
   }
 }
 
+.historycheckcode, .historycheckquantity {
+  text-align: right;
+}
+
+.historycheckname, .historycheckpersonal, .historycheckremarks, .historycheckvendor {
+  text-align: left;
+}
+

@@ -113,3 +113,46 @@ th {
 td {
   text-align: right;
 }
+
+.buttonUnderlineI {
+  flex: 1; /* 各ボタンが同じ幅を持つようにする */
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: right;
+  justify-content: right;
+  overflow: hidden;
+  font-size: 18px;
+  color: #222;
+  text-align: right;
+  overflow-wrap: anywhere;
+  background: transparent;
+  white-space: nowrap;
+  margin: 0 0px; /* 左右に適度なスペース */
+}
+
+.buttonUnderlineI::after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 2px;
+  content: "";
+  background-color: #6fa24a;
+  transform: scaleX(0);
+  transform-origin: right top;
+}
+
+@media (any-hover: hover) {
+  .buttonUnderlineI::after {
+    transition: transform 0.2s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+
+  .buttonUnderlineI:hover::after {
+    transition: transform 0.4s cubic-bezier(0.9, 0, 0, 1);
+    transform: scaleX(1);
+    transform-origin: left top;
+  }
+}

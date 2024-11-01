@@ -126,6 +126,7 @@
 }
 
 .insert_code {
+  text-align: right;
   width: 100px;
 }
 
@@ -135,6 +136,7 @@
 
 .insert_quantity {
   width: 100px;
+  text-align: right;
 }
 
 .used_Select {
@@ -223,4 +225,8 @@ a {
 
 .buttonUnderlineSt:active {
   transform: scale(0.9);
+}
+
+.insert_quantity::placeholder{
+  text-align: left;
 }

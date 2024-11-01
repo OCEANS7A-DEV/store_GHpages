@@ -400,7 +400,6 @@ export const StoreInventoryGet = async(
       throw new Error(`HTTP error! status: ${response.status}`)
     }
     const result = await response.json();
-    console.log(result)
     return result;
   }catch(e){
     return (e);
@@ -428,7 +427,6 @@ export const PeriodDateGet = async () => {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
     const result = await response.json();
-    console.log(result)
     return result;
   }catch(e){
     return (e);

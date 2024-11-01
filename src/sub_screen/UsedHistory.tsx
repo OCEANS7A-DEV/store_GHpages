@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
-import '../css/store.css';
-import '../css/order_history.css';
+//import '../css/store.css';
+//import '../css/order_history.css';
 import '../css/usedHistory.css';
 import { HistoryGet } from '../backend/Server_end.ts';
 
@@ -114,36 +114,42 @@ export default function UsedHistory({ setCurrentPage, setisLoading }: SettingPro
         </a>
       </div>
       <div className="usedhistory-area">
-        <table className="usedhistory-table">
-          <thead>
-            <tr>
-              <th className="usedDate">月日</th>
-              <th className="usedCode">商品ナンバー</th>
-              <th className="usedName">商品名</th>
-              <th className="usedNumber">数量</th>
-              <th className="usedMethod">使用方法</th>
-              <th className="usedIndividual">個人購入</th>
-              <th className="usedremarks">備考</th>
-            </tr>
-          </thead>
-          <tbody className='usedhistory-datail'>
-            {historydata.map((data, index) => (
-              <tr key={index}>
-                <td>{new Date(data[0]).toLocaleDateString('ja-JP', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit'
-                    })}</td>
-                <td>{data[2]}</td>
-                <td>{data[3]}</td>
-                <td>{data[4]}</td>
-                <td>{data[5]}</td>
-                <td>{data[6]}</td>
-                <td>{data[7]}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div>
+          <table className="usedhistory-table">
+            <thead>
+                <tr>
+                  <th className="usedDate">月日</th>
+                  <th className="usedCode">商品ナンバー</th>
+                  <th className="usedName">商品名</th>
+                  <th className="usedNumber">数量</th>
+                  <th className="usedMethod">使用方法</th>
+                  <th className="usedIndividual">個人購入</th>
+                  <th className="usedremarks">備考</th>
+                </tr>
+              </thead>
+          </table>
+        </div>
+        <div className='historydata-table'>
+          <table className="usedhistory-table">
+            <tbody>
+              {historydata.map((data, index) => (
+                <tr key={index}>
+                  <td className="dataDate">{new Date(data[0]).toLocaleDateString('ja-JP', {
+                      year: 'numeric',
+                      month: '2-digit',
+                      day: '2-digit'
+                      })}</td>
+                  <td className="dataCode">{data[2]}</td>
+                  <td className="dataName">{data[3]}</td>
+                  <td className="dataNumber">{data[4]}</td>
+                  <td className="dataMethod">{data[5]}</td>
+                  <td className="dataIndividual">{data[6]}</td>
+                  <td className="dataRemarks">{data[7]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
       <div className="button_area">
         <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>

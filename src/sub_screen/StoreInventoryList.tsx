@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../css/store.css';
 import { StoreInventoryGet, PeriodDateGet, HistoryGet } from '../backend/Server_end.ts';
 import '../css/StoreInventory.css';
+import HistoryInsertCheck, {HistoryUsedCheck} from './historycheckDialog.tsx';
 
 
 interface SettingProps {
@@ -19,6 +20,13 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
   const [InventoryData, setInventoryData] = useState<InventoryRow[]>([]);
   const storename = localStorage.getItem('StoreSetName');
   const [periodDate, setPeriodDate] = useState([]);
+  const [monthinsert, setmonthinsert] = useState([]);
+  const [monthused, setmonthused] = useState([]);
+  const [historyDialogOpenInsert, sethistoryDialogOpenInsert] = useState(false);
+  const [historyDialogOpenUsed, sethistoryDialogOpenUsed] = useState(false);
+  const [Dialogdata, setDialogdata] = useState([]);
+  const [DialogdataU, setDialogdataU] = useState([]);
+  const [message, setmessage] = useState<string>('');
 
   const clickpage = () => {
     setCurrentPage('used');
@@ -60,6 +68,26 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
     return Array.from(array2Map.values())
   };
 
+  const monthInsertDialog = (row) => {
+    setmessage(`${row[1]}の${periodDate[0]}年${periodDate[1]}月　入庫データです`);
+    const returndata = monthinsert.filter((code) => code[3] == row[0])
+    console.log(returndata)
+    setDialogdata(returndata)
+    sethistoryDialogOpenInsert(true);
+  };
+
+  const monthUsedDialog = (row) => {
+    setmessage(`${row[1]}の${periodDate[0]}年${periodDate[1]}月　出庫データです`);
+    const returndata = monthused.filter((code) => code[2] == row[0])
+    console.log(returndata)
+    setDialogdataU(returndata)
+    sethistoryDialogOpenUsed(true)
+  };
+
+
+
+
+
   useEffect(() => {
     const fetchData = async () => {
       const dataget = async () => {
@@ -69,8 +97,10 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
           const orderData = await HistoryGet(`${Date[0]}/${Date[1]}`, storename, '店舗へ');
           const data = await StoreInventoryGet(storename);
           const Ordermap = await Arraymap(orderData,data,5)
+          setmonthinsert(orderData);
           const UsedData = await HistoryGet(`${Date[0]}/${Date[1]}`, storename, '店舗使用商品');
           const RESULTmap = ArrayUsedmap(UsedData,Ordermap,6)
+          setmonthused(UsedData);
           setInventoryData(RESULTmap);
         } catch (error) {
           console.error("在庫データの取得中にエラーが発生しました:", error);
@@ -110,13 +140,43 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
                   <td className="DIname">{row[1]}</td>
                   <td className="DIprenumber">{row[2]}</td>
                   <td className="DInumber">{row[3]}</td>
-                  <td className="DIorder">{row[5]}</td>
-                  <td className="DIused">{row[6]}</td>
+                  <td className="DIorder">
+                    <a
+                      className="buttonUnderlineI"
+                      role="button"
+                      href="#"
+                      onClick={() => monthInsertDialog(row)}
+                    >
+                      {row[5]}
+                    </a>
+                  </td>
+                    <td className="DIused"><a
+                      className="buttonUnderlineI"
+                      role="button"
+                      href="#"
+                      onClick={() => monthUsedDialog(row)}
+                    >
+                      {row[6]}
+                    </a></td>
                   <td className="DIratio" style={{color: colorset(row[4])}}>{row[4]}</td>
                 </tr>
               ))}
             </tbody>
           </table>
+          <HistoryInsertCheck
+            title="入庫"
+            message={message}
+            tableData={Dialogdata}
+            onConfirm={() => sethistoryDialogOpenInsert(false)}
+            isOpen={historyDialogOpenInsert}
+          />
+          <HistoryUsedCheck
+            title="出庫"
+            message={message}
+            tableData={DialogdataU}
+            onConfirm={() => sethistoryDialogOpenUsed(false)}
+            isOpen={historyDialogOpenUsed}
+          />
         </div>
       </div>
       <div className="button_area">
