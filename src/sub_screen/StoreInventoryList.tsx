@@ -39,8 +39,6 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
       const quantityToAdd = item[6];
       const matchingArray2 = array2Map.get(number);
       if (matchingArray2) {
-        console.log(quantityToAdd)
-        console.log(matchingArray2)
         matchingArray2[column] += quantityToAdd;
       }
       return item;
@@ -55,8 +53,6 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
       const quantityToAdd = item[4];
       const matchingArray2 = array2Map.get(number);
       if (matchingArray2) {
-        console.log(quantityToAdd)
-        console.log(matchingArray2)
         matchingArray2[column] += quantityToAdd;
       }
       return item;
