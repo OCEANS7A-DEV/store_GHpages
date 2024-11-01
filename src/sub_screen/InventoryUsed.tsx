@@ -17,8 +17,6 @@ interface UsedInsertData {
   備考: string;
   使用方法: { value: string; label: string } | null;
   ProcessingMethod: { value: string; label: string }[];
-  商品単価: string;
-  業者: string,
 }
 
 interface SettingProps {
@@ -56,7 +54,7 @@ const colorlistGet = async (code: any) => {
   return returnData;
 };
 
-const fieldDataList = ['月日',　'商品コード', '商品名', '商品詳細', '数量', '使用方法', '個人購入', '備考'];
+const usedfieldDataList = ['月日', '商品コード', '商品名', '商品詳細', '数量', '使用方法', '個人購入', '備考'];
 
 const productSearch = (code: number) => {
   const storageGet = JSON.parse(sessionStorage.getItem('data') ?? '');
@@ -91,10 +89,9 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
     使用方法: null,
     個人購入: '',
     備考: '',
-    ProcessingMethod: [],
-    商品単価: '',
-    業者: ''
+    ProcessingMethod: []
   }));
+  //console.log(initialusedFormData)
   const [usedformData, setusedFormData] = useState<UsedInsertData[]>(initialusedFormData);
   const storename = localStorage.getItem('StoreSetName');
   const codeRefs = useRef([]);
@@ -125,15 +122,15 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
     field: keyof UsedInsertData,
     event: ChangeEvent<HTMLInputElement>,
   ) => {
-    const newFormData = [...usedformData];
-    newFormData[index][field] = event.target.value;
-    setusedFormData(newFormData);
+    const newusedFormData = [...usedformData];
+    newusedFormData[index][field] = event.target.value;
+    setusedFormData(newusedFormData);
   };
 
   const addNewForm = () => {
-    const newFormData = [...usedformData];
+    const newusedFormData = [...usedformData];
     for (let i = 0; i < 20; i++) {
-      newFormData.push({
+      newusedFormData.push({
         月日: '',
         商品コード: '',
         商品名: '',
@@ -141,12 +138,10 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
         使用方法: null,
         個人購入: '',
         備考: '',
-        ProcessingMethod: [],
-        商品単価: '',
-        業者: ''
+        ProcessingMethod: []
       });
     }
-    setusedFormData(newFormData);
+    setusedFormData(newusedFormData);
   };
 
 
@@ -155,11 +150,11 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
     value: any
   ) => {
     const searchresult = productSearch(value);
-    const newFormData = [...usedformData];
+    const newusedFormData = [...usedformData];
     const updateFormData = (ResultData: any) => {
       if (ResultData !== null) {
-        newFormData[index] = {
-          ...newFormData[index],
+        newusedFormData[index] = {
+          ...newusedFormData[index],
           商品コード: ResultData[1],
           商品名: ResultData[2],
           商品単価: ResultData[3],
@@ -176,7 +171,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
       const ResultData = await productSearch(Number(value));
       updateFormData(ResultData);
     }
-    setusedFormData(newFormData);
+    setusedFormData(newusedFormData);
   };
 
   const numberchange = async (
@@ -185,9 +180,9 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
     event: ChangeEvent<HTMLInputElement>,
   ) => {
     const CodeValue = event.target.value.replace(/[^0-9]/g, '');
-    const newFormData = [...usedformData];
-    newFormData[index][field] = CodeValue;
-    setusedFormData(newFormData);
+    const newusedFormData = [...usedformData];
+    newusedFormData[index][field] = CodeValue;
+    setusedFormData(newusedFormData);
   };
 
   const insertPost = async () => {
@@ -195,8 +190,8 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
   };
 
   const removeForm = (index: number) => {
-    const newFormData = usedformData.filter((_, i) => i !== index);
-    newFormData.push({
+    const newusedFormData = usedformData.filter((_, i) => i !== index);
+    newusedFormData.push({
       月日: '',
       商品コード: '',
       商品名: '',
@@ -204,11 +199,10 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
       使用方法: null,
       個人購入: '',
       備考: '',
-      ProcessingMethod: [],
-      商品単価: '',
-      業者: ''
+      ProcessingMethod: []
     });
-    setusedFormData(newFormData);
+    
+    setusedFormData(newusedFormData);
     codeRefs.current.splice(index, 1);
     quantityRefs.current.splice(index, 1);
   };
@@ -257,9 +251,8 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
   };
 
   const handleConfirm = async () => {
-
     setisLoading(true);
-    var nullset = ['注文データのエラー']
+    var nullset = ['エラー']
     var cancelcount = 0
     var rownumber = 1
     for (const row of usedformData) {
@@ -275,6 +268,11 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
         nullset.push(`${rownumber}つ目のデータで、商品名または商品ナンバーは入力されていますが、数量が入力されていません。`);
         cancelcount++;
       }
+      if ((row.商品名 !== "" || row.商品コード !== "") && row.使用方法 == null){
+        nullset.push(`${rownumber}つ目のデータで、商品名または商品ナンバーは入力されていますが、使用方法が指定されていません。`);
+        cancelcount++;
+      }
+      rownumber ++
     }
     if (cancelcount >= 1) {
       setusedDialogOpen(false);
@@ -302,62 +300,25 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
   };
 
   const DetailhandleConfirmAdd = async (data: any) => {
-    let returnData: any[] = [];
-    const Datapush = async () => {
-      const nullData = [];
-      let colordata: any[] | null = null;
-      try {
-        colordata = await colorlistGet(Number(data[1]))
-        colordata = colordata || nullData;
-      } catch (error) {
-        colordata = nullData;
-      }
-      const pushdata = {
-        商品コード: data[1],
-        商品名: data[2],
-        商品詳細: null,
-        数量: '',
-        個人購入: '',
-        備考: '',
-        selectOptions: colordata,
-        商品単価: data[3],
-      };
-      returnData.push(pushdata);
+    let returnData = [...usedformData];
+    const newData = {
+      商品コード: data[1],
+      商品名: data[2]
     };
-    let count = 0;
-    for (let i = 0; i < usedformData.length; i++){
-      if (usedformData[i].商品コード !== '') {
-        returnData.push(usedformData[i])
-        count++
-        continue
-      }else if (usedformData[i].商品コード === ''){
-        count++
-        await Datapush();
-        break
-      }else{
-        count++
-        await addNewForm();
-        await Datapush();
-        break
+    let dataAdded = false;
+    for (let i = 0; i < returnData.length; i++) {
+      if (!dataAdded && returnData[i].商品コード === '') {
+        returnData[i] = {
+          ...returnData[i],
+          ...newData
+        };
+        dataAdded = true;
+        break;
       }
-    }
-    for (let i = 0; i < (usedformData.length - count); i++){
-      let pushnullData = {
-        商品コード: '',
-        商品名: '',
-        商品詳細: null,
-        数量: '',
-        個人購入: '',
-        備考: '',
-        selectOptions: null,
-        商品単価: '',
-      };
-      returnData.push(pushnullData);
     }
     setusedFormData(returnData);
     setDetailisDialogOpen(false);
   };
-
   const clickcheckpage = () => {
     setCurrentPage('usedHistory');
   };
@@ -473,9 +434,9 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
               value={data.使用方法 || null}
               isSearchable={false}
               onChange={(ProcessingMethod) => {
-                const newFormData = [...usedformData];
-                newFormData[index].使用方法 = ProcessingMethod;
-                setusedFormData(newFormData);
+                const newusedFormData = [...usedformData];
+                newusedFormData[index].使用方法 = ProcessingMethod;
+                setusedFormData(newusedFormData);
               }}
               placeholder="方法を選択"
             />
