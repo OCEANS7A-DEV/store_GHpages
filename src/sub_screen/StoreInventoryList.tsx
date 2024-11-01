@@ -115,6 +115,7 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
 
   return (
     <div className="store-inventory-window">
+      <h2 className="store-inventory-h2">{storename}店　在庫表</h2>
       <div className="in-table-area">
         <div>
           <table className="inventory-head">
@@ -142,7 +143,7 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
                   <td className="DInumber">{row[3]}</td>
                   <td className="DIorder">
                     <a
-                      className="buttonUnderlineI"
+                      className="buttonUnderlineIn"
                       role="button"
                       href="#"
                       onClick={() => monthInsertDialog(row)}
@@ -151,7 +152,7 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
                     </a>
                   </td>
                     <td className="DIused"><a
-                      className="buttonUnderlineI"
+                      className="buttonUnderlineIn"
                       role="button"
                       href="#"
                       onClick={() => monthUsedDialog(row)}

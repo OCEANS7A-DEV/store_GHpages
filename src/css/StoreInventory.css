@@ -4,10 +4,15 @@
 
 .in-table-area{
   padding: 20px;
+  padding-top: 0px;
+}
+
+.store-inventory-h2 {
+  margin: 10px;
 }
 
 .inventory-table-area {
-  height: calc(100vh - 130px);
+  height: calc(100vh - 165px);
   overflow-y: scroll;
 }
 
@@ -114,7 +119,9 @@ td {
   text-align: right;
 }
 
-.buttonUnderlineI {
+
+.buttonUnderlineIn {
+  width: 100%;
   flex: 1; /* 各ボタンが同じ幅を持つようにする */
   cursor: pointer;
   position: relative;
@@ -124,7 +131,7 @@ td {
   justify-content: right;
   overflow: hidden;
   font-size: 18px;
-  color: #222;
+  color: #4682b4;
   text-align: right;
   overflow-wrap: anywhere;
   background: transparent;
@@ -132,7 +139,7 @@ td {
   margin: 0 0px; /* 左右に適度なスペース */
 }
 
-.buttonUnderlineI::after {
+.buttonUnderlineIn::after {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -140,17 +147,17 @@ td {
   width: 100%;
   height: 2px;
   content: "";
-  background-color: #6fa24a;
+  background-color: #4682b4;
   transform: scaleX(0);
   transform-origin: right top;
 }
 
 @media (any-hover: hover) {
-  .buttonUnderlineI::after {
+  .buttonUnderlineIn::after {
     transition: transform 0.2s cubic-bezier(0.19, 1, 0.22, 1);
   }
 
-  .buttonUnderlineI:hover::after {
+  .buttonUnderlineIn:hover::after {
     transition: transform 0.4s cubic-bezier(0.9, 0, 0, 1);
     transform: scaleX(1);
     transform-origin: left top;
