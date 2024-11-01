@@ -421,7 +421,6 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
       };
       returnData.push(pushnullData);
     }
-    console.log(returnData);
     setFormData(returnData);
     setDetailisDialogOpen(false);
   };

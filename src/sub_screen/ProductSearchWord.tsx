@@ -32,7 +32,6 @@ export default function WordSearch({ setsearchData, setDetailisDialogOpen, setDe
 
 
   const handleOpenDetailDialog = async (index: any) => {
-    console.log(index)
     setsearchDataIndex(index);//ここでエラー
     setisLoading(true);
     var match = 'https://drive.google.com/file/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFhbm/preview';// 画像がないとき用のURL

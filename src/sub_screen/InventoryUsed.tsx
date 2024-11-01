@@ -313,7 +313,6 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
         colordata = nullData;
       }
       const pushdata = {
-        月日: '',  // searchresult が期待通りの構造か要確認
         商品コード: data[1],
         商品名: data[2],
         商品詳細: null,
@@ -344,7 +343,6 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
     }
     for (let i = 0; i < (usedformData.length - count); i++){
       let pushnullData = {
-        月日: '',  // searchresult が期待通りの構造か要確認
         商品コード: '',
         商品名: '',
         商品詳細: null,
