@@ -201,7 +201,6 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
       備考: '',
       ProcessingMethod: []
     });
-    
     setusedFormData(newusedFormData);
     codeRefs.current.splice(index, 1);
     quantityRefs.current.splice(index, 1);
@@ -467,6 +466,9 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
       <div className="button_area">
         <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>
           ＜＜ 店舗選択へ
+        </a>
+        <a className="buttonUnderlineSt" type="button" onClick={addNewForm}>
+          入力枠追加
         </a>
         <a className="buttonUnderlineSt" type="button" onClick={clickcheckpage}>
           履歴へ
