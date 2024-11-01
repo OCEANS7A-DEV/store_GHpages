@@ -1,4 +1,3 @@
-// ConfirmDialog.tsx
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -15,7 +14,6 @@ interface UsedDialogProps {
 
 const UsedDialog: React.FC<UsedDialogProps> = ({ title, message, tableData, onConfirm, onCancel, isOpen }) => {
   if (!isOpen) return null;
-  console.log(tableData)
 
   return ReactDOM.createPortal(
     <div className="confirm-dialog-overlay">
@@ -31,7 +29,6 @@ const UsedDialog: React.FC<UsedDialogProps> = ({ title, message, tableData, onCo
             ))}
           </p>
         </div>
-        {/* テーブルを表示 */}
         <div className="dialog-table">
           <table className='data-table'>
             <thead>

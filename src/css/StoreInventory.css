@@ -48,6 +48,7 @@ td {
   border: 1px solid #222; /* 境界線 */
   padding: 8px;           /* セルの内側に余白 */
   text-align: left;       /* テキストを左揃え */
+
 }
 
 th {

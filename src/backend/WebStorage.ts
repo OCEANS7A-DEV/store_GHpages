@@ -11,7 +11,21 @@ export const localStoreSet = async () => {
     label: store,
   }));
   localStorage.setItem('storeData', JSON.stringify(options))
+  return options;
 }
+
+export const localStoreSetCash = async (storedata: any) => {
+  if (!Array.isArray(storedata)) {
+    console.error("storedata is not an array");
+    return;
+  }
+  const options = storedata.map((store: string) => ({
+    value: store,
+    label: store,
+  }));
+  localStorage.setItem('storeData', JSON.stringify(options));
+};
+
 
 export const localStorageSet = async (
 ) => {
@@ -37,7 +51,7 @@ export const searchStr = async (searchword: string) => {
   const swKZ = jaconv.toKatakana(searchword);
   const swHZ = jaconv.toHiragana(swKZ);
   const swKH = jaconv.toHan(swKZ);
-  const data = JSON.parse(sessionStorage.getItem('data'));
+  const data = JSON.parse(sessionStorage.getItem('data') ?? '');
   if (!data || data.length === 0) {
     console.log('データが存在しません。');
     return [];
@@ -63,8 +77,6 @@ export const FormDataKeepSet = async (data: any, storename: any) => {
 };
 
 export const KeepFormDataGet = (storename: any) => {
-  //localStorage.setItem('FormData', JSON.stringify(data));
-  const result = JSON.parse(localStorage.getItem(storename));
-
+  const result = JSON.parse(localStorage.getItem(storename) ?? '');
   return result;
 };

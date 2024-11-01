@@ -4,19 +4,19 @@ import Select from 'react-select';
 import '../css/store.css';
 import '../css/order_history.css';
 import '../css/usedHistory.css';
-import { HistoryGet, ExplanationImageGet } from '../backend/Server_end.ts';
+import { HistoryGet } from '../backend/Server_end.ts';
 
 
 const Yearlist = () => {
-  let returnData = [];
+  let returnData: SelectOption[] = [];
   let today = new Date();
   const year = today.getFullYear();
   for (let i = 0; i < 10; i++){
     const setyear = year - i;
-    const DefAsArray = {
+    const labeldata = setyear + "年";
+    const DefAsArray: SelectOption = {
       value: setyear,
-      label: setyear,
-      id: i,
+      label: labeldata,
     };
     returnData.push(DefAsArray);
   }
@@ -24,14 +24,13 @@ const Yearlist = () => {
 };
 
 const MonthList = () => {
-  let returnData = [];
+  let returnData: SelectOption[] = [];
   for (let i = 0; i < 12; i++){
     const setdata = i + 1;
     const labeldata = setdata + "月";
-    const DefAsArray = {
+    const DefAsArray: SelectOption = {
       value: setdata,
       label: labeldata,
-      id: i,
     };
     returnData.push(DefAsArray);
   }
@@ -39,26 +38,13 @@ const MonthList = () => {
 };
 
 interface SelectOption {
-  value: string;
+  value: number;
   label: string;
-  id: number;
 }
 
 interface SettingProps {
   setCurrentPage: (page: string) => void;
   setisLoading: (value: boolean) => void;
-}
-
-function groupDataByFirstColumn(data) {
-  const groupedData = {};
-  data.forEach(row => {
-    const key = row[0];
-    if (!groupedData[key]) {
-      groupedData[key] = [];
-    }
-    groupedData[key].push(row);
-  });
-  return groupedData;
 }
 
 
@@ -67,11 +53,8 @@ export default function UsedHistory({ setCurrentPage, setisLoading }: SettingPro
   const [yearsOptions, setyearsOptions] = useState<SelectOption[]>([]);
   const [months, setmonths] = useState<SelectOption | null>(null);
   const [monthsOptions, setmonthsOptions] = useState<SelectOption[]>([]);
-  const storename = localStorage.getItem('StoreSetName');
+  const storename = localStorage.getItem('StoreSetName') || '';
   const [historydata, sethistorydata] = useState<any[]>([]);
-  const [explanationIMAGE, setexplanationIMAGE] = useState<string>('');
-  const [processlist, setprocesslist] = useState([]);
-  const [progressmax, setprogressmax] = useState<number>(0);
 
   const handleyearChange = (selectedOption: SelectOption | null) => {
     setyears(selectedOption);
@@ -86,11 +69,14 @@ export default function UsedHistory({ setCurrentPage, setisLoading }: SettingPro
   };
 
   const historysearch = async () => {
-    setisLoading(true)
+    if (!years || !months) {
+      console.error("年または月が選択されていません");
+      return;
+    }
+    setisLoading(true);
     const searchDate = `${years.value}/${months.value}`;
-    const result = await HistoryGet(searchDate, storename, '店舗使用商品')
-    //console.log(result);
-    await sethistorydata(result);
+    const result = await HistoryGet(searchDate, storename, '店舗使用商品');
+    sethistorydata(result);
     setisLoading(false);
   };
 

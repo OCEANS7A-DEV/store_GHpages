@@ -1,4 +1,4 @@
-// ConfirmDialog.tsx
+
 import React,{ useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 
@@ -31,7 +31,6 @@ const OutOfStockStatus: React.FC<ConfirmDialogProps> = ({ title, message, tableD
       setbuttontext('入庫実行')
     }else{
       setIsEnabled(false)
-      
       setbuttontext('入庫済み')
     }
   })

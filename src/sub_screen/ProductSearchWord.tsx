@@ -1,6 +1,5 @@
 import React, { useState, ChangeEvent } from 'react';
 import '../css/ProductSearchWord.css';
-//import '../css/store.css';
 import { searchStr } from '../backend/WebStorage';
 import { InventorySearch } from '../backend/Server_end';
 

@@ -34,7 +34,7 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
 
   const Arraymap = (array1, array2, column) => {
     const array2Map = new Map(array2.map(item => [item[0], item]));
-    const mergedArray = array1.map(item => {
+    array1.map(item => {
       const number = item[3];
       const quantityToAdd = item[6];
       const matchingArray2 = array2Map.get(number);
@@ -50,7 +50,7 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
 
   const ArrayUsedmap = (array1, array2, column) => {
     const array2Map = new Map(array2.map(item => [item[0], item]));
-    const mergedArray = array1.map(item => {
+    array1.map(item => {
       const number = item[2];
       const quantityToAdd = item[4];
       const matchingArray2 = array2Map.get(number);

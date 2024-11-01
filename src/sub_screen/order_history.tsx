@@ -7,15 +7,15 @@ import OutOfStockStatus from './Out_of_stock_status.tsx';
 
 
 const Yearlist = () => {
-  let returnData = [];
+  let returnData: SelectOption[] = [];
   let today = new Date();
   const year = today.getFullYear();
   for (let i = 0; i < 10; i++){
     const setyear = year - i;
+    const labeldata = setyear + "年";
     const DefAsArray = {
       value: setyear,
-      label: setyear,
-      id: i,
+      label: labeldata,
     };
     returnData.push(DefAsArray);
   }
@@ -23,14 +23,13 @@ const Yearlist = () => {
 };
 
 const MonthList = () => {
-  let returnData = [];
+  let returnData: SelectOption[] = [];
   for (let i = 0; i < 12; i++){
     const setdata = i + 1;
     const labeldata = setdata + "月";
     const DefAsArray = {
       value: setdata,
       label: labeldata,
-      id: i,
     };
     returnData.push(DefAsArray);
   }
@@ -38,9 +37,8 @@ const MonthList = () => {
 };
 
 interface SelectOption {
-  value: string;
+  value: number;
   label: string;
-  id: number;
 }
 
 interface SettingProps {
@@ -75,7 +73,6 @@ export default function OrderHistory({ setCurrentPage, setisLoading }: SettingPr
   const [explanationIMAGE, setexplanationIMAGE] = useState<string>('');
   const [processlist, setprocesslist] = useState([]);
   const [progressmax, setprogressmax] = useState<number>(0);
-  const [Dialogmaxprocess, setDialogmaxprocess] = useState<number>(0);
 
   const handleyearChange = (selectedOption: SelectOption | null) => {
     setyears(selectedOption);
@@ -94,7 +91,6 @@ export default function OrderHistory({ setCurrentPage, setisLoading }: SettingPr
     const searchDate = `${years.value}/${months.value}`;
     const result = await HistoryGet(searchDate, storename, '店舗へ')
     const groupeddata = groupDataByFirstColumn(result);
-    console.log(groupeddata);
     await sethistorydata(groupeddata);
     setisLoading(false);
   };
@@ -154,7 +150,6 @@ export default function OrderHistory({ setCurrentPage, setisLoading }: SettingPr
     setmonthsOptions(monthlist);
     const Explanationimageset = async () => {
       const ImageURL = await ExplanationImageGet('進行度合い説明');
-      console.log(ImageURL);
       setexplanationIMAGE(ImageURL);
     };
     Explanationimageset();

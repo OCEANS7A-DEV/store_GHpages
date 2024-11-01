@@ -1,24 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
-
-import { ListGet, ColorListGet, processlistGet } from './backend/Server_end.ts';
-import { localStorageSet, localStoreSet } from './backend/WebStorage.ts';
+import { localStorageSet, localStoreSet, localStoreSetCash } from './backend/WebStorage.ts';
 
 import './css/top.css';
 
 interface SelectOption {
   value: string;
   label: string;
-  id: number;
 }
 
 interface SettingProps {
   setCurrentPage: (page: string) => void;
 }
 
-
-
-const sleep = (time: number) => new Promise<void>((r) => setTimeout(r, time));
 
 export default function TopPage({ setCurrentPage }: SettingProps) {
   const [storeSelect, setStoreSelect] = useState<SelectOption | null>(null);
@@ -27,23 +21,22 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
   useEffect(() => {
     localStorageSet();
     const getLocalStorageSize = async () => {
-      const cachedData = localStorage.getItem('storeData');
-      await setSelectOptions(JSON.parse(cachedData));
-      await localStoreSet(cachedData);
-      const cachedData2 = localStorage.getItem('storeData');
-      await setSelectOptions(JSON.parse(cachedData2));
-      await localStoreSet(cachedData2);
+      const cachedData = await localStorage.getItem('storeData');
+      setSelectOptions(cachedData ? JSON.parse(cachedData) : []);
+      const storeSelectupdate = await localStoreSet();
+      setSelectOptions(storeSelectupdate);
+      const setStore = localStorage.getItem('StoreSetName') ?? '';
+      const setSelect: SelectOption = {
+        value: setStore,
+        label: setStore
+      }
+      setStoreSelect(setSelect);
     }
     getLocalStorageSize()
-    const setStore = localStorage.getItem('StoreSetName');
-    const setSelect = {
-      value: setStore, label: setStore
-    }
-    setStoreSelect(setSelect);
+    
   }, []);
 
   const handleStoreChange = (selectedOption: SelectOption | null) => {
-    console.log(selectedOption)
     setStoreSelect(selectedOption);
   };
 

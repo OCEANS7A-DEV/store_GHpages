@@ -1,4 +1,4 @@
-// ConfirmDialog.tsx
+
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
@@ -29,8 +29,6 @@ const DetailDialog: React.FC<DetailDialogProps> = ({ title, message, Data, onCon
       subArray.length === Data.length &&
       subArray.every((value, i) => value === Data[i])
     );
-    console.log(searchtabledata)
-    console.log(index)
     if (index > 0){
       setisBeforeButton(true);
     }

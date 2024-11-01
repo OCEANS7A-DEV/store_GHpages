@@ -44,23 +44,21 @@ const nullData = [
 
 const colorlistGet = async (code: any) => {
   let returnData = [];
-  const colorData = await JSON.parse(sessionStorage.getItem(String(code)));
+  const colorData = await JSON.parse(sessionStorage.getItem(String(code)) ?? '');
   for (let i = 0; i < colorData.length; i++) {
     const DefAsArray = {
       value: colorData[i],
       label: colorData[i],
-      id: i,
     };
     returnData.push(DefAsArray);
   }
-  //console.log(returnData);
   return returnData;
 };
 
 const fieldDataList = ['業者',　'商品コード', '商品名', '商品詳細', '数量', '個人購入', '備考'];
 
 const productSearch = (code: number) => {
-  const storageGet = JSON.parse(sessionStorage.getItem('data'));
+  const storageGet = JSON.parse(sessionStorage.getItem('data') ?? '');
   const product = storageGet.find(item => item[1] === code);
   return product;
 };
@@ -104,7 +102,6 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
 
 
   const clickpage = () => {
-    //localStorage.removeItem('StoreSetName');
     setCurrentPage('topPage');
   };
 
