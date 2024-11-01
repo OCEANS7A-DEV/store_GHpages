@@ -3,9 +3,7 @@ import Select from 'react-select';
 import '../css/InventoryUsed.css';
 import { InventorySearch, GASPostInsertStore, processlistGet, ProcessingMethodGet } from '../backend/Server_end';
 import UsedDialog from './usedDialog';
-import { FormDataKeepSet, KeepFormDataGet } from '../backend/WebStorage';
 import WordSearch from './ProductSearchWord';
-import SaveConfirmDialog from './SaveConfirmDialog';
 import DetailDialog from './ProductdetailDialog.tsx';
 
 
@@ -127,7 +125,6 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
     field: keyof UsedInsertData,
     event: ChangeEvent<HTMLInputElement>,
   ) => {
-    console.log(event.target.value)
     const newFormData = [...usedformData];
     newFormData[index][field] = event.target.value;
     setusedFormData(newFormData);
@@ -160,7 +157,6 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
     const searchresult = productSearch(value);
     const newFormData = [...usedformData];
     const updateFormData = (ResultData: any) => {
-      console.log(ResultData)
       if (ResultData !== null) {
         newFormData[index] = {
           ...newFormData[index],
@@ -195,7 +191,6 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
   };
 
   const insertPost = async () => {
-    console.log(usedformData)
     await GASPostInsertStore('usedinsert', '店舗使用商品', usedformData, storename);
   };
 
@@ -262,6 +257,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
   };
 
   const handleConfirm = async () => {
+
     setisLoading(true);
     var nullset = ['注文データのエラー']
     var cancelcount = 0
