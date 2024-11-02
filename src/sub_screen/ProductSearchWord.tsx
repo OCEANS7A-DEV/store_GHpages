@@ -45,6 +45,12 @@ export default function WordSearch({ setsearchData, setDetailisDialogOpen, setDe
     setisLoading(false);
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key == 'Enter'){
+      productReSearch();
+    }
+  };
+
 
 
 
@@ -58,6 +64,7 @@ export default function WordSearch({ setsearchData, setDetailisDialogOpen, setDe
           pattern="^[ぁ-ん]+$"
           onChange={handlewordchange}
           placeholder="検索ワードを入力"
+          onKeyDown={(e) => handleKeyDown(e)}
         />
         <a className="buttonUnderlineSe" onClick={productReSearch}>
           検索

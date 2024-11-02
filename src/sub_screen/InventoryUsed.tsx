@@ -24,17 +24,8 @@ interface SettingProps {
   setisLoading: (value: boolean) => void;
 }
 
-interface UsedInventoryDataType {
-  月日: string;
-  商品コード: string;
-  商品名: string;
-  商品単価: string;
-}
 
 
-
-const nullData = [
-];
 interface SelectOption {
   value: string;
   label: string;
@@ -91,7 +82,6 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
     備考: '',
     ProcessingMethod: []
   }));
-  //console.log(initialusedFormData)
   const [usedformData, setusedFormData] = useState<UsedInsertData[]>(initialusedFormData);
   const storename = localStorage.getItem('StoreSetName');
   const codeRefs = useRef([]);
@@ -157,7 +147,6 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
           ...newusedFormData[index],
           商品コード: ResultData[1],
           商品名: ResultData[2],
-          商品単価: ResultData[3],
         };
       }
     };
