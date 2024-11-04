@@ -70,7 +70,6 @@ export default function UsedHistory({ setCurrentPage, setisLoading }: SettingPro
 
   const historysearch = async () => {
     if (!years || !months) {
-      //console.error("年または月が選択されていません");
       alert("年または月が選択されていません");
       return;
     }

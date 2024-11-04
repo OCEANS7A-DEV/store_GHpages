@@ -88,7 +88,6 @@ export default function OrderHistory({ setCurrentPage, setisLoading }: SettingPr
 
   const historysearch = async () => {
     if (!years || !months) {
-      //console.error("年または月が選択されていません");
       alert("年または月が選択されていません");
       return;
     }
