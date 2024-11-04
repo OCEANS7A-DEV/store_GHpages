@@ -49,18 +49,18 @@ interface SettingProps {
 
 
 export default function UsedHistory({ setCurrentPage, setisLoading }: SettingProps) {
-  const [years, setyears] = useState<SelectOption | null>(null);
+  const [years, setyears] = useState<SelectOption>();
   const [yearsOptions, setyearsOptions] = useState<SelectOption[]>([]);
-  const [months, setmonths] = useState<SelectOption | null>(null);
+  const [months, setmonths] = useState<SelectOption>();
   const [monthsOptions, setmonthsOptions] = useState<SelectOption[]>([]);
   const storename = localStorage.getItem('StoreSetName') || '';
   const [historydata, sethistorydata] = useState<any[]>([]);
 
-  const handleyearChange = (selectedOption: SelectOption | null) => {
+  const handleyearChange = (selectedOption: SelectOption | []) => {
     setyears(selectedOption);
   };
 
-  const handlemonthChange = (selectedOption: SelectOption | null) => {
+  const handlemonthChange = (selectedOption: SelectOption | []) => {
     setmonths(selectedOption);
   };
 

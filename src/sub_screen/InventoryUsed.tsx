@@ -15,7 +15,7 @@ interface UsedInsertData {
   数量: string;
   個人購入: string;
   備考: string;
-  使用方法: { value: string; label: string } | null;
+  使用方法: { value: string; label: string }[];
   ProcessingMethod: { value: string; label: string }[];
 }
 
@@ -77,7 +77,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
     商品コード: '',
     商品名: '',
     数量: '',
-    使用方法: null,
+    使用方法: [],
     個人購入: '',
     備考: '',
     ProcessingMethod: []
@@ -94,7 +94,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
   const [DetailisDialogOpen, setDetailisDialogOpen] = useState(false);
   const [DetailIMAGE, setDetailIMAGE] = useState<string>('');
   const [searchtabledata, setsearchtabledata] = useState<any>([]);
-  const [searchDataIndex, setsearchDataIndex] = useState<any>(null);
+  const [searchDataIndex, setsearchDataIndex] = useState<any>(0);
 
 
 
@@ -125,7 +125,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
         商品コード: '',
         商品名: '',
         数量: '',
-        使用方法: null,
+        使用方法: [],
         個人購入: '',
         備考: '',
         ProcessingMethod: []
@@ -185,7 +185,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
       商品コード: '',
       商品名: '',
       数量: '',
-      使用方法: null,
+      使用方法: [],
       個人購入: '',
       備考: '',
       ProcessingMethod: []
@@ -419,7 +419,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
               className="insert_Select"
               key={index}
               options={ProcessingMethod}
-              value={data.使用方法 || null}
+              value={data.使用方法 || []}
               isSearchable={false}
               onChange={(ProcessingMethod) => {
                 const newusedFormData = [...usedformData];

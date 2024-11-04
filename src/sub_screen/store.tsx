@@ -15,7 +15,7 @@ interface InsertData {
   業者: string;
   商品コード: string;
   商品名: string;
-  商品詳細: { value: string; label: string } | null;
+  商品詳細: { value: string; label: string }[];
   数量: string;
   個人購入: string;
   備考: string;
@@ -27,15 +27,6 @@ interface SettingProps {
   setCurrentPage: (page: string) => void;
   setisLoading: (value: boolean) => void;
 }
-
-interface InventoryDataType {
-  業者: string;
-  商品コード: string;
-  商品名: string;
-  商品単価: string;
-}
-
-
 
 const nullData = [
 ];
@@ -73,7 +64,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     業者: '',
     商品コード: '',
     商品名: '',
-    商品詳細: null,
+    商品詳細: [],
     数量: '',
     個人購入: '',
     備考: '',
@@ -122,7 +113,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
         業者: '',
         商品コード: '',
         商品名: '',
-        商品詳細: null,
+        商品詳細: [],
         数量: '',
         個人購入: '',
         備考: '',
@@ -149,7 +140,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
             [fieldDataList[i]]: item,
           }), {}),
           商品単価: ResultData[3],
-          商品詳細: null,
+          商品詳細: [],
         };
       }
     };
@@ -190,7 +181,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
       業者: '',
       商品コード: '',
       商品名: '',
-      商品詳細: null,
+      商品詳細: [],
       数量: '',
       個人購入: '',
       備考: '',
@@ -313,7 +304,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
       const saveData: any[] = [];
       const nullData = [];
       for (let i = 0; i < Data.length; i++) {
-        let colordata: any[] | null = null;
+        let colordata: any[] = [];
         let searchresult: any[] = [];
         if (Data[i].商品コード !== ''){
           try {
@@ -321,10 +312,10 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
               productSearch(Number(Data[i].商品コード)),
               colorlistGet(Number(Data[i].商品コード)),
             ]);
-            colordata = colordata || nullData;
+            colordata = colordata || [];
           } catch (error) {
             searchresult = await productSearch(Number(Data[i].商品コード));
-            colordata = nullData;
+            colordata = [];
           }
           const pushdata = {
             業者: searchresult[0],  // searchresult が期待通りの構造か要確認
@@ -343,7 +334,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
             業者: '',
             商品コード: '',
             商品名: '',
-            商品詳細: null,
+            商品詳細: [],
             数量: '',
             個人購入: '',
             備考: '',
@@ -370,18 +361,18 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     let returnData: any[] = [];
     const Datapush = async () => {
       const nullData = [];
-      let colordata: any[] | null = null;
+      let colordata: any[] = [];
       try {
         colordata = await colorlistGet(Number(data[1]))
-        colordata = colordata || nullData;
+        colordata = colordata || [];
       } catch (error) {
-        colordata = nullData;
+        colordata = [];
       }
       const pushdata = {
         業者: data[0],  // searchresult が期待通りの構造か要確認
         商品コード: data[1],
         商品名: data[2],
-        商品詳細: null,
+        商品詳細: [],
         数量: '',
         個人購入: '',
         備考: '',
@@ -412,11 +403,11 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
         業者: '',  // searchresult が期待通りの構造か要確認
         商品コード: '',
         商品名: '',
-        商品詳細: null,
+        商品詳細: [],
         数量: '',
         個人購入: '',
         備考: '',
-        selectOptions: null,
+        selectOptions: [],
         商品単価: '',
       };
       returnData.push(pushnullData);
@@ -558,11 +549,11 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
               className="insert_Select"
               key={index}
               options={data.selectOptions}
-              value={data.商品詳細 || null}
+              value={data.商品詳細 || ''}
               isSearchable={false}
               onChange={(selectedOption) => {
                 const newFormData = [...formData];
-                newFormData[index].商品詳細 = selectedOption || null;
+                newFormData[index].商品詳細 = selectedOption || [];
                 setFormData(newFormData);
               }}
               placeholder="詳細を選択"

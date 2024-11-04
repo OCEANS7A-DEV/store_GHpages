@@ -60,9 +60,9 @@ function groupDataByFirstColumn(data) {
 
 
 export default function OrderHistory({ setCurrentPage, setisLoading }: SettingProps) {
-  const [years, setyears] = useState<SelectOption | null>(null);
+  const [years, setyears] = useState<SelectOption>();
   const [yearsOptions, setyearsOptions] = useState<SelectOption[]>([]);
-  const [months, setmonths] = useState<SelectOption | null>(null);
+  const [months, setmonths] = useState<SelectOption>();
   const [monthsOptions, setmonthsOptions] = useState<SelectOption[]>([]);
   const storename = localStorage.getItem('StoreSetName');
   const [historydata, sethistorydata] = useState<any[]>([]);
@@ -74,11 +74,11 @@ export default function OrderHistory({ setCurrentPage, setisLoading }: SettingPr
   const [processlist, setprocesslist] = useState([]);
   const [progressmax, setprogressmax] = useState<number>(0);
 
-  const handleyearChange = (selectedOption: SelectOption | null) => {
+  const handleyearChange = (selectedOption: SelectOption) => {
     setyears(selectedOption);
   };
 
-  const handlemonthChange = (selectedOption: SelectOption | null) => {
+  const handlemonthChange = (selectedOption: SelectOption) => {
     setmonths(selectedOption);
   };
 

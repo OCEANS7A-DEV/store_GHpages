@@ -15,7 +15,7 @@ interface SettingProps {
 
 
 export default function TopPage({ setCurrentPage }: SettingProps) {
-  const [storeSelect, setStoreSelect] = useState<SelectOption | null>(null);
+  const [storeSelect, setStoreSelect] = useState<SelectOption>();
   const [selectOptions, setSelectOptions] = useState<SelectOption[]>([]);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
     
   }, []);
 
-  const handleStoreChange = (selectedOption: SelectOption | null) => {
+  const handleStoreChange = (selectedOption: SelectOption | []) => {
     setStoreSelect(selectedOption);
   };
 
