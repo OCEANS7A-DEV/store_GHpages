@@ -186,7 +186,12 @@ progress {
 }
 
 .progress{
+  text-align: center;
   margin: 0;
+}
+
+.history-processing {
+  text-align: center;
 }
 
 .history-area {

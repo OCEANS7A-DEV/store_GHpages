@@ -48,7 +48,7 @@ export const ColorListGet = async (
         body: JSON.stringify({
           action: 'colorsGet',
           sub_action: 'get',
-          sheetName: 'カラー剤一覧',
+          sheetName: '商品詳細一覧',
           searchColumn: '商品コード',
         })
       },
