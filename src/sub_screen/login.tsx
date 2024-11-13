@@ -1,0 +1,49 @@
+import React, { useState, useEffect, ChangeEvent } from 'react';
+import '../css/login.css';
+import '../css/top.css';
+import { Loginjudgement } from '../backend/Server_end';
+
+interface LoginInputs {
+  username: string;
+  password: string;
+}
+
+interface SettingProps {
+  setCurrentPage: (page: string) => void;
+  setisLoading: (value: boolean) => void;
+}
+
+
+export default function LoginPage({ setCurrentPage, setisLoading }: SettingProps) {
+  const [UserName, setUserName] = useState<string>('');
+  const [PassWord, setPassWord] = useState<string>('');
+
+  const login = async () => {
+    setisLoading(true);
+    const loginjudgement = await Loginjudgement(UserName, PassWord)
+    if (loginjudgement['result']){
+      sessionStorage.setItem('LoginID',UserName);
+      setCurrentPage('topPage')
+    }else {
+      alert('ログインID、またはパスワードが間違っています')
+    }
+    setisLoading(false)
+  }
+
+
+
+  return (
+    <div className="top-window">
+      <div className="top-BG">
+        <h2 className="top-title">ログイン</h2>
+        <div className="login-page">
+          <input placeholder='ログインID' type='text' onChange={(e) => setUserName(e.target.value)}/>
+          <input placeholder='パスワード' type='password' onChange={(e) => setPassWord(e.target.value)}/>
+          <a className="buttonUnderlineSt" id="main_back" type="button" onClick={login}>
+            ログイン
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -8,6 +8,7 @@ import InventoryUsed from './sub_screen/InventoryUsed.tsx';
 import UsedHistory from './sub_screen/UsedHistory.tsx';
 import StoreInventoryList from './sub_screen/StoreInventoryList.tsx'
 import LoadingDisplay from './sub_screen/loading.tsx';
+import LoginPage from './sub_screen/login.tsx';
 
 
 
@@ -15,7 +16,7 @@ import TopPage from './top.tsx';
 
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState('topPage');
+  const [currentPage, setCurrentPage] = useState('loginPage');
   const nodeRef = useRef(null);
   const [isLoading, setisLoading] = useState(false);
 
@@ -34,6 +35,8 @@ export default function App() {
         return <UsedHistory setCurrentPage={setCurrentPage} setisLoading={setisLoading}/>;
       case 'storeinventory':
         return <StoreInventoryList setCurrentPage={setCurrentPage} setisLoading={setisLoading}/>;
+      case 'loginPage':
+        return <LoginPage setCurrentPage={setCurrentPage} setisLoading={setisLoading}/>
       default:
         return null;
     }

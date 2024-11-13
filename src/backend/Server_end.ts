@@ -123,6 +123,7 @@ export const GASPostInsertStore = async (
   datail: any,
   store: any,
 ) => {
+  const id = sessionStorage.getItem('LoginID')
   try {
     await fetch(
       URL_STRING,
@@ -138,6 +139,7 @@ export const GASPostInsertStore = async (
           sheetName: sheet,
           data: datail,
           storeName: store,
+          insertID: id,
         }),
       },
     );
@@ -413,6 +415,41 @@ export const PeriodDateGet = async () => {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
+    const result = await response.json();
+    return result;
+  }catch(e){
+    return (e);
+  }
+};
+
+
+
+
+export const Loginjudgement = async (
+  loginID: string,
+  passWord: string
+) => {
+  try {
+    const response = await fetch(
+      URL_STRING,
+      {
+        method: 'POST',
+        headers: {
+          "Content-Type" : "application/x-www-form-urlencoded",
+        },
+        body: JSON.stringify({
+          action: 'Loginjudgement',
+          sub_action: 'get',
+          sheetName: 'その他一覧',
+          loginid: loginID,
+          password: passWord,
+        })
+      },
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    
     const result = await response.json();
     return result;
   }catch(e){
