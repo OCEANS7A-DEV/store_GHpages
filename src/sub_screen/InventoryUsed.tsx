@@ -268,6 +268,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
       setisLoading(false);
       return;
     }
+    
     insertPost();
     setusedDialogOpen(false);
     setisLoading(false);
