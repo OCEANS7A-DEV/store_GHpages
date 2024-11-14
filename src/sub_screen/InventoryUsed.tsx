@@ -271,7 +271,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
     insertPost();
     setusedDialogOpen(false);
     setisLoading(false);
-    alert('発注が完了しました\n保存してあるデータは自動で削除されます');
+    alert('使用商品の入力が完了しました');
     localStorage.setItem('Already_ordered', JSON.stringify(usedformData));
     setusedFormData(initialusedFormData);
     localStorage.removeItem(storename);
