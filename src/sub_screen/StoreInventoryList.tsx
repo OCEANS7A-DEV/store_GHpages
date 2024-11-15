@@ -93,6 +93,7 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
       const dataget = async () => {
         try {
           const Date = await PeriodDateGet();
+          console.log(Date)
           setPeriodDate(Date);
           const orderData = await HistoryGet(`${Date[0]}/${Date[1]}`, storename, '店舗へ');
           const data = await StoreInventoryGet(storename);
@@ -123,11 +124,11 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
               <tr>
                 <th className="thDIcode">商品ナンバー</th>
                 <th className="thDIname">商品名</th>
-                <th className="thDIprenumber">{periodDate[1]}月末</th>
                 <th className="thDInumber">現状在庫</th>
-                <th className="thDIorder">{periodDate[1]+1}月入</th>
-                <th className="thDIused">{periodDate[1]+1}月出</th>
-                <th className="thDIratio">{periodDate[1]}月比</th>
+                <th className="thDIprenumber">{periodDate[1]-1}月末</th>
+                <th className="thDIorder">{periodDate[1]}月入</th>
+                <th className="thDIused">{periodDate[1]}月出</th>
+                <th className="thDIratio">{periodDate[1]-1}月比</th>
               </tr>
             </thead>
           </table>
@@ -139,8 +140,8 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
                 <tr key={index}>
                   <td className="DIcode">{row[0]}</td>
                   <td className="DIname">{row[1]}</td>
-                  <td className="DIprenumber">{row[2]}</td>
                   <td className="DInumber">{row[3]}</td>
+                  <td className="DIprenumber">{row[2]}</td>
                   <td className="DIorder">
                     <a
                       className="buttonUnderlineIn"
