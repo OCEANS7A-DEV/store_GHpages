@@ -287,6 +287,39 @@ export const HistoryGet = async(
   }
 };
 
+export const MovingHistoryGet = async(
+  SearchDate: string,
+  sheetname: string
+) => {
+  try {
+    const response = await fetch(
+      "https://script.google.com/macros/s/AKfycbyzFig3cgYpdipQY0jXwVq0AiF0AE-a2sPZCB-UIel6cgZb5VrExHpzhIVKvZrRkHnZ/exec",
+      {
+        method: 'POST',
+        headers: {
+          "Content-Type" : "application/x-www-form-urlencoded",
+        },
+        body: JSON.stringify({
+          action: 'MovinghistoryGet',
+          sub_action: 'get',
+          date: SearchDate,
+          sheetName: sheetname,
+        })
+      },
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const result = await response.json();
+    console.log(result)
+    return result;
+  }catch(e){
+    return (e);
+  }
+};
+
+
+
 export const ExplanationImageGet = async(
   value: string
 ) => {

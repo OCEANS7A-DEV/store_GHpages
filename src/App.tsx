@@ -6,6 +6,7 @@ import StorePage from './sub_screen/store.tsx';
 import OrderHistory from './sub_screen/order_history.tsx';
 import InventoryUsed from './sub_screen/InventoryUsed.tsx';
 import UsedHistory from './sub_screen/UsedHistory.tsx';
+import MovingHistory from './sub_screen/MovingHistory.tsx'
 import StoreInventoryList from './sub_screen/StoreInventoryList.tsx'
 import LoadingDisplay from './sub_screen/loading.tsx';
 import LoginPage from './sub_screen/login.tsx';
@@ -37,9 +38,11 @@ export default function App() {
       case 'storeinventory':
         return <StoreInventoryList setCurrentPage={setCurrentPage} setisLoading={setisLoading}/>;
       case 'loginPage':
-        return <LoginPage setCurrentPage={setCurrentPage} setisLoading={setisLoading}/>
+        return <LoginPage setCurrentPage={setCurrentPage} setisLoading={setisLoading}/>;
       case 'Moving':
-        return <InventoryMoving setCurrentPage={setCurrentPage} setisLoading={setisLoading}/>
+        return <InventoryMoving setCurrentPage={setCurrentPage} setisLoading={setisLoading}/>;
+      case 'MovingHistory':
+        return <MovingHistory setCurrentPage={setCurrentPage} setisLoading={setisLoading}/>;
       default:
         return null;
     }

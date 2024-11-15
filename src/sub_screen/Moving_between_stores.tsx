@@ -93,7 +93,6 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
   const [DetailIMAGE, setDetailIMAGE] = useState<string>('');
   const [searchtabledata, setsearchtabledata] = useState<any>([]);
   const [searchDataIndex, setsearchDataIndex] = useState<any>(0);
-  const [Tostore, setTostore] = useState<SelectOption>();
   const [selectOptions, setSelectOptions] = useState<SelectOption[]>([]);
 
 
@@ -304,7 +303,7 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
     setDetailisDialogOpen(false);
   };
   const clickcheckpage = () => {
-    setCurrentPage('usedHistory');
+    setCurrentPage('MovingHistory');
   };
 
   const nextDatail = async () => {
