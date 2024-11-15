@@ -52,21 +52,27 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
 
   return (
     <div className="top-window">
-      <div className="top-BG">
-        <h2 className="top-title">店舗選択画面</h2>
-        <div className="default-page">
-          <Select
-            className='Select_custom'
-            placeholder="店舗選択"
-            isSearchable={false}
-            value={storeSelect}
-            onChange={handleStoreChange}
-            options={selectOptions}
-          />
-          <div className="SelectMethod">
-            <a className="buttonUnderline" type="button" onClick={() => {setPage('storePage')}}>商品発注</a>
-            <a className="buttonUnderline" type="button" onClick={() => {setPage('used')}}>使用商品</a>
+      <div>
+          <div className="top-BG">
+          <h2 className="top-title">店舗選択画面</h2>
+          <div className="default-page">
+            <Select
+              className='Select_custom'
+              placeholder="店舗選択"
+              isSearchable={false}
+              value={storeSelect}
+              onChange={handleStoreChange}
+              options={selectOptions}
+            />
+            <div className="SelectMethod">
+              <a className="buttonUnderline" type="button" onClick={() => {setPage('storePage')}}>商品発注</a>
+              <a className="buttonUnderline" type="button" onClick={() => {setPage('used')}}>使用商品</a>
+            </div>
           </div>
+        </div>
+        <div className="ToFrom">
+          <h2 className="top-title">商品の店舗間移動</h2>
+          <a className="buttonUnderline" type="button" onClick={() => {setCurrentPage('Moving')}}>店舗間移動</a>
         </div>
       </div>
     </div>

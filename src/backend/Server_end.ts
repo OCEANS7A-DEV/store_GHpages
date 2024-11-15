@@ -149,6 +149,36 @@ export const GASPostInsertStore = async (
   }
 };
 
+export const GASPostInsertMoving = async (
+  actionName: string,
+  sheet: string,
+  datail: any,
+) => {
+  const id = sessionStorage.getItem('LoginID')
+  try {
+    await fetch(
+      URL_STRING,
+      {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          "Content-Type" : "application/x-www-form-urlencoded",
+        },
+        body: JSON.stringify({
+          action: actionName,
+          sub_action: 'get',
+          sheetName: sheet,
+          data: datail,
+          insertID: id,
+        }),
+      },
+    );
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
+
 export const TESTPOST = async(
 ) => {
   try {
