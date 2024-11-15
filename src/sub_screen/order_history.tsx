@@ -232,9 +232,9 @@ export default function OrderHistory({ setCurrentPage, setisLoading }: SettingPr
             </tbody>
           </table>
         </div>
-        <div className="hisrtory-explanation">
+        {/* <div className="hisrtory-explanation">
           <iframe src={explanationIMAGE} className="explanation-image"></iframe>
-        </div>
+        </div> */}
       </div>
       <div className="button_area">
         <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>
