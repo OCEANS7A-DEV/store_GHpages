@@ -556,6 +556,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
                 newFormData[index].商品詳細 = selectedOption || [];
                 setFormData(newFormData);
               }}
+              menuPlacement="auto"
               placeholder="詳細を選択"
             />
             <input
