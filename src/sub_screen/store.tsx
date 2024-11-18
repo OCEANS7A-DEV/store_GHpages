@@ -31,6 +31,17 @@ interface SettingProps {
 const nullData = [
 ];
 
+function customMenuPlacement({ maxHeight, menuEl, placement, isFixed }) {
+  const spacingFromBottom = 60; // 下側余白を60pxに設定
+  const controlRect = menuEl.getBoundingClientRect();
+
+  // 下側に十分なスペースがない場合に上側に配置
+  if (window.innerHeight - controlRect.bottom < maxHeight + spacingFromBottom) {
+    return "top";
+  }
+  return "bottom"; // デフォルトは下側
+}
+
 
 
 const colorlistGet = async (code: any) => {
@@ -557,6 +568,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
                 setFormData(newFormData);
               }}
               menuPlacement="auto"
+              getMenuPlacement={customMenuPlacement}
               placeholder="詳細を選択"
             />
             <input
