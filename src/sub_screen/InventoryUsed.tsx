@@ -96,7 +96,8 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
   const [searchtabledata, setsearchtabledata] = useState<any>([]);
   const [searchDataIndex, setsearchDataIndex] = useState<any>(0);
   const [searchArea, setsearchArea] = useState(false);
-  const [OCcondition, setOCcondition] = useState<string>(">>")
+  const [OCcondition, setOCcondition] = useState<string>(">>");
+  const [OCtitle,setOCtitle] = useState<string>('商品検索ウィンドウを開きます');
   
 
 
@@ -357,8 +358,10 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
     setsearchArea((prevState) => !prevState);
     if (searchArea == true){
       setOCcondition('>>');
+      setOCtitle('商品検索ウィンドウを開きます');
     }else{
       setOCcondition('<<');
+      setOCtitle('商品検索ウィンドウを閉じます');
     }
   };
 
@@ -401,7 +404,12 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
               addButtonName='注文に追加'
             />
           </div>
-          <a className="buttonUnderlineOC" type="button" onClick={searchAreaconfirm}>
+          <a
+            className="buttonUnderlineOC"
+            type="button"
+            onClick={searchAreaconfirm}
+            title={OCtitle}
+            >
             {OCcondition}
           </a>
         </div>

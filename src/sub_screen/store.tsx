@@ -101,7 +101,8 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   const [searchDataIndex, setsearchDataIndex] = useState<number>(0);
   const [NonisDialogOpen, setNonisDialogOpen] = useState(false);
   const [searchArea, setsearchArea] = useState(false);
-  const [OCcondition, setOCcondition] = useState<string>(">>")
+  const [OCcondition, setOCcondition] = useState<string>(">>");
+  const [OCtitle,setOCtitle] = useState<string>('商品検索ウィンドウを開きます');
 
 
   const clickpage = () => {
@@ -489,8 +490,10 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     setsearchArea((prevState) => !prevState);
     if (searchArea == true){
       setOCcondition('>>');
+      setOCtitle('商品検索ウィンドウを開きます');
     }else{
       setOCcondition('<<');
+      setOCtitle('商品検索ウィンドウを閉じます');
     }
   };
 
@@ -546,7 +549,12 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
               addButtonName='注文に追加'
             />
           </div>
-          <a className="buttonUnderlineOC" type="button" onClick={searchAreaconfirm}>
+          <a
+            className="buttonUnderlineOC"
+            type="button"
+            onClick={searchAreaconfirm}
+            title={OCtitle}
+            >
             {OCcondition}
           </a>
         </div>

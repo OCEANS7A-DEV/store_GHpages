@@ -95,7 +95,9 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
   const [searchDataIndex, setsearchDataIndex] = useState<any>(0);
   const [selectOptions, setSelectOptions] = useState<SelectOption[]>([]);
   const [searchArea, setsearchArea] = useState(false);
-  const [OCcondition, setOCcondition] = useState<string>(">>")
+  const [OCcondition, setOCcondition] = useState<string>(">>");
+  const [OCtitle,setOCtitle] = useState<string>('商品検索ウィンドウを開きます');
+
 
 
 
@@ -351,8 +353,10 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
     setsearchArea((prevState) => !prevState);
     if (searchArea == true){
       setOCcondition('>>');
+      setOCtitle('商品検索ウィンドウを開きます');
     }else{
       setOCcondition('<<');
+      setOCtitle('商品検索ウィンドウを閉じます');
     }
   };
 
@@ -395,7 +399,12 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
               addButtonName='注文に追加'
             />
           </div>
-          <a className="buttonUnderlineOC" type="button" onClick={searchAreaconfirm}>
+          <a
+            className="buttonUnderlineOC"
+            type="button"
+            onClick={searchAreaconfirm}
+            title={OCtitle}
+            >
             {OCcondition}
           </a>
         </div>
