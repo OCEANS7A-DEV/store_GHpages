@@ -94,6 +94,8 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
   const [searchtabledata, setsearchtabledata] = useState<any>([]);
   const [searchDataIndex, setsearchDataIndex] = useState<any>(0);
   const [selectOptions, setSelectOptions] = useState<SelectOption[]>([]);
+  const [searchArea, setsearchArea] = useState(false);
+  const [OCcondition, setOCcondition] = useState<string>(">>")
 
 
 
@@ -345,33 +347,58 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
     setSelectOptions(cachedData ? JSON.parse(cachedData) : []);
   }, []);
 
+  const searchAreaconfirm = () => {
+    setsearchArea((prevState) => !prevState);
+    if (searchArea == true){
+      setOCcondition('>>');
+    }else{
+      setOCcondition('<<');
+    }
+  };
+
   return (
     <div className="window_area">
       <div className='window_top'>
         <h2 className='store_name'>店舗間移動用ページ</h2>
       </div>
       <div className='form_area'>
-        <WordSearch className="searcharea"
-          setsearchData={setsearchData}
-          setDetailisDialogOpen={setDetailisDialogOpen}
-          setDetailIMAGE={setDetailIMAGE}
-          setisLoading={setisLoading}
-          setsearchtabledata={setsearchtabledata}
-          searchtabledata={searchtabledata}
-          setsearchDataIndex={setsearchDataIndex}/>
-          <DetailDialog
-            Data={searchData}
-            title={searchData[2]}
-            message={DetailMessage}
-            onConfirm={DetailhandleConfirm}
-            isOpen={DetailisDialogOpen}
-            image={DetailIMAGE}
-            insert={DetailhandleConfirmAdd}
-            nextDatail={nextDatail}
-            beforeDatail={beforeDatail}
-            searchtabledata={searchtabledata} searchDataIndex={0}
-            addButtonName='使用商品に追加'
-          />
+      <div className="searchArea">
+          <div
+            className="searchareawindow"
+            style={{
+              width: searchArea ? "310px" : "0px", // 表示状態で幅を変える
+              overflow: "hidden",
+              transition: "width 0.3s ease", // スムーズな変更
+            }}
+          >
+            <WordSearch
+              className="searcharea"
+              setsearchData={setsearchData}
+              setDetailisDialogOpen={setDetailisDialogOpen}
+              setDetailIMAGE={setDetailIMAGE}
+              setisLoading={setisLoading}
+              setsearchtabledata={setsearchtabledata}
+              searchtabledata={searchtabledata}
+              setsearchDataIndex={setsearchDataIndex}
+            />
+            <DetailDialog
+              Data={searchData}
+              title={searchData[2]}
+              message={DetailMessage}
+              onConfirm={DetailhandleConfirm}
+              isOpen={DetailisDialogOpen}
+              image={DetailIMAGE}
+              insert={DetailhandleConfirmAdd}
+              nextDatail={nextDatail}
+              beforeDatail={beforeDatail}
+              searchtabledata={searchtabledata} searchDataIndex={0}
+              addButtonName='注文に追加'
+            />
+          </div>
+          <a className="buttonUnderlineOC" type="button" onClick={searchAreaconfirm}>
+            {OCcondition}
+          </a>
+        </div>
         <div className='in-area'>
           {usedformData.map((data, index) => (
           <div key={index} className="insert_area">
