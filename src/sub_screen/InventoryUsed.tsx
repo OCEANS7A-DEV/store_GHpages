@@ -456,6 +456,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
                 newusedFormData[index].使用方法 = ProcessingMethod;
                 setusedFormData(newusedFormData);
               }}
+              menuPlacement="auto"
               placeholder="方法を選択"
             />
             <input

@@ -594,7 +594,6 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
                 setFormData(newFormData);
               }}
               menuPlacement="auto"
-              getMenuPlacement={customMenuPlacement}
               placeholder="詳細を選択"
             />
             <input
