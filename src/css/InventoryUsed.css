@@ -95,7 +95,30 @@
   overflow: hidden;
   z-index: 1001;
 }
+.buttonUnderlineOC {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #222;
+  background-color: #fff;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+  margin: auto;
+}
 
+.buttonUnderlineOC:hover {
+  color: white;
+  background-color: #1B85FB;
+}
+
+.buttonUnderlineOC:active {
+  transform: scale(0.9);
+  box-shadow: 0 0 0px 0 rgba(0, 0, 0, .5);
+}
 
 
 

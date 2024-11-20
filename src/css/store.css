@@ -222,6 +222,7 @@ a {
   transform: scale(0.9);
   box-shadow: 0 0 0px 0 rgba(0, 0, 0, .5);
 }
+
 .searchArea{
   display: flex;
   align-items: center;
