@@ -104,7 +104,6 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   const [OCcondition, setOCcondition] = useState<string>(">>")
 
 
-
   const clickpage = () => {
     setCurrentPage('topPage');
   };
@@ -594,6 +593,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
                 setFormData(newFormData);
               }}
               menuPlacement="auto"
+              menuPortalTarget={document.body}
               placeholder="詳細を選択"
             />
             <input

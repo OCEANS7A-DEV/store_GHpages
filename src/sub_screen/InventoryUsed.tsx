@@ -457,6 +457,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
                 setusedFormData(newusedFormData);
               }}
               menuPlacement="auto"
+              menuPortalTarget={document.body}
               placeholder="方法を選択"
             />
             <input
