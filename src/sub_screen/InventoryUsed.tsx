@@ -365,9 +365,6 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
   return (
     <div className="window_area">
       <div className='window_top'>
-        <a className="buttonUnderlineSt" type="button" onClick={searchAreaconfirm}>
-          検索
-        </a>
         <h2 className='store_name'>使用商品入力: {storename} 店</h2>
       </div>
       <div className='form_area'>
