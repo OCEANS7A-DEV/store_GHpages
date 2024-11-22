@@ -204,7 +204,7 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
           quantityRefs.current[index].focus();
         }
       } else if (fieldType === '数量'){
-        if (personalRefs.current[index]) {
+        if (remarksRefs.current[index]) {
           remarksRefs.current[index].focus();
         }
       } else if (fieldType === '備考') {
@@ -474,7 +474,6 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
               onChange={(e) => numberchange(index, '数量', e)}
               onKeyDown={(e) => handleKeyDown(index, e, '数量')}
             />
-
             <input
               type="text"
               placeholder="備考"

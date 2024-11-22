@@ -106,6 +106,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   const [OCtitle,setOCtitle] = useState<string>('商品検索ウィンドウを開きます');
 
 
+
   const clickpage = () => {
     setCurrentPage('topPage');
   };
@@ -507,6 +508,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     }
   };
 
+
   return (
     <div className="window_area">
       <div className='window_top'>
@@ -606,6 +608,17 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
               value={data.商品詳細 || ''}
               isSearchable={false}
               ref={(el) => (detailRefs.current[index] = el)}
+              onFocus={() => {
+                const newFormData = [...formData];
+                newFormData[index].menuIsOpen = true; // フォーカス時にメニューを開く
+                setFormData(newFormData);
+              }}
+              onBlur={() => {
+                const newFormData = [...formData];
+                newFormData[index].menuIsOpen = false; // フォーカス外れ時にメニューを閉じる
+                setFormData(newFormData);
+              }}
+              menuIsOpen={formData[index].menuIsOpen}
               onChange={(selectedOption) => {
                 const newFormData = [...formData];
                 newFormData[index].商品詳細 = selectedOption || [];

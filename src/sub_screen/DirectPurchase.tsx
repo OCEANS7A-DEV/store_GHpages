@@ -152,7 +152,7 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
   };
 
   const insertPost = async () => {
-    await GASPostInsertStore('Direct', '直接購入', usedformData, storename);
+    await GASPostInsertStore('insert', '直接購入', usedformData, storename);
   };
 
   const removeForm = (index: number) => {
@@ -177,7 +177,7 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
           quantityRefs.current[index].focus();
         }
       } else if (fieldType === '数量'){
-        if (personalRefs.current[index]) {
+        if (remarksRefs.current[index]) {
           remarksRefs.current[index].focus();
         }
       } else if (fieldType === '備考') {
