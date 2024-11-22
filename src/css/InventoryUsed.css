@@ -138,6 +138,7 @@
 .personal,
 .remarks {
   margin-right: 10px; /* フィールド間のスペースを調整 */
+  height: 28px;
 }
 
 .delete_button {
@@ -154,7 +155,7 @@
 }
 
 .insert_name {
-  width: 200px;
+  width: 300px;
 }
 
 .insert_quantity {

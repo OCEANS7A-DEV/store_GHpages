@@ -10,7 +10,8 @@ import MovingHistory from './sub_screen/MovingHistory.tsx'
 import StoreInventoryList from './sub_screen/StoreInventoryList.tsx'
 import LoadingDisplay from './sub_screen/loading.tsx';
 import LoginPage from './sub_screen/login.tsx';
-import InventoryMoving from './sub_screen/Moving_between_stores.tsx'
+import InventoryMoving from './sub_screen/Moving_between_stores.tsx';
+import InventoryDirect from './sub_screen/DirectPurchase.tsx';
 
 
 
@@ -43,6 +44,8 @@ export default function App() {
         return <InventoryMoving setCurrentPage={setCurrentPage} setisLoading={setisLoading}/>;
       case 'MovingHistory':
         return <MovingHistory setCurrentPage={setCurrentPage} setisLoading={setisLoading}/>;
+      case 'DirectPage':
+        return <InventoryDirect setCurrentPage={setCurrentPage} setisLoading={setisLoading}/>;
       default:
         return null;
     }

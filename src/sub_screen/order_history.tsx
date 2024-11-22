@@ -62,8 +62,6 @@ function groupDataByFirstColumn(data) {
 export default function OrderHistory({ setCurrentPage, setisLoading }: SettingProps) {
   const [years, setyears] = useState<SelectOption>();
   const [yearsOptions, setyearsOptions] = useState<SelectOption[]>([]);
-  const [months, setmonths] = useState<SelectOption>();
-  const [monthsOptions, setmonthsOptions] = useState<SelectOption[]>([]);
   const storename = localStorage.getItem('StoreSetName');
   const [historydata, sethistorydata] = useState<any[]>([]);
   const [orderdata, setorderdata] = useState<any>([]);
@@ -73,6 +71,7 @@ export default function OrderHistory({ setCurrentPage, setisLoading }: SettingPr
   const [explanationIMAGE, setexplanationIMAGE] = useState<string>('');
   const [processlist, setprocesslist] = useState([]);
   const [progressmax, setprogressmax] = useState<number>(0);
+  const progressColumnBehindNumber = 3;
 
   const handleyearChange = (selectedOption: SelectOption) => {
     setyears(selectedOption);
@@ -87,14 +86,15 @@ export default function OrderHistory({ setCurrentPage, setisLoading }: SettingPr
   };
 
   const historysearch = async () => {
-    if (!years || !months) {
-      alert("年または月が選択されていません");
+    if (!years) {
+      alert("年が選択されていません");
       return;
     }
     setisLoading(true)
-    const searchDate = `${years.value}/${months.value}`;
+    const searchDate = `${years.value}`;
     const result = await HistoryGet(searchDate, storename, '店舗へ')
-    const groupeddata = groupDataByFirstColumn(result);
+    const groupeddata = await groupDataByFirstColumn(result);
+    console.log(groupeddata);
     await sethistorydata(groupeddata);
     setisLoading(false);
   };
@@ -150,8 +150,6 @@ export default function OrderHistory({ setCurrentPage, setisLoading }: SettingPr
   useEffect(() => {
     const yearlist = Yearlist();
     setyearsOptions(yearlist);
-    const monthlist = MonthList();
-    setmonthsOptions(monthlist);
     const Explanationimageset = async () => {
       const ImageURL = await ExplanationImageGet('進行度合い説明');
       setexplanationIMAGE(ImageURL);
@@ -172,15 +170,6 @@ export default function OrderHistory({ setCurrentPage, setisLoading }: SettingPr
           value={years}
           onChange={handleyearChange}
           options={yearsOptions}
-        />
-        <div className="select-sepa">/</div>
-        <Select
-          className='month_Select'
-          placeholder="月選択"
-          isSearchable={false}
-          value={months}
-          onChange={handlemonthChange}
-          options={monthsOptions}
         />
         <a className="buttonUnderlineH" id="main_back" type="button" onClick={historysearch}>
           検索
@@ -217,24 +206,21 @@ export default function OrderHistory({ setCurrentPage, setisLoading }: SettingPr
                     processlistdata={processlist}
                     ExecuteGoodsReceipt={ExecuteGoodsReceipt}
                     Dialogmaxprocess={progressmax}
-                    progressdata={progress(historydata[key][0][historydata[key][0].length - 1])}
+                    progressdata={progress(historydata[key][0][historydata[key][0].length - progressColumnBehindNumber])}
                   />
                   <td className="history-progress">
                     <p className="progress">
-                      {progress(historydata[key][0][historydata[key][0].length - 1])}
+                      {progress(historydata[key][0][historydata[key][0].length - progressColumnBehindNumber])}
                       /
-                      {progressMax(historydata[key][0][historydata[key][0].length - 1])}</p>
-                    <progress value={progress(historydata[key][0][historydata[key][0].length - 1])} max={progressMax(historydata[key][0][historydata[key][0].length - 1])}/>
+                      {progressMax(historydata[key][0][historydata[key][0].length - progressColumnBehindNumber])}</p>
+                    <progress value={progress(historydata[key][0][historydata[key][0].length - progressColumnBehindNumber])} max={progressMax(historydata[key][0][historydata[key][0].length - progressColumnBehindNumber])}/>
                   </td>
-                  <td className="history-processing">{processingdata(historydata[key][0][historydata[key][0].length - 1])}</td>
+                  <td className="history-processing">{processingdata(historydata[key][0][historydata[key][0].length - progressColumnBehindNumber])}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        {/* <div className="hisrtory-explanation">
-          <iframe src={explanationIMAGE} className="explanation-image"></iframe>
-        </div> */}
       </div>
       <div className="button_area">
         <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>

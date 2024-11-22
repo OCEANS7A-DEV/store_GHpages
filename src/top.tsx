@@ -65,7 +65,8 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
               options={selectOptions}
             />
             <div className="SelectMethod">
-              <a className="buttonUnderline" type="button" onClick={() => {setPage('storePage')}}>商品発注</a>
+              <a className="buttonUnderline" type="button" onClick={() => {setPage('storePage')}}>本部発注</a>
+              <a className="buttonUnderline" type="button" onClick={() => {setPage('DirectPage')}}>直接購入</a>
               <a className="buttonUnderline" type="button" onClick={() => {setPage('used')}}>使用商品</a>
             </div>
           </div>
