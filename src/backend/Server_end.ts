@@ -490,7 +490,8 @@ export const PeriodDateGet = async () => {
 
 export const Loginjudgement = async (
   loginID: string,
-  passWord: string
+  passWord: string,
+  device: string,
 ) => {
   try {
     const response = await fetch(
@@ -506,6 +507,7 @@ export const Loginjudgement = async (
           sheetName: 'その他一覧',
           loginid: loginID,
           password: passWord,
+          platform: device,
         })
       },
     );
@@ -514,6 +516,7 @@ export const Loginjudgement = async (
     }
     
     const result = await response.json();
+    console.log(result)
     return result;
   }catch(e){
     return (e);
