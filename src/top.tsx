@@ -53,7 +53,7 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
   return (
     <div className="top-window">
       <div>
-          <div className="top-BG">
+        <div className="top-BG">
           <h2 className="top-title">店舗選択画面</h2>
           <div className="default-page">
             <Select
