@@ -41,10 +41,10 @@ export default function LoginPage({ setCurrentPage, setisLoading }: SettingProps
         <h2 className="top-title">ログイン</h2>
         <div className="login-page">
           <div>
-            <input placeholder='ログインID' type='text' onChange={(e) => setUserName(e.target.value)}/>
+            <input className="loginInput" placeholder='ログインID' type='text' onChange={(e) => setUserName(e.target.value)}/>
           </div>
           <div>
-            <input placeholder='パスワード' type='password' onChange={(e) => setPassWord(e.target.value)}/>
+            <input className="loginInput" placeholder='パスワード' type='password' onChange={(e) => setPassWord(e.target.value)}/>
           </div>
           <div>
             <a className="buttonUnderlineSt" id="main_back" type="button" onClick={login}>
