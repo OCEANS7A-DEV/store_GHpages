@@ -57,7 +57,7 @@ const colorlistGet = async (code: any) => {
   return returnData;
 };
 
-const fieldDataList = ['業者',　'商品コード', '商品名', '商品詳細', '数量', '個人購入', '備考'];
+const fieldDataList = ['業者', '商品コード', '商品名', '商品詳細', '数量', '個人購入', '備考'];
 
 const productSearch = (code: number) => {
   const storageGet = JSON.parse(sessionStorage.getItem('data') ?? '');
@@ -89,6 +89,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   const quantityRefs = useRef([]);
   const personalRefs = useRef([]);
   const remarksRefs = useRef([]);
+  const detailRefs = useRef([]);
   const message = "注文内容は以下の通りです\n以下の内容でよろしければOKをクリックしてください\n内容の変更がある場合にはキャンセルをクリックしてください";
   const [SaveMessage, setSaveMessage] = useState<string>('');
   const [SaveisDialogOpen, setSaveDialogOpen] = useState(false);
@@ -210,6 +211,10 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     if (e.key === 'Enter') {
       e.preventDefault();
       if (fieldType === '商品コード') {
+        if (detailRefs.current[index]) {
+          detailRefs.current[index].focus();
+        }
+      }else if (fieldType === '商品詳細'){
         if (quantityRefs.current[index]) {
           quantityRefs.current[index].focus();
         }
@@ -259,12 +264,15 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
       var nullset = ['注文データのエラー']
       var cancelcount = 0
       var rownumber = 1
+      
       for (const row of formData) {
+        console.log(row.商品詳細)
+        console.log(row.selectOptions)
         if (row.商品名 !== "" && row.商品コード == "") {
           nullset.push(`${rownumber}つ目のデータ、商品名はあるが、商品ナンバーが入力されていません。`);
           cancelcount ++
         }
-        if (row.selectOptions.length > 0 && !row.商品詳細) {
+        if (row.selectOptions.length > 0 && row.商品詳細 == '') {
           nullset.push(`${rownumber}つ目のデータ、選択肢があるのに、商品詳細が選ばれていません。`);
           cancelcount ++
         }
@@ -278,10 +286,12 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
         }
       }
       if (cancelcount >= 1) {
-        setDialogOpen(false);
+        setisLoading(false);
         alert(nullset.join('\n'));
+        setDialogOpen(false);
         return;
       }
+      setisLoading(false);
       insertPost();
       setDialogOpen(false);
       setisLoading(false);
@@ -595,11 +605,13 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
               options={data.selectOptions}
               value={data.商品詳細 || ''}
               isSearchable={false}
+              ref={(el) => (detailRefs.current[index] = el)}
               onChange={(selectedOption) => {
                 const newFormData = [...formData];
                 newFormData[index].商品詳細 = selectedOption || [];
                 setFormData(newFormData);
               }}
+              onKeyDown={(e) => handleKeyDown(index, e, '商品詳細')}
               menuPlacement="auto"
               menuPortalTarget={document.body}
               placeholder="詳細を選択"
