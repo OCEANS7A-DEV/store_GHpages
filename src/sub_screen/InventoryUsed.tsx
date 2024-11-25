@@ -90,6 +90,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
   const remarksRefs = useRef([]);
   const HowToUseRefs = useRef([]);
   const message = "使用商品は以下の通りです\n以下の内容でよろしければOKをクリックしてください\n内容の変更がある場合にはキャンセルをクリックしてください";
+  const CautionaryNote = '日付の確認、使用商品の種類、使用方法、個人購入なら名前の入力など\n間違いがないかよく確認しておいてください。';
   const [searchData, setsearchData] = useState<any>([]);
   const DetailMessage = `業者名: ${searchData[0] || ''}　　||　　商品ナンバー: ${searchData[1] || ''}\n商品単価: ${(searchData[3] !== undefined && searchData[3] !== null) ? searchData[3].toLocaleString() : ''}円　　||　　店販価格: ${(searchData[5] !== undefined && searchData[5] !== null) ? searchData[5].toLocaleString() : ''}`
   const [DetailisDialogOpen, setDetailisDialogOpen] = useState(false);
@@ -250,6 +251,12 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
     if (usedformData[index][fieldType]) {
       usedsearchDataChange(index, usedformData[index][fieldType]);
     }
+    if (usedformData[index].商品コード == '' && index >= 1 && usedformData[index].月日 === usedformData[index-1].月日){
+      const newusedFormData = [...usedformData];
+      newusedFormData[index].月日 = '';
+      setusedFormData(newusedFormData);
+
+    }
   };
 
   const handleOpenDialog = () => {
@@ -312,16 +319,24 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
       商品コード: data[1],
       商品名: data[2]
     };
+    let index = 0;
     let dataAdded = false;
     for (let i = 0; i < returnData.length; i++) {
       if (!dataAdded && returnData[i].商品コード === '') {
+        if (!usedformData[i].月日){
+          newData.月日 = usedformData[i-1].月日
+        }
         returnData[i] = {
           ...returnData[i],
           ...newData
         };
         dataAdded = true;
+        index = i;
         break;
       }
+    }
+    if (quantityRefs.current[index]) {
+      quantityRefs.current[index].focus();
     }
     setusedFormData(returnData);
     setDetailisDialogOpen(false);
@@ -412,6 +427,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
               setsearchtabledata={setsearchtabledata}
               searchtabledata={searchtabledata}
               setsearchDataIndex={setsearchDataIndex}
+              insert={DetailhandleConfirmAdd}
             />
             <DetailDialog
               Data={searchData}
@@ -456,6 +472,13 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
               onChange={(e) => numberchange(index, '商品コード', e)}
               onKeyDown={(e) => handleKeyDown(index, e, '商品コード')}
               onBlur={() => handleBlur(index, '商品コード')}
+              onFocus={() => {
+                const newusedFormData = [...usedformData];
+                if(!usedformData[index].月日 && index > 0){
+                  newusedFormData[index].月日 = usedformData[index-1].月日
+                  setusedFormData(newusedFormData);
+                }
+              }}
               inputMode="numeric"
             />
             <input
@@ -550,6 +573,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
           onConfirm={handleConfirm}
           onCancel={handleCancel}
           isOpen={isusedDialogOpen}
+          CautionaryNote={CautionaryNote}
         />
       </div>
       </div>

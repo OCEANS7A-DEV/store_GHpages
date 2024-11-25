@@ -559,6 +559,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
               setsearchtabledata={setsearchtabledata}
               searchtabledata={searchtabledata}
               setsearchDataIndex={setsearchDataIndex}
+              insert={DetailhandleConfirmAdd}
             />
             <DetailDialog
               Data={searchData}

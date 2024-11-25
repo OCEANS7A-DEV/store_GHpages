@@ -1,5 +1,5 @@
-.confirm-top {
-  height: 150px;
+.confirm-top-used {
+  height: 170px;
   flex-shrink: 0;
 }
 
@@ -99,6 +99,10 @@
   text-align: left;
   max-width: 100px;
   min-width: 100px;
+}
+
+.CautionaryNote{
+  color: red;
 }
 
 

@@ -10,15 +10,16 @@ interface UsedDialogProps {
   onConfirm: () => void;
   onCancel: () => void;
   isOpen: boolean;
+  CautionaryNote: string;
 }
 
-const UsedDialog: React.FC<UsedDialogProps> = ({ title, message, tableData, onConfirm, onCancel, isOpen }) => {
+const UsedDialog: React.FC<UsedDialogProps> = ({ title, message, tableData, onConfirm, onCancel, isOpen, CautionaryNote }) => {
   if (!isOpen) return null;
 
   return ReactDOM.createPortal(
     <div className="confirm-dialog-overlay">
       <div className="confirm-dialog">
-        <div className="confirm-top">
+        <div className="confirm-top-used">
           <h2>{title}</h2>
           <p>
             {message.split('\n').map((line, index) => (
@@ -27,6 +28,7 @@ const UsedDialog: React.FC<UsedDialogProps> = ({ title, message, tableData, onCo
                 <br />
               </React.Fragment>
             ))}
+            <div className="CautionaryNote">{CautionaryNote}</div>
           </p>
         </div>
         <div className="dialog-table">

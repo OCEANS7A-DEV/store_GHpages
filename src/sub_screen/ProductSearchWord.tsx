@@ -13,9 +13,10 @@ interface SearchProps {
   searchtabledata: any;
   setsearchDataIndex: (numberdata: number) => void;
   searchDataIndex: number,
+  insert: (data: any) => void;
 }
 
-export default function WordSearch({ setsearchData, setDetailisDialogOpen, setDetailIMAGE, setisLoading, setsearchtabledata, searchtabledata, setsearchDataIndex ,searchDataIndex }: SearchProps) {
+export default function WordSearch({ setsearchData, setDetailisDialogOpen, setDetailIMAGE, setisLoading, setsearchtabledata, searchtabledata, setsearchDataIndex ,insert }: SearchProps) {
   const [SWord, setSWord] = useState<string>('');
 
 
@@ -86,7 +87,16 @@ export default function WordSearch({ setsearchData, setDetailisDialogOpen, setDe
             <tbody className="datail">
               {searchtabledata.map((row, index) => (
                 <tr key={index}>
-                  <td className="scode">{row[1]}</td>
+                  <td className="scode">
+                    <a
+                      className="buttonUnderlineD"
+                      role="button"
+                      href="#"
+                      onClick={() => insert(row)}
+                    >
+                      {row[1]}
+                    </a>
+                  </td>
                   <td className="sname">
                     <a
                       className="buttonUnderlineD"

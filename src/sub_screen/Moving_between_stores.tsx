@@ -384,6 +384,7 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
               setsearchtabledata={setsearchtabledata}
               searchtabledata={searchtabledata}
               setsearchDataIndex={setsearchDataIndex}
+              insert={DetailhandleConfirmAdd}
             />
             <DetailDialog
               Data={searchData}
