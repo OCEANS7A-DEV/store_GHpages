@@ -263,7 +263,11 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
     };
     let dataAdded = false;
     for (let i = 0; i < returnData.length; i++) {
+      if (i > usedformData.length) {
+        addNewForm()
+      }
       if (!dataAdded && returnData[i].商品コード === '') {
+        
         returnData[i] = {
           ...returnData[i],
           ...newData

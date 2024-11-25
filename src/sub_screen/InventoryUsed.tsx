@@ -89,6 +89,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
   const personalRefs = useRef([]);
   const remarksRefs = useRef([]);
   const HowToUseRefs = useRef([]);
+  const dateRefs = useRef([]);
   const message = "使用商品は以下の通りです\n以下の内容でよろしければOKをクリックしてください\n内容の変更がある場合にはキャンセルをクリックしてください";
   const CautionaryNote = '日付の確認、使用商品の種類、使用方法、個人購入なら名前の入力など\n間違いがないかよく確認しておいてください。';
   const [searchData, setsearchData] = useState<any>([]);
@@ -208,13 +209,18 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
         newusedFormData[index].使用方法 = ProcessingMethod;
       console.log(newusedFormData[index].使用方法[1])
     }
+    
     if (e.key === 'Enter') {
       e.preventDefault();
       if (fieldType === '商品コード') {
         if (quantityRefs.current[index]) {
           quantityRefs.current[index].focus();
         }
-      } else if (fieldType === '数量'){
+      }else if (fieldType === '月日'){
+        if (codeRefs.current[index]) {
+          codeRefs.current[index].focus();
+        }
+      }else if (fieldType === '数量'){
         if (HowToUseRefs.current[index]) {
           HowToUseRefs.current[index].focus();
         }
@@ -232,14 +238,14 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
       } else if (fieldType === '備考') {
         const nextIndex = index + 1;
         if (nextIndex < usedformData.length) {
-          if (codeRefs.current[nextIndex]) {
-            codeRefs.current[nextIndex].focus();
+          if (dateRefs.current[nextIndex]) {
+            dateRefs.current[nextIndex].focus();
           }
         } else {
           addNewForm();
           setTimeout(() => {
-            if (codeRefs.current[nextIndex]) {
-              codeRefs.current[nextIndex].focus();
+            if (dateRefs.current[nextIndex]) {
+              dateRefs.current[nextIndex].focus();
             }
           }, 0);
         }
@@ -322,7 +328,11 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
     let index = 0;
     let dataAdded = false;
     for (let i = 0; i < returnData.length; i++) {
+      if (i > usedformData.length) {
+        addNewForm()
+      }
       if (!dataAdded && returnData[i].商品コード === '') {
+
         if (!usedformData[i].月日){
           newData.月日 = usedformData[i-1].月日
         }
@@ -459,7 +469,10 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
               type="date"
               className="insert_date"
               value={data.月日}
+              max="9999-12-31"
+              ref={(el) => (dateRefs.current[index] = el)}
               onChange={(e) => handleChange(index, '月日', e)}
+              onKeyDown={(e) => handleKeyDown(index, e, '月日')}
             />
             <input
               title="入力は半角のみです"
