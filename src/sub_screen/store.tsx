@@ -9,7 +9,10 @@ import SaveConfirmDialog from './SaveConfirmDialog';
 import DetailDialog from './ProductdetailDialog.tsx';
 import NonConfirmDialog from './NonOrderDialog.tsx';
 
-
+interface SelectData {
+  value: string;
+  label: string;
+}
 
 interface InsertData {
   業者: string;
@@ -155,7 +158,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
             [fieldDataList[i]]: item,
           }), {}),
           商品単価: ResultData[3],
-          商品詳細: [],
+          商品詳細: formData[index].商品詳細,
         };
       }
     };
@@ -208,7 +211,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     quantityRefs.current.splice(index, 1);
   };
 
-  const handleKeyDown = async (index: number, e: React.KeyboardEvent<HTMLInputElement>, fieldType: string) => {
+  const handleKeyDown = async (index: number, e: React.KeyboardEvent<HTMLInputElement>, fieldType: string,) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       if (fieldType === '商品コード') {
@@ -240,6 +243,16 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
               codeRefs.current[nextIndex].focus();
             }
           }, 0);
+        }
+      }
+    }
+  };
+
+  const SelecthandleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>, fieldType: string) => {
+    if (e.key === 'Enter') {
+      if (fieldType === '商品詳細'){
+        if (quantityRefs.current[index]) {
+          quantityRefs.current[index].focus();
         }
       }
     }
@@ -605,9 +618,16 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
               className="insert_Select"
               key={index}
               options={data.selectOptions}
-              value={data.商品詳細 || ''}
+              value={formData[index].商品詳細}
               isSearchable={false}
               ref={(el) => (detailRefs.current[index] = el)}
+              menuIsOpen={formData[index].menuIsOpen}
+              onChange={(selectedOption) => {
+                const newFormData = [...formData];
+                newFormData[index].商品詳細 = selectedOption;
+                setFormData(newFormData);
+                newFormData[index].menuIsOpen = false;
+              }}
               onFocus={() => {
                 const newFormData = [...formData];
                 newFormData[index].menuIsOpen = true; // フォーカス時にメニューを開く
@@ -618,13 +638,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
                 newFormData[index].menuIsOpen = false; // フォーカス外れ時にメニューを閉じる
                 setFormData(newFormData);
               }}
-              menuIsOpen={formData[index].menuIsOpen}
-              onChange={(selectedOption) => {
-                const newFormData = [...formData];
-                newFormData[index].商品詳細 = selectedOption || [];
-                setFormData(newFormData);
-              }}
-              onKeyDown={(e) => handleKeyDown(index, e, '商品詳細')}
+              onKeyDown={(e) => SelecthandleKeyDown(index, e, '商品詳細')}
               menuPlacement="auto"
               menuPortalTarget={document.body}
               placeholder="詳細を選択"

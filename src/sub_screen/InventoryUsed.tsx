@@ -45,7 +45,7 @@ const colorlistGet = async (code: any) => {
   return returnData;
 };
 
-const usedfieldDataList = ['月日', '商品コード', '商品名', '商品詳細', '数量', '使用方法', '個人購入', '備考'];
+const usedfieldDataList = ['月日', '商品コード', '商品名','数量', '使用方法', '個人購入', '備考'];
 
 const productSearch = (code: number) => {
   const storageGet = JSON.parse(sessionStorage.getItem('data') ?? '');
@@ -88,6 +88,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
   const quantityRefs = useRef([]);
   const personalRefs = useRef([]);
   const remarksRefs = useRef([]);
+  const HowToUseRefs = useRef([]);
   const message = "使用商品は以下の通りです\n以下の内容でよろしければOKをクリックしてください\n内容の変更がある場合にはキャンセルをクリックしてください";
   const [searchData, setsearchData] = useState<any>([]);
   const DetailMessage = `業者名: ${searchData[0] || ''}　　||　　商品ナンバー: ${searchData[1] || ''}\n商品単価: ${(searchData[3] !== undefined && searchData[3] !== null) ? searchData[3].toLocaleString() : ''}円　　||　　店販価格: ${(searchData[5] !== undefined && searchData[5] !== null) ? searchData[5].toLocaleString() : ''}`
@@ -200,6 +201,12 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
   };
 
   const handleKeyDown = async (index: number, e: React.KeyboardEvent<HTMLInputElement>, fieldType: string) => {
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      const newusedFormData = [...usedformData];
+        newusedFormData[index].使用方法 = ProcessingMethod;
+      console.log(newusedFormData[index].使用方法[1])
+    }
     if (e.key === 'Enter') {
       e.preventDefault();
       if (fieldType === '商品コード') {
@@ -207,6 +214,13 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
           quantityRefs.current[index].focus();
         }
       } else if (fieldType === '数量'){
+        if (HowToUseRefs.current[index]) {
+          HowToUseRefs.current[index].focus();
+        }
+      }else if (fieldType === '使用方法'){
+        const newusedFormData = [...usedformData];
+        newusedFormData[index].使用方法 = ProcessingMethod;
+        setusedFormData(newusedFormData);
         if (personalRefs.current[index]) {
           personalRefs.current[index].focus();
         }
@@ -364,6 +378,15 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
       setOCtitle('商品検索ウィンドウを閉じます');
     }
   };
+  const SelecthandleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>, fieldType: string) => {
+    if (e.key === 'Enter') {
+      if (fieldType === '使用方法'){
+        if (personalRefs.current[index]) {
+          personalRefs.current[index].focus();
+        }
+      }
+    }
+  };
 
   return (
     <div className="window_area">
@@ -457,13 +480,27 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
               className="insert_Select"
               key={index}
               options={ProcessingMethod}
-              value={data.使用方法 || []}
+              value={data.使用方法}
               isSearchable={false}
               onChange={(ProcessingMethod) => {
                 const newusedFormData = [...usedformData];
                 newusedFormData[index].使用方法 = ProcessingMethod;
                 setusedFormData(newusedFormData);
+                newusedFormData[index].menuIsOpen = false;
               }}
+              onFocus={() => {
+                const newusedFormData = [...usedformData];
+                newusedFormData[index].menuIsOpen = true; // フォーカス時にメニューを開く
+                setusedFormData(newusedFormData);
+              }}
+              onBlur={() => {
+                const newusedFormData = [...usedformData];
+                newusedFormData[index].menuIsOpen = false; // フォーカス外れ時にメニューを閉じる
+                setusedFormData(newusedFormData);
+              }}
+              menuIsOpen={usedformData[index].menuIsOpen}
+              ref={(el) => (HowToUseRefs.current[index] = el)}
+              onKeyDown={(e) => SelecthandleKeyDown(index, e, '使用方法')}
               menuPlacement="auto"
               menuPortalTarget={document.body}
               placeholder="方法を選択"
