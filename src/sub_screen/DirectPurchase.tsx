@@ -326,120 +326,120 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
         <h2 className='store_name'>直接購入での入庫ページ: {storename} 店</h2>
       </div>
       <div className='form_area'>
-      <div className="searchArea">
-          <div
-            className="searchareawindow"
-            style={{
-              width: searchArea ? "310px" : "0px", // 表示状態で幅を変える
-              overflow: "hidden",
-              transition: "width 0.3s ease", // スムーズな変更
-            }}
-          >
-            <WordSearch
-              className="searcharea"
-              setsearchData={setsearchData}
-              setDetailisDialogOpen={setDetailisDialogOpen}
-              setDetailIMAGE={setDetailIMAGE}
-              setisLoading={setisLoading}
-              setsearchtabledata={setsearchtabledata}
-              searchtabledata={searchtabledata}
-              setsearchDataIndex={setsearchDataIndex}
-            />
-            <DetailDialog
-              Data={searchData}
-              title={searchData[2]}
-              message={DetailMessage}
-              onConfirm={DetailhandleConfirm}
-              isOpen={DetailisDialogOpen}
-              image={DetailIMAGE}
-              insert={DetailhandleConfirmAdd}
-              nextDatail={nextDatail}
-              beforeDatail={beforeDatail}
-              searchtabledata={searchtabledata} searchDataIndex={0}
-              addButtonName='注文に追加'
-            />
-          </div>
-          <a
-            className="buttonUnderlineOC"
-            type="button"
-            onClick={searchAreaconfirm}
-            title={OCtitle}
+        <div className="searchArea">
+            <div
+              className="searchareawindow"
+              style={{
+                width: searchArea ? "310px" : "0px", // 表示状態で幅を変える
+                overflow: "hidden",
+                transition: "width 0.3s ease", // スムーズな変更
+              }}
             >
-            {OCcondition}
-          </a>
-        </div>
-        <div className='in-area'>
-          {usedformData.map((data, index) => (
-          <div key={index} className="insert_area">
-            <input
-              type="date"
-              className="insert_date"
-              value={data.月日}
-              onChange={(e) => handleChange(index, '月日', e)}
-            />            
-            <input
-              title="入力は半角のみです"
-              type="tel"
-              pattern="^[0-9\-\/]+$"
-              placeholder="商品ナンバー"
-              className="insert_code"
-              value={data.商品コード}
-              ref={(el) => (codeRefs.current[index] = el)}
-              onChange={(e) => numberchange(index, '商品コード', e)}
-              onKeyDown={(e) => handleKeyDown(index, e, '商品コード')}
-              onBlur={() => handleBlur(index, '商品コード')}
-              inputMode="numeric"
-            />
-            <input
-              type="text"
-              placeholder="商品名"
-              className="insert_name"
-              value={data.商品名}
-              onChange={(e) => handleChange(index, '商品名', e)}
-            />
-            <input
-              type="text"
-              pattern="^[0-9]+$"
-              placeholder="数量"
-              className="insert_quantity"
-              inputMode="numeric"
-              value={data.数量}
-              ref={(el) => (quantityRefs.current[index] = el)}
-              onChange={(e) => numberchange(index, '数量', e)}
-              onKeyDown={(e) => handleKeyDown(index, e, '数量')}
-            />
-            <input
-              type="text"
-              placeholder="備考"
-              className="remarks"
-              value={data.備考}
-              ref={(el) => (remarksRefs.current[index] = el)}
-              onChange={(e) => handleChange(index, '備考', e)}
-              onKeyDown={(e) => handleKeyDown(index, e, '備考')}
-            />
-            <button type="button" className="delete_button" onClick={() => removeForm(index)}>
-              削除
-            </button>
+              <WordSearch
+                className="searcharea"
+                setsearchData={setsearchData}
+                setDetailisDialogOpen={setDetailisDialogOpen}
+                setDetailIMAGE={setDetailIMAGE}
+                setisLoading={setisLoading}
+                setsearchtabledata={setsearchtabledata}
+                searchtabledata={searchtabledata}
+                setsearchDataIndex={setsearchDataIndex}
+              />
+              <DetailDialog
+                Data={searchData}
+                title={searchData[2]}
+                message={DetailMessage}
+                onConfirm={DetailhandleConfirm}
+                isOpen={DetailisDialogOpen}
+                image={DetailIMAGE}
+                insert={DetailhandleConfirmAdd}
+                nextDatail={nextDatail}
+                beforeDatail={beforeDatail}
+                searchtabledata={searchtabledata} searchDataIndex={0}
+                addButtonName='注文に追加'
+              />
+            </div>
+            <a
+              className="buttonUnderlineOC"
+              type="button"
+              onClick={searchAreaconfirm}
+              title={OCtitle}
+              >
+              {OCcondition}
+            </a>
           </div>
-        ))}
-      </div>
-      <div className="button_area">
-        <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>
-          ＜＜ 戻る
-        </a>
-        <a className="buttonUnderlineSt" type="button" onClick={addNewForm}>
-          入力枠追加
-        </a>
-        <a className="buttonUnderlineSt" type="button" onClick={handleOpenDialog}>入力内容送信 ＞＞</a>
-        <DirectDialog
-          title="確認"
-          message={message}
-          tableData={usedformData}
-          onConfirm={handleConfirm}
-          onCancel={handleCancel}
-          isOpen={isusedDialogOpen}
-        />
-      </div>
+          <div className='in-area'>
+            {usedformData.map((data, index) => (
+            <div key={index} className="insert_area">
+              <input
+                type="date"
+                className="insert_date"
+                value={data.月日}
+                onChange={(e) => handleChange(index, '月日', e)}
+              />            
+              <input
+                title="入力は半角のみです"
+                type="tel"
+                pattern="^[0-9\-\/]+$"
+                placeholder="商品ナンバー"
+                className="insert_code"
+                value={data.商品コード}
+                ref={(el) => (codeRefs.current[index] = el)}
+                onChange={(e) => numberchange(index, '商品コード', e)}
+                onKeyDown={(e) => handleKeyDown(index, e, '商品コード')}
+                onBlur={() => handleBlur(index, '商品コード')}
+                inputMode="numeric"
+              />
+              <input
+                type="text"
+                placeholder="商品名"
+                className="insert_name"
+                value={data.商品名}
+                onChange={(e) => handleChange(index, '商品名', e)}
+              />
+              <input
+                type="text"
+                pattern="^[0-9]+$"
+                placeholder="数量"
+                className="insert_quantity"
+                inputMode="numeric"
+                value={data.数量}
+                ref={(el) => (quantityRefs.current[index] = el)}
+                onChange={(e) => numberchange(index, '数量', e)}
+                onKeyDown={(e) => handleKeyDown(index, e, '数量')}
+              />
+              <input
+                type="text"
+                placeholder="備考"
+                className="remarks"
+                value={data.備考}
+                ref={(el) => (remarksRefs.current[index] = el)}
+                onChange={(e) => handleChange(index, '備考', e)}
+                onKeyDown={(e) => handleKeyDown(index, e, '備考')}
+              />
+              <button type="button" className="delete_button" onClick={() => removeForm(index)}>
+                削除
+              </button>
+            </div>
+          ))}
+        </div>
+        <div className="button_area">
+          <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>
+            ＜＜ 戻る
+          </a>
+          <a className="buttonUnderlineSt" type="button" onClick={addNewForm}>
+            入力枠追加
+          </a>
+          <a className="buttonUnderlineSt" type="button" onClick={handleOpenDialog}>入力内容送信 ＞＞</a>
+          <DirectDialog
+            title="確認"
+            message={message}
+            tableData={usedformData}
+            onConfirm={handleConfirm}
+            onCancel={handleCancel}
+            isOpen={isusedDialogOpen}
+          />
+        </div>
       </div>
     </div>
   );
