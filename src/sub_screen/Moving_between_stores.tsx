@@ -219,8 +219,8 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
           codeRefs.current[index].focus();
         }
       }else if (fieldType === '数量'){
-        if (codeRefs.current[index]) {
-          codeRefs.current[index].focus();
+        if (remarksRefs.current[index]) {
+          remarksRefs.current[index].focus();
         }
       } else if (fieldType === '備考') {
         const nextIndex = index + 1;
