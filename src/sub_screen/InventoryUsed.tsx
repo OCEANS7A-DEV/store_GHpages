@@ -49,7 +49,7 @@ const usedfieldDataList = ['月日', '商品コード', '商品名','数量', '�
 
 const productSearch = (code: number) => {
   const storageGet = JSON.parse(sessionStorage.getItem('data') ?? '');
-  const product = storageGet.find(item => item[1] === code);
+  const product = storageGet.find((item: number[]) => item[1] === code);
   return product;
 };
 
