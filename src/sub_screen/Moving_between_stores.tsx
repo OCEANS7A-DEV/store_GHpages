@@ -474,6 +474,23 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
                 newusedFormData[index].出庫店舗 = selectOptions || [];
                 setusedFormData(newusedFormData);
               }}
+              onFocus={() => {
+                const newusedFormData = [...usedformData];
+                if(!usedformData[index].月日 && index > 0){
+                  newusedFormData[index].月日 = usedformData[index-1].月日
+                  setusedFormData(newusedFormData);
+                }
+                newusedFormData[index].menuIsOpen = true; // フォーカス時にメニューを開く
+                setusedFormData(newusedFormData);
+              }}
+              onBlur={() => {
+                const newusedFormData = [...usedformData];
+                newusedFormData[index].menuIsOpen = false; // フォーカス外れ時にメニューを閉じる
+                setusedFormData(newusedFormData);
+              }}
+              menuPlacement="auto"
+              menuPortalTarget={document.body}
+              menuIsOpen={usedformData[index].menuIsOpen}
               placeholder="出庫店舗選択"
             />
             <Select
@@ -489,6 +506,23 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
                 newusedFormData[index].入庫店舗 = selectOptions || [];
                 setusedFormData(newusedFormData);
               }}
+              onFocus={() => {
+                const newusedFormData = [...usedformData];
+                if(!usedformData[index].月日 && index > 0){
+                  newusedFormData[index].月日 = usedformData[index-1].月日
+                  setusedFormData(newusedFormData);
+                }
+                newusedFormData[index].menuIsOpen = true; // フォーカス時にメニューを開く
+                setusedFormData(newusedFormData);
+              }}
+              onBlur={() => {
+                const newusedFormData = [...usedformData];
+                newusedFormData[index].menuIsOpen = false; // フォーカス外れ時にメニューを閉じる
+                setusedFormData(newusedFormData);
+              }}
+              menuPlacement="auto"
+              menuPortalTarget={document.body}
+              menuIsOpen={usedformData[index].menuIsOpen}
               placeholder="入庫店舗選択"
             />
             <input
