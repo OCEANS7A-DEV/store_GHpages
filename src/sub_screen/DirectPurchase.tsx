@@ -399,6 +399,7 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
               <input
                 type="date"
                 className="insert_date"
+                max="9999-12-31"
                 value={data.月日}
                 onChange={(e) => handleChange(index, '月日', e)}
               />            
