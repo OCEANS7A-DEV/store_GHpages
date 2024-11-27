@@ -516,7 +516,6 @@ export const Loginjudgement = async (
     }
     
     const result = await response.json();
-    console.log(result)
     return result;
   }catch(e){
     return (e);

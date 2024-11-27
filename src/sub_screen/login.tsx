@@ -21,7 +21,6 @@ export default function LoginPage({ setCurrentPage, setisLoading }: SettingProps
   const login = async () => {
     setisLoading(true);
     const platform = navigator.platform;
-    console.log(platform);
     const loginjudgement = await Loginjudgement(UserName, PassWord, platform)
     
     if (loginjudgement['result']){
