@@ -170,6 +170,8 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
       ]);
       if(ResultData[10] === false){
         alert(`商品ナンバー: ${ResultData[1]}, 商品名: ${ResultData[2]}\nこの商品は本部への注文ができません。`)
+        const DataIndex = formData.findIndex(({商品コード}) => 商品コード == ResultData[1])
+        removeForm(DataIndex)
         return
       }
       updateFormData(ResultData);
@@ -178,6 +180,9 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
       const ResultData = await productSearch(Number(value));
       if(ResultData[10] === false){
         alert(`商品ナンバー: ${ResultData[1]}, 商品名: ${ResultData[2]}\nこの商品は本部への注文ができません。`)
+        const DataIndex = formData.findIndex(({商品コード}) => 商品コード == ResultData[1])
+
+        removeForm(DataIndex)
         return
       }
       updateFormData(ResultData);
