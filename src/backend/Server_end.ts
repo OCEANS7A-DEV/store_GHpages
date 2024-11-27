@@ -504,7 +504,7 @@ export const Loginjudgement = async (
         body: JSON.stringify({
           action: 'Loginjudgement',
           sub_action: 'get',
-          sheetName: 'その他一覧',
+          sheetName: 'アカウント一覧',
           loginid: loginID,
           password: passWord,
           platform: device,
