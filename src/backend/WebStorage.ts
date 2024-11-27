@@ -44,6 +44,7 @@ export const localStorageSet = async (
     sessionStorage.setItem(`${keys[i]}`, JSON.stringify(groupedData[keys[i]]))
   }
   const data = await AllData();
+  console.log(data)
   sessionStorage.setItem('data', JSON.stringify(data));
 };
 

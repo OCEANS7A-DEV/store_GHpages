@@ -396,6 +396,10 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   };
 
   const DetailhandleConfirmAdd = async (data: any) => {
+    if(data[10] === false){
+      alert('この商品は注文できません。')
+      return
+    }
     const Vacant = formData.findIndex(({ 商品コード }) => 商品コード === '');
     let returnData: any[] = [...formData];
     let colordata: any[] = [];
