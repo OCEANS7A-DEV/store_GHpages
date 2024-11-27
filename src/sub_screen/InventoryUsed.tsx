@@ -431,7 +431,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
           <div
             className="searchareawindow"
             style={{
-              width: searchArea ? "310px" : "0px", // 表示状態で幅を変える
+              width: searchArea ? "360px" : "0px", // 表示状態で幅を変える
               overflow: "hidden",
               transition: "width 0.3s ease", // スムーズな変更
             }}

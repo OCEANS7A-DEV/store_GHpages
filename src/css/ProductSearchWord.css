@@ -64,7 +64,7 @@ a {
   height: calc(100vh - 245px); /* 高さを固定 */
   overflow-y: scroll;
   overflow-x: hidden;
-  width: 310px; /* 親要素の幅いっぱいに */
+  width: 360px; /* 親要素の幅いっぱいに */
   border: 1px double darkgray;
 }
 
@@ -115,7 +115,7 @@ th {
 }
 .sname{
   display: flex;
-  width: 182px;
+  width: 260px;
   white-space: nowrap;
   overflow: hidden;
   height: 28px;
@@ -188,7 +188,7 @@ th {
   font-size: 13px;
 }
 .stname {
-  width: 190px;
+  width:260px;
 }
 
 .search-head{
