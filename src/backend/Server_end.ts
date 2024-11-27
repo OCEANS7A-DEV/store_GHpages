@@ -197,7 +197,6 @@ export const AllData = async(
       throw new Error(`HTTP error! status: ${response.status}`)
     }
     const result = await response.json();
-    console.log(result)
     return result;
 
   }catch(e){

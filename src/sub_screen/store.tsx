@@ -168,10 +168,18 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
         productSearch(Number(value)),
         colorlistGet(Number(value)),
       ]);
+      if(ResultData[10] === false){
+        alert(`商品ナンバー: ${ResultData[1]}, 商品名: ${ResultData[2]}\nこの商品は本部への注文ができません。`)
+        return
+      }
       updateFormData(ResultData);
       newFormData[index].selectOptions = options || nullData;
     } catch (error) {
       const ResultData = await productSearch(Number(value));
+      if(ResultData[10] === false){
+        alert(`商品ナンバー: ${ResultData[1]}, 商品名: ${ResultData[2]}\nこの商品は本部への注文ができません。`)
+        return
+      }
       updateFormData(ResultData);
       newFormData[index].selectOptions = nullData;
     }
