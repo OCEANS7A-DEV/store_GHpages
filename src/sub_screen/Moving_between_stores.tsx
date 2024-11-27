@@ -82,6 +82,9 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
   }));
   const [usedformData, setusedFormData] = useState<UsedInsertData[]>(initialusedFormData);
   const storename = localStorage.getItem('StoreSetName');
+  const dateRefs = useRef([]);
+  const outputStoreRefs = useRef([]);
+  const inputStoreRefs = useRef([]);
   const codeRefs = useRef([]);
   const quantityRefs = useRef([]);
   const personalRefs = useRef([]);
@@ -199,26 +202,37 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
 
   const handleKeyDown = async (index: number, e: React.KeyboardEvent<HTMLInputElement>, fieldType: string) => {
     if (e.key === 'Enter') {
-      e.preventDefault();
       if (fieldType === '商品コード') {
         if (quantityRefs.current[index]) {
           quantityRefs.current[index].focus();
         }
-      } else if (fieldType === '数量'){
-        if (remarksRefs.current[index]) {
-          remarksRefs.current[index].focus();
+      }else if(fieldType === '月日'){
+        if (outputStoreRefs.current[index]) {
+          outputStoreRefs.current[index].focus();
+        }
+      }else if(fieldType === '出庫'){
+        if (inputStoreRefs.current[index]) {
+          inputStoreRefs.current[index].focus();
+        }
+      }else if(fieldType === '入庫'){
+        if (inputStoreRefs.current[index]) {
+          inputStoreRefs.current[index].focus();
+        }
+      }else if (fieldType === '数量'){
+        if (codeRefs.current[index]) {
+          codeRefs.current[index].focus();
         }
       } else if (fieldType === '備考') {
         const nextIndex = index + 1;
         if (nextIndex < usedformData.length) {
-          if (codeRefs.current[nextIndex]) {
-            codeRefs.current[nextIndex].focus();
+          if (dateRefs.current[nextIndex]) {
+            dateRefs.current[nextIndex].focus();
           }
         } else {
           addNewForm();
           setTimeout(() => {
-            if (codeRefs.current[nextIndex]) {
-              codeRefs.current[nextIndex].focus();
+            if (dateRefs.current[nextIndex]) {
+              dateRefs.current[nextIndex].focus();
             }
           }, 0);
         }
@@ -443,6 +457,8 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
               className="insert_date"
               max="9999-12-31"
               value={data.月日}
+              ref={(el) => (dateRefs.current[index] = el)}
+              onKeyDown={(e) => handleKeyDown(index, e, '月日')}
               onChange={(e) => handleChange(index, '月日', e)}
             />            
             <Select
@@ -451,6 +467,8 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
               options={selectOptions}
               value={data.出庫店舗 || []}
               isSearchable={false}
+              ref={(el) => (outputStoreRefs.current[index] = el)}
+              onKeyDown={(e) => handleKeyDown(index, e, '出庫')}
               onChange={(selectOptions) => {
                 const newusedFormData = [...usedformData];
                 newusedFormData[index].出庫店舗 = selectOptions || [];
@@ -464,6 +482,8 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
               options={selectOptions}
               value={data.入庫店舗 || []}
               isSearchable={false}
+              ref={(el) => (inputStoreRefs.current[index] = el)}
+              onKeyDown={(e) => handleKeyDown(index, e, '入庫')}
               onChange={(selectOptions) => {
                 const newusedFormData = [...usedformData];
                 newusedFormData[index].入庫店舗 = selectOptions || [];
