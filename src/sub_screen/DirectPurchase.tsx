@@ -1,6 +1,7 @@
 import React, { useState, useRef, ChangeEvent, useEffect } from 'react';
 import Select from 'react-select';
 import '../css/InventoryUsed.css';
+import '../css/Direct.css';
 import { InventorySearch, GASPostInsertStore } from '../backend/Server_end';
 import DirectDialog from './DirectDialog';
 import WordSearch from './ProductSearchWord';
@@ -78,6 +79,7 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
   const [searchArea, setsearchArea] = useState(false);
   const [OCcondition, setOCcondition] = useState<string>(">>");
   const [OCtitle,setOCtitle] = useState<string>('商品検索ウィンドウを開きます');
+  const [addType, setADDType] = useState(false);
 
 
 
@@ -256,29 +258,48 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
   };
 
   const DetailhandleConfirmAdd = async (data: any) => {
+    const Vacant = usedformData.findIndex(({ 商品コード }) => 商品コード === '');
     let returnData = [...usedformData];
     const newData = {
+      月日: '',
       商品コード: data[1],
       商品名: data[2]
     };
-    let dataAdded = false;
-    for (let i = 0; i < returnData.length; i++) {
-      if (i > usedformData.length) {
-        addNewForm()
+
+    if (Vacant !== -1){
+      if (!usedformData[Vacant].月日){
+        newData.月日 = usedformData[Vacant-1].月日
       }
-      if (!dataAdded && returnData[i].商品コード === '') {
-        
-        returnData[i] = {
-          ...returnData[i],
-          ...newData
-        };
-        dataAdded = true;
-        break;
+      returnData[Vacant] = {
+        ...returnData[Vacant],
+        ...newData
+      };
+    }else{
+      setADDType(true);
+      if (!usedformData[returnData.length - 1].月日){
+        newData.月日 = usedformData[returnData.length - 1].月日
       }
+      returnData.push({
+        月日: newData.月日,
+        商品コード: newData.商品コード,
+        商品名: newData.商品名,
+        数量: '',
+        備考: '',
+      });
     }
-    setusedFormData(returnData);
+    if (quantityRefs.current[Vacant]) {
+      quantityRefs.current[Vacant].focus();
+    }
+    await setusedFormData(returnData);
     setDetailisDialogOpen(false);
   };
+
+  useEffect(() => {
+    if (addType){
+      addNewForm()
+      setADDType(false);
+    }
+  },[addType])
 
   const nextDatail = async () => {
     const updateindex = searchDataIndex + 1
@@ -373,7 +394,7 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
               {OCcondition}
             </a>
           </div>
-          <div className='in-area'>
+          <div className='in-area' id='Direct'>
             {usedformData.map((data, index) => (
             <div key={index} className="insert_area">
               <input

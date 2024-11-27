@@ -107,6 +107,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   const [searchArea, setsearchArea] = useState(false);
   const [OCcondition, setOCcondition] = useState<string>(">>");
   const [OCtitle,setOCtitle] = useState<string>('商品検索ウィンドウを開きます');
+  const [addType, setADDType] = useState(false);
 
 
 
@@ -395,60 +396,35 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   };
 
   const DetailhandleConfirmAdd = async (data: any) => {
-    let returnData: any[] = [];
-    const Datapush = async () => {
-      const nullData = [];
-      let colordata: any[] = [];
-      try {
-        colordata = await colorlistGet(Number(data[1]))
-        colordata = colordata || [];
-      } catch (error) {
-        colordata = [];
-      }
-      const pushdata = {
-        業者: data[0],  // searchresult が期待通りの構造か要確認
-        商品コード: data[1],
-        商品名: data[2],
-        商品詳細: [],
-        数量: '',
-        個人購入: '',
-        備考: '',
-        selectOptions: colordata,
-        商品単価: data[3],
-      };
-      returnData.push(pushdata);
+    const Vacant = formData.findIndex(({ 商品コード }) => 商品コード === '');
+    let returnData: any[] = [...formData];
+    let colordata: any[] = [];
+    try {
+      colordata = await colorlistGet(Number(data[1]))
+      colordata = colordata || [];
+    } catch (error) {
+      colordata = [];
+    }
+    const pushdata = {
+      業者: data[0],
+      商品コード: data[1],
+      商品名: data[2],
+      商品詳細: [],
+      数量: '',
+      個人購入: '',
+      備考: '',
+      selectOptions: colordata,
+      商品単価: data[3],
     };
-    let count = 0;
-    for (let i = 0; i < formData.length; i++){
-      if (formData[i].商品コード !== '') {
-        returnData.push(formData[i])
-        count++
-        continue
-      }else if (formData[i].商品コード === ''){
-        count++
-        await Datapush();
-        break
-      }else{
-        count++
-        await addNewForm();
-        await Datapush();
-        break
-      }
+
+    if (Vacant !== -1){
+      returnData[Vacant] = pushdata
+    }else{
+      setADDType(true);
+      returnData.push(pushdata);
     }
-    for (let i = 0; i < (formData.length - count); i++){
-      let pushnullData = {
-        業者: '',  // searchresult が期待通りの構造か要確認
-        商品コード: '',
-        商品名: '',
-        商品詳細: [],
-        数量: '',
-        個人購入: '',
-        備考: '',
-        selectOptions: [],
-        商品単価: '',
-      };
-      returnData.push(pushnullData);
-    }
+
+    
     setFormData(returnData);
     setDetailisDialogOpen(false);
   };
@@ -509,6 +485,13 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   useEffect(() => {
     processlistGet();
   }, []);
+
+  useEffect(() => {
+    if (addType){
+      addNewForm()
+      setADDType(false);
+    }
+  },[addType])
 
   const searchAreaconfirm = () => {
     setsearchArea((prevState) => !prevState);

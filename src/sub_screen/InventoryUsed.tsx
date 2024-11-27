@@ -101,6 +101,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
   const [searchArea, setsearchArea] = useState(false);
   const [OCcondition, setOCcondition] = useState<string>(">>");
   const [OCtitle,setOCtitle] = useState<string>('商品検索ウィンドウを開きます');
+  const [addType, setADDType] = useState(false);
   
 
 
@@ -124,7 +125,8 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
     setusedFormData(newusedFormData);
   };
 
-  const addNewForm = () => {
+  const addNewForm = async () => {
+    console.log('空データ追加')
     const newusedFormData = [...usedformData];
     for (let i = 0; i < 20; i++) {
       newusedFormData.push({
@@ -203,15 +205,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
   };
 
   const handleKeyDown = async (index: number, e: React.KeyboardEvent<HTMLInputElement>, fieldType: string) => {
-    if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      const newusedFormData = [...usedformData];
-        newusedFormData[index].使用方法 = ProcessingMethod;
-      console.log(newusedFormData[index].使用方法[1])
-    }
-    
     if (e.key === 'Enter') {
-      e.preventDefault();
       if (fieldType === '商品コード') {
         if (quantityRefs.current[index]) {
           quantityRefs.current[index].focus();
@@ -320,37 +314,45 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
   };
 
   const DetailhandleConfirmAdd = async (data: any) => {
+    const Vacant = usedformData.findIndex(({ 商品コード }) => 商品コード === '');
     let returnData = [...usedformData];
     const newData = {
+      月日: '',
       商品コード: data[1],
       商品名: data[2]
     };
-    let index = 0;
-    let dataAdded = false;
-    for (let i = 0; i < returnData.length; i++) {
-      if (i > usedformData.length) {
-        addNewForm()
-      }
-      if (!dataAdded && returnData[i].商品コード === '') {
 
-        if (!usedformData[i].月日){
-          newData.月日 = usedformData[i-1].月日
-        }
-        returnData[i] = {
-          ...returnData[i],
-          ...newData
-        };
-        dataAdded = true;
-        index = i;
-        break;
+    if (Vacant !== -1){
+      if (!usedformData[Vacant].月日){
+        newData.月日 = usedformData[Vacant-1].月日
       }
+      returnData[Vacant] = {
+        ...returnData[Vacant],
+        ...newData
+      };
+    }else{
+      setADDType(true);
+      if (!usedformData[returnData.length - 1].月日){
+        newData.月日 = usedformData[returnData.length - 1].月日
+      }
+      returnData.push({
+        月日: newData.月日,
+        商品コード: newData.商品コード,
+        商品名: newData.商品名,
+        数量: '',
+        使用方法: [],
+        個人購入: '',
+        備考: '',
+        ProcessingMethod: []
+      });
     }
-    if (quantityRefs.current[index]) {
-      quantityRefs.current[index].focus();
+    if (quantityRefs.current[Vacant]) {
+      quantityRefs.current[Vacant].focus();
     }
-    setusedFormData(returnData);
+    await setusedFormData(returnData);
     setDetailisDialogOpen(false);
   };
+
   const clickcheckpage = () => {
     setCurrentPage('usedHistory');
   };
@@ -391,6 +393,13 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
     processlistGet();
     ProcessingMethodList();
   }, []);
+
+  useEffect(() => {
+    if (addType){
+      addNewForm()
+      setADDType(false);
+    }
+  },[addType])
 
 
   const searchAreaconfirm = () => {
