@@ -317,7 +317,6 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
     const Vacant = usedformData.findIndex(({ 商品コード }) => 商品コード === '');
     let returnData = [...usedformData];
     const newData = {
-      月日: '',
       商品コード: data[1],
       商品名: data[2]
     };
