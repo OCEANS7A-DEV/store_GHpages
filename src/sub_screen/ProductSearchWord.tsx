@@ -89,7 +89,7 @@ export default function WordSearch({ setsearchData, setDetailisDialogOpen, setDe
                 <tr key={index}>
                   <td className="scode">
                     <a
-                      className="buttonUnderlineD"
+                      className="buttonUnderlineDR"
                       role="button"
                       href="#"
                       onClick={() => insert(row)}
