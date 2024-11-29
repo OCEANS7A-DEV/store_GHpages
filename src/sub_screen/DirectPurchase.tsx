@@ -381,7 +381,7 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
                 nextDatail={nextDatail}
                 beforeDatail={beforeDatail}
                 searchtabledata={searchtabledata} searchDataIndex={0}
-                addButtonName='注文に追加'
+                addButtonName='入庫に追加'
               />
             </div>
             <a

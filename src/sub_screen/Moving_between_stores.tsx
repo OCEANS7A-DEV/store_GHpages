@@ -437,7 +437,7 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
               nextDatail={nextDatail}
               beforeDatail={beforeDatail}
               searchtabledata={searchtabledata} searchDataIndex={0}
-              addButtonName='注文に追加'
+              addButtonName='商品移動に追加'
             />
           </div>
           <a
