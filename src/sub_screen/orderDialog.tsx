@@ -48,7 +48,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ title, message, tableData
               {tableData
                 .filter((row) => {
                   const 商品コード = row.商品コード;
-                  return typeof 商品コード === 'number' && 商品コード !== null;
+                  return 商品コード !== '';
                 })
                 .map((row, index) => (
                   <tr key={index}>
