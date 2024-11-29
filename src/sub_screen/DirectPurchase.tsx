@@ -154,7 +154,7 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
   };
 
   const insertPost = async () => {
-    await GASPostInsertStore('insert', '直接購入', usedformData, storename);
+    await GASPostInsertStore('insert', '直接購入', usedformData, storename, '');
   };
 
   const removeForm = (index: number) => {

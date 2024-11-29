@@ -56,15 +56,15 @@ const productSearch = (code: number) => {
 const ProcessingMethod: SelectOption[] = [];
 
 const ProcessingMethodList = async () => {
-  ProcessingMethod.length = 0;
   const MethodList = await ProcessingMethodGet();
-  for (let i = 0; i < MethodList.length; i++) {
-    const DefAsArray = {
-      value: MethodList[i],
-      label: MethodList[i],
-    };
-    ProcessingMethod.push(DefAsArray);
-  }
+  
+  // 新しい配列を生成して上書き
+  ProcessingMethod.splice(0, ProcessingMethod.length, ...MethodList.map(method => ({
+    value: method,
+    label: method,
+  })));
+
+  // ローカルストレージに保存
   localStorage.setItem('processMethodList', JSON.stringify(ProcessingMethod));
 };
 
@@ -185,7 +185,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
   };
 
   const insertPost = async () => {
-    await GASPostInsertStore('usedinsert', '店舗使用商品', usedformData, storename);
+    await GASPostInsertStore('usedinsert', '店舗使用商品', usedformData, storename, '');
   };
 
   const removeForm = (index: number) => {
@@ -390,12 +390,16 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
   };
 
   useEffect(() => {
-    const method = JSON.parse(localStorage.getItem('processMethodList'));
-    ProcessingMethod.push(method)
-    processlistGet();
-    ProcessingMethodList()
-
-
+    const method = JSON.parse(localStorage.getItem('processMethodList') || "[]");
+  
+    // ローカルストレージのデータをProcessingMethodに上書き
+    ProcessingMethod.splice(0, ProcessingMethod.length, ...method);
+  
+    // ProcessingMethodListでデータを更新
+    (async () => {
+      await ProcessingMethodList();
+      await processlistGet();
+    })();
   }, []);
 
   useEffect(() => {
