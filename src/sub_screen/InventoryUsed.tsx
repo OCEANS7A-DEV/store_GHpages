@@ -185,6 +185,8 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
   };
 
   const insertPost = async () => {
+    console.log(usedformData)
+    return
     await GASPostInsertStore('usedinsert', '店舗使用商品', usedformData, storename);
   };
 
@@ -530,7 +532,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
               key={index}
               options={ProcessingMethod}
               value={data.使用方法}
-              isSearchable={false}
+              isSearchable={true}
               onChange={(ProcessingMethod) => {
                 const newusedFormData = [...usedformData];
                 newusedFormData[index].使用方法 = ProcessingMethod;

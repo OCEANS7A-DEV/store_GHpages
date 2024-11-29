@@ -59,7 +59,7 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
             <Select
               className='Select_custom'
               placeholder="店舗選択"
-              isSearchable={false}
+              isSearchable={true}
               value={storeSelect}
               onChange={handleStoreChange}
               options={selectOptions}

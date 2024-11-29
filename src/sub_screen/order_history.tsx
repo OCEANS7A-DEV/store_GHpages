@@ -166,7 +166,7 @@ export default function OrderHistory({ setCurrentPage, setisLoading }: SettingPr
         <Select
           className='year_Select'
           placeholder="年選択"
-          isSearchable={false}
+          isSearchable={true}
           value={years}
           onChange={handleyearChange}
           options={yearsOptions}

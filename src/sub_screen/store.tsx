@@ -620,7 +620,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
               key={index}
               options={data.selectOptions}
               value={formData[index].商品詳細}
-              isSearchable={false}
+              isSearchable={true}
               ref={(el) => (detailRefs.current[index] = el)}
               menuIsOpen={formData[index].menuIsOpen}
               onChange={(selectedOption) => {

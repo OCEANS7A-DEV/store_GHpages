@@ -95,7 +95,7 @@ export default function UsedHistory({ setCurrentPage, setisLoading }: SettingPro
         <Select
           className='year_Select'
           placeholder="年選択"
-          isSearchable={false}
+          isSearchable={true}
           value={years}
           onChange={handleyearChange}
           options={yearsOptions}
@@ -104,7 +104,7 @@ export default function UsedHistory({ setCurrentPage, setisLoading }: SettingPro
         <Select
           className='month_Select'
           placeholder="月選択"
-          isSearchable={false}
+          isSearchable={true}
           value={months}
           onChange={handlemonthChange}
           options={monthsOptions}

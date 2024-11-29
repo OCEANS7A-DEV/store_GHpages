@@ -466,7 +466,7 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
               key={index}
               options={selectOptions}
               value={data.出庫店舗 || []}
-              isSearchable={false}
+              isSearchable={true}
               ref={(el) => (outputStoreRefs.current[index] = el)}
               onKeyDown={(e) => handleKeyDown(index, e, '出庫')}
               onChange={(selectOptions) => {
