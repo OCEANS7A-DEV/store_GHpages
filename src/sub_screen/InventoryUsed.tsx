@@ -65,6 +65,7 @@ const ProcessingMethodList = async () => {
     };
     ProcessingMethod.push(DefAsArray);
   }
+  localStorage.setItem('processMethodList', JSON.stringify(ProcessingMethod));
 };
 
 
@@ -389,8 +390,12 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
   };
 
   useEffect(() => {
+    const method = JSON.parse(localStorage.getItem('processMethodList'));
+    ProcessingMethod.push(method)
     processlistGet();
-    ProcessingMethodList();
+    ProcessingMethodList()
+
+
   }, []);
 
   useEffect(() => {
