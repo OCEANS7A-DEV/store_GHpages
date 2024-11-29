@@ -185,8 +185,6 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
   };
 
   const insertPost = async () => {
-    console.log(usedformData)
-    return
     await GASPostInsertStore('usedinsert', '店舗使用商品', usedformData, storename);
   };
 
