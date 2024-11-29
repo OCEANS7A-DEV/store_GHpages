@@ -68,6 +68,8 @@ export const searchStr = async (searchword: string) => {
       productName.indexOf(swHZ) !== -1
     );
   });
+  const FiltereResult = result.find((item) => item[2] !=="");
+  console.log(FiltereResult)
   return result;
 };
 
