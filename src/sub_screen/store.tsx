@@ -68,6 +68,21 @@ const productSearch = (code: number) => {
   return product;
 };
 
+const getNearestMonday = () => {
+  const date = new Date();
+  const dayOfWeek = date.getDay();
+  const diffToMonday = dayOfWeek <= 3 ? 1 - dayOfWeek : 8 - dayOfWeek;
+  const nearestMonday = new Date(date);
+  nearestMonday.setDate(date.getDate() + diffToMonday);
+
+  // 年月日を取得してゼロ埋め
+  const year = nearestMonday.getFullYear();
+  const month = String(nearestMonday.getMonth() + 1).padStart(2, "0"); // 月は0始まりなので+1
+  const day = String(nearestMonday.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`; // yyyy-mm-dd形式で返す
+};
+
 
 
 
@@ -108,8 +123,11 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   const [OCcondition, setOCcondition] = useState<string>(">>");
   const [OCtitle,setOCtitle] = useState<string>('商品検索ウィンドウを開きます');
   const [addType, setADDType] = useState(false);
+  const [defaultDate, setDefaultDate] = useState('');
 
-
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDefaultDate(event.target.value);
+  };
 
   const clickpage = () => {
     setCurrentPage('topPage');
@@ -203,8 +221,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   };
 
   const insertPost = async () => {
-    console.log(formData)
-    await GASPostInsertStore('insert', '店舗へ', formData, storename);
+    await GASPostInsertStore('insert', '店舗へ', formData, storename, defaultDate);
   };
 
   const removeForm = (index: number) => {
@@ -501,6 +518,8 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
 
   useEffect(() => {
     processlistGet();
+    const setDate = getNearestMonday();
+    setDefaultDate(setDate);
   }, []);
 
   useEffect(() => {
@@ -528,7 +547,15 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
         <a className="buttonUnderlineSt" type="button" onClick={() => handleSaveConfirmMessage('set')}>
           保存データを反映
         </a>
-        <h2 className='store_name'>注文商品入力: {storename} 店</h2>
+        <h2 className='store_name'> 注文日:</h2>
+        <input
+          type="date"
+          className="insert_order_date"
+          max="9999-12-31"
+          value={defaultDate}
+          onChange={(e) => {handleDateChange(e)}}
+        />
+        <h2 className='store_name'> 注文商品入力: {storename} 店</h2>
         <a className="buttonUnderlineSt" type="button" onClick={() => handleSaveConfirmMessage('save')}>
           データを保存
         </a>

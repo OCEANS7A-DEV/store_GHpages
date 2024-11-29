@@ -103,8 +103,16 @@
   z-index: 100;
 }
 
+.order_date {
+  justify-content: center;
+  height: 75px;
+}
 
-
+.insert_order_date {
+  height: 40px;
+  margin-top: 16px;
+  margin-right: 20px;
+}
 
 
 

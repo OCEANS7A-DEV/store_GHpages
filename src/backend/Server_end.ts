@@ -122,7 +122,9 @@ export const GASPostInsertStore = async (
   sheet: string,
   datail: any,
   store: any,
+  insertDate: string,
 ) => {
+  const formatDate = insertDate.replace(/-/g, "/");
   const id = sessionStorage.getItem('LoginID')
   try {
     await fetch(
@@ -140,6 +142,7 @@ export const GASPostInsertStore = async (
           data: datail,
           storeName: store,
           insertID: id,
+          setDate: formatDate,
         }),
       },
     );
