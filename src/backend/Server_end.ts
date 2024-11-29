@@ -412,7 +412,7 @@ export const ProcessingMethodGet = async (
       },
       body: JSON.stringify({
         sheetName: 'その他一覧',
-        action: 'processingMethodGet',
+        action: 'storeGet',
         select: '商品使用方法',
         sub_action: 'get',
       })
@@ -421,6 +421,7 @@ export const ProcessingMethodGet = async (
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const result = await response.json();
+    console.log(result)
     return result;
   } catch (error) {
     console.error('Error:', error);
