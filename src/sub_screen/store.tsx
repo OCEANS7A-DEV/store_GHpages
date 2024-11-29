@@ -457,6 +457,9 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
       setADDType(true);
       returnData.push(pushdata);
     }
+    if (detailRefs.current[Vacant]) {
+      detailRefs.current[Vacant].focus();
+    }
 
     
     setFormData(returnData);
