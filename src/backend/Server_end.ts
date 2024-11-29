@@ -412,7 +412,7 @@ export const ProcessingMethodGet = async (
       },
       body: JSON.stringify({
         sheetName: 'その他一覧',
-        action: 'storeGet',
+        action: 'processingMethodGet',
         select: '商品使用方法',
         sub_action: 'get',
       })
