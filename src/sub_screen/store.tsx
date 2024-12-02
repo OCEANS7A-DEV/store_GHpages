@@ -205,7 +205,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     field: keyof InsertData,
     event: ChangeEvent<HTMLInputElement>,
   ) => {
-    const CodeValue = event.target.value.replace(/[^0-9\-]/g, '');
+    const CodeValue = event.target.value.replace(/[^0-9A-Za-z\-]/g, '');
     const newFormData = [...formData];
     newFormData[index][field] = CodeValue;
     setFormData(newFormData);
