@@ -239,7 +239,9 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
       if (fieldType === '商品コード') {
         if (detailRefs.current[index]) {
           detailRefs.current[index].focus();
-          detailRefs.current[index].openMenu();
+          setTimeout(() => {
+            detailRefs.current[index].openMenu();
+          }, 10);
         }
       }else if (fieldType === '商品詳細'){
         if (quantityRefs.current[index]) {
