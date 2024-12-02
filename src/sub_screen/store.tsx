@@ -34,16 +34,7 @@ interface SettingProps {
 const nullData = [
 ];
 
-function customMenuPlacement({ maxHeight, menuEl, placement, isFixed }) {
-  const spacingFromBottom = 60; // 下側余白を60pxに設定
-  const controlRect = menuEl.getBoundingClientRect();
 
-  // 下側に十分なスペースがない場合に上側に配置
-  if (window.innerHeight - controlRect.bottom < maxHeight + spacingFromBottom) {
-    return "top";
-  }
-  return "bottom"; // デフォルトは下側
-}
 
 
 
@@ -248,6 +239,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
       if (fieldType === '商品コード') {
         if (detailRefs.current[index]) {
           detailRefs.current[index].focus();
+          detailRefs.current[index].openMenu();
         }
       }else if (fieldType === '商品詳細'){
         if (quantityRefs.current[index]) {
@@ -460,6 +452,11 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     }
     if (detailRefs.current[Vacant]) {
       detailRefs.current[Vacant].focus();
+      setTimeout(() => {
+        detailRefs.current[Vacant].openMenu();
+      }, 10);
+      
+
     }
 
     
