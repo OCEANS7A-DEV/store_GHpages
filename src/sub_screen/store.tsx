@@ -378,16 +378,17 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
             searchresult = await productSearch(Number(Data[i].商品コード));
             colordata = [];
           }
+          console.log(Data[i].商品詳細)
           const pushdata = {
-            業者: searchresult[0],  // searchresult が期待通りの構造か要確認
+            業者: Data[i].業者,  // searchresult が期待通りの構造か要確認
             商品コード: Data[i].商品コード,
-            商品名: searchresult[2],
+            商品名: Data[i].商品名,
             商品詳細: Data[i].商品詳細,
             数量: Data[i].数量,
             個人購入: Data[i].個人購入,
             備考: Data[i].備考,
             selectOptions: colordata,
-            商品単価: searchresult[3],
+            商品単価: Data[i].商品単価,
           };
           saveData.push(pushdata);
         }else{
