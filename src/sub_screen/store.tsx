@@ -241,7 +241,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
           detailRefs.current[index].focus();
           setTimeout(() => {
             detailRefs.current[index].openMenu();
-          }, 10);
+          }, 50);
         }
       }else if (fieldType === '商品詳細'){
         if (quantityRefs.current[index]) {
@@ -457,7 +457,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
       detailRefs.current[Vacant].focus();
       setTimeout(() => {
         detailRefs.current[Vacant].openMenu();
-      }, 10);
+      }, 50);
       
 
     }
