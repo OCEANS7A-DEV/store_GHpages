@@ -198,6 +198,12 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
       newFormData[index].selectOptions = nullData;
     }
     setFormData(newFormData);
+    if (detailRefs.current[index]) {
+      detailRefs.current[index].focus();
+      setTimeout(() => {
+        detailRefs.current[index].openMenu();
+      }, 50);
+    };
   };
 
   const numberchange = async (

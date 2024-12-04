@@ -24,12 +24,22 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
       const cachedData = await localStorage.getItem('storeData');
       setSelectOptions(cachedData ? JSON.parse(cachedData) : []);
       const storeSelectupdate = await localStoreSet();
+      const authorityType = sessionStorage.getItem('authority');
+      if (authorityType === '本部') {
+        storeSelectupdate.push(
+          {
+            value: '在庫調整',
+            label: '在庫調整'
+          }
+        )
+      }
       setSelectOptions(storeSelectupdate);
       const setStore = localStorage.getItem('StoreSetName') ?? '';
       const setSelect: SelectOption = {
         value: setStore,
         label: setStore
       }
+      
       setStoreSelect(setSelect);
     }
     getLocalStorageSize()
