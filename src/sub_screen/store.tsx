@@ -296,7 +296,6 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   };
 
   const handleOpenDialog = () => {
-    console.log(formData)
     setDialogOpen(true);
   };
 

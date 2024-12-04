@@ -24,8 +24,13 @@ export default function LoginPage({ setCurrentPage, setisLoading }: SettingProps
     const loginjudgement = await Loginjudgement(UserName, PassWord, platform)
     if (loginjudgement['result'][3]){
       sessionStorage.setItem('LoginID',UserName);
-      sessionStorage.setItem('authority',loginjudgement['result'][5])
-      setCurrentPage('topPage')
+      sessionStorage.setItem('authority',loginjudgement['result'][5]);
+      if(loginjudgement['result'][5] !== 'スタッフ'){
+        setCurrentPage('topPage')
+      }else{
+        setCurrentPage('StaffPage')
+      }
+      
     }else {
       alert('ログインID、またはパスワードが間違っています')
     }

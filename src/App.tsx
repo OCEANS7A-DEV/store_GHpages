@@ -12,6 +12,7 @@ import LoadingDisplay from './sub_screen/loading.tsx';
 import LoginPage from './sub_screen/login.tsx';
 import InventoryMoving from './sub_screen/Moving_between_stores.tsx';
 import InventoryDirect from './sub_screen/DirectPurchase.tsx';
+import OceanCatalog from './sub_screen/Ocean_catalog.tsx';
 
 
 
@@ -46,6 +47,8 @@ export default function App() {
         return <MovingHistory setCurrentPage={setCurrentPage} setisLoading={setisLoading}/>;
       case 'DirectPage':
         return <InventoryDirect setCurrentPage={setCurrentPage} setisLoading={setisLoading}/>;
+      case 'StaffPage':
+        return <OceanCatalog setCurrentPage={setCurrentPage} setisLoading={setisLoading}/>;
       default:
         return null;
     }
