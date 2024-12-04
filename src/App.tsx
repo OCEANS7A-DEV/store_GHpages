@@ -2,21 +2,22 @@ import { useState } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import './App.css';
 import React, { useRef } from 'react';
-import StorePage from './sub_screen/store.tsx';
-import OrderHistory from './sub_screen/order_history.tsx';
-import InventoryUsed from './sub_screen/InventoryUsed.tsx';
-import UsedHistory from './sub_screen/UsedHistory.tsx';
-import MovingHistory from './sub_screen/MovingHistory.tsx'
-import StoreInventoryList from './sub_screen/StoreInventoryList.tsx'
-import LoadingDisplay from './sub_screen/loading.tsx';
-import LoginPage from './sub_screen/login.tsx';
-import InventoryMoving from './sub_screen/Moving_between_stores.tsx';
-import InventoryDirect from './sub_screen/DirectPurchase.tsx';
-import OceanCatalog from './sub_screen/Ocean_catalog.tsx';
+import StorePage from './sub_screen/store';
+import OrderHistory from './sub_screen/order_history';
+import InventoryUsed from './sub_screen/InventoryUsed';
+import UsedHistory from './sub_screen/UsedHistory';
+import MovingHistory from './sub_screen/MovingHistory'
+import StoreInventoryList from './sub_screen/StoreInventoryList'
+import LoadingDisplay from './sub_screen/loading';
+import LoginPage from './sub_screen/login';
+import InventoryMoving from './sub_screen/Moving_between_stores';
+import InventoryDirect from './sub_screen/DirectPurchase';
+import OceanCatalog from './sub_screen/Ocean_catalog';
+import CorrectionRequest from './sub_screen/CorrectionRequest';
 
 
 
-import TopPage from './top.tsx';
+import TopPage from './top';
 
 
 export default function App() {
@@ -49,6 +50,8 @@ export default function App() {
         return <InventoryDirect setCurrentPage={setCurrentPage} setisLoading={setisLoading}/>;
       case 'StaffPage':
         return <OceanCatalog setCurrentPage={setCurrentPage} setisLoading={setisLoading}/>;
+      case 'Request':
+        return <CorrectionRequest setCurrentPage={setCurrentPage} setisLoading={setisLoading}/>;
       default:
         return null;
     }
