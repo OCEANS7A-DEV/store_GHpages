@@ -68,9 +68,9 @@ export const searchStr = async (searchword: string) => {
       productName.indexOf(swHZ) !== -1
     );
   });
-  const FiltereResult = result.find((item) => item[2] !=="");
-  console.log(FiltereResult)
-  return result;
+  const FiltereResult = result.filter(row => row[2] !== "");
+  const Last = FiltereResult.filter(row => Number.isInteger(row[1]));
+  return Last;
 };
 
 export const FormDataKeepSet = async (data: any, storename: any) => {

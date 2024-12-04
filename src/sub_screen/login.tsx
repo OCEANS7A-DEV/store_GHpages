@@ -2,6 +2,8 @@ import React, { useState, useEffect, ChangeEvent } from 'react';
 import '../css/login.css';
 import '../css/top.css';
 import { Loginjudgement } from '../backend/Server_end';
+import { localStorageSet } from '../backend/WebStorage';
+
 
 interface LoginInputs {
   username: string;
@@ -28,6 +30,7 @@ export default function LoginPage({ setCurrentPage, setisLoading }: SettingProps
       if(loginjudgement['result'][5] !== 'スタッフ'){
         setCurrentPage('topPage')
       }else{
+        await localStorageSet();
         setCurrentPage('StaffPage')
       }
       

@@ -1,7 +1,9 @@
 import React, { useState, ChangeEvent } from 'react';
 import { FormDataKeepSet, KeepFormDataGet } from '../backend/WebStorage';
-import WordSearch from './ProductSearchWord';
-import DetailDialog from './ProductdetailDialog';
+import WordSearch from './catalogSearch';
+import CatalogDetailDialog from './catalog_Dialog';
+import '../css/Ocean_catalog.css';
+
 
 
 interface SettingProps {
@@ -9,11 +11,6 @@ interface SettingProps {
   setisLoading: (value: boolean) => void;
 }
 
-const productSearch = (code: number) => {
-  const storageGet = JSON.parse(sessionStorage.getItem('data') ?? '');
-  const product = storageGet.find(item => item[1] === code);
-  return product;
-};
 
 export default function OceanCatalog({ setCurrentPage, setisLoading }: SettingProps) {
   const [searchData, setsearchData] = useState<any>([]);
@@ -69,31 +66,29 @@ export default function OceanCatalog({ setCurrentPage, setisLoading }: SettingPr
 
   return (
     <div className="Staff">
-      <div className="searchArea">
-          <WordSearch
-            className="searcharea"
-            setsearchData={setsearchData}
-            setDetailisDialogOpen={setDetailisDialogOpen}
-            setDetailIMAGE={setDetailIMAGE}
-            setisLoading={setisLoading}
-            setsearchtabledata={setsearchtabledata}
-            searchtabledata={searchtabledata}
-            setsearchDataIndex={setsearchDataIndex}
-            insert={DetailhandleConfirmAdd}
-          />
-          <DetailDialog
-            Data={searchData}
-            title={searchData[2]}
-            message={DetailMessage}
-            onConfirm={DetailhandleConfirm}
-            isOpen={DetailisDialogOpen}
-            image={DetailIMAGE}
-            insert={DetailhandleConfirmAdd}
-            nextDatail={nextDatail}
-            beforeDatail={beforeDatail}
-            searchtabledata={searchtabledata} searchDataIndex={0}
-            addButtonName='注文に追加'
-          />
+      <div className="StaffsearchArea">
+        <WordSearch
+          className="searcharea"
+          setsearchData={setsearchData}
+          setDetailisDialogOpen={setDetailisDialogOpen}
+          setDetailIMAGE={setDetailIMAGE}
+          setisLoading={setisLoading}
+          setsearchtabledata={setsearchtabledata}
+          searchtabledata={searchtabledata}
+          setsearchDataIndex={setsearchDataIndex}
+        />
+        <CatalogDetailDialog
+          Data={searchData}
+          title={searchData[2]}
+          message={DetailMessage}
+          onConfirm={DetailhandleConfirm}
+          isOpen={DetailisDialogOpen}
+          image={DetailIMAGE}
+          insert={DetailhandleConfirmAdd}
+          nextDatail={nextDatail}
+          beforeDatail={beforeDatail}
+          searchtabledata={searchtabledata} searchDataIndex={0}
+        />
       </div>
     </div>
   );
