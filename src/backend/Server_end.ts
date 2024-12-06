@@ -57,7 +57,7 @@ export const ColorListGet = async (
   }
 };
 
-export const ListGet = async () => {
+export const ListGet = async (columnName: string) => {
   try {
     const response = await fetch(URL_STRING, {
       method: 'POST',
@@ -66,8 +66,8 @@ export const ListGet = async () => {
       },
       body: JSON.stringify({
         sheetName: 'その他一覧',
-        action: 'storeGet',
-        select: '店舗一覧',
+        action: 'ListGet',
+        select: columnName,
         sub_action: 'get',
       })
     });
@@ -520,7 +520,6 @@ export const Loginjudgement = async (
     }
     
     const result = await response.json();
-    console.log(result)
     return result;
   }catch(e){
     return (e);
