@@ -4,7 +4,7 @@ import Select from 'react-select';
 //import '../css/store.css';
 //import '../css/order_history.css';
 import '../css/usedHistory.css';
-import { HistoryGet } from '../backend/Server_end.ts';
+import { HistoryGet } from '../backend/Server_end';
 
 
 const Yearlist = () => {
