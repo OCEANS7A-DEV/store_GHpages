@@ -53,7 +53,7 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
   const setPage = (pageName) => {
     if (storeSelect) {
       const set = storeSelect.value;
-      localExclusion(set);
+      localExclusion(set, pageName);
       
       localStorage.setItem('StoreSetName', set);
       setCurrentPage(pageName);

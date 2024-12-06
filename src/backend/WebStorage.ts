@@ -58,10 +58,12 @@ export const localStorageSet = async (
 };
 
 
-export const localExclusion = (store: string) => {
+export const localExclusion = (store: string, pageName: string) => {
   const data = JSON.parse(sessionStorage.getItem('data'));
   let result = [];
-  if(store !== "SQ"){
+  if(store !== "SQ" && pageName === 'used'){
+    result = data.filter(row => row[0] !== "社外製品等" && Number.isInteger(row[1]));
+  }else if(pageName === 'storePage' || pageName === 'DirectPage'){
     result = data.filter(row => row[0] !== "社外製品等" && Number.isInteger(row[1]));
   }else{
     result = data.filter(row => Number.isInteger(row[1]));
