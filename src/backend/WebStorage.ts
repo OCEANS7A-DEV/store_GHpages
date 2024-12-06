@@ -64,7 +64,7 @@ export const localExclusion = (store: string) => {
   if(store !== "SQ"){
     result = data.filter(row => row[0] !== "社外製品等" && Number.isInteger(row[1]));
   }else{
-    result = data.filter(Number.isInteger(row[1]));
+    result = data.filter(row => Number.isInteger(row[1]));
   }
   
   sessionStorage.setItem('data', JSON.stringify(result));
