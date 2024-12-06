@@ -298,7 +298,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
     insertPost();
     setusedDialogOpen(false);
     setisLoading(false);
-    alert('使用商品の入力が完了しました。\n修正があれば本部連絡ください。');
+    alert('使用商品の入力が完了しました。\n修正があれば修正依頼より修正内容を入力し\n送信してください。');
     localStorage.setItem('Already_ordered', JSON.stringify(usedformData));
     setusedFormData(initialusedFormData);
     localStorage.removeItem(storename);

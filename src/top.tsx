@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
-import { localStorageSet, localStoreSet, localStoreSetCash } from './backend/WebStorage.ts';
+import { localStorageSet, localStoreSet, localExclusion } from './backend/WebStorage';
 
 import './css/top.css';
 
@@ -53,6 +53,8 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
   const setPage = (pageName) => {
     if (storeSelect) {
       const set = storeSelect.value;
+      localExclusion(set);
+      
       localStorage.setItem('StoreSetName', set);
       setCurrentPage(pageName);
     } else {

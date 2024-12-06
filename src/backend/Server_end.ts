@@ -190,7 +190,7 @@ export const AllData = async(
       {
         method: 'POST',
         body: JSON.stringify({
-          action: 'test',
+          action: 'allData',
           sub_action: 'get',
           sheetName: '在庫一覧',
         })
