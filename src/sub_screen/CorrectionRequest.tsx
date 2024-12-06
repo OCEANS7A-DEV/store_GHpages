@@ -19,7 +19,7 @@ interface SelectOption {
 
 export default function CorrectionRequest({ setCurrentPage, setisLoading }: SettingProps) {
   const [selectOptions, setSelectOptions] = useState<SelectOption[]>([]);
-  const [subjectSelect, setSubjectSelect] = useState<SelectOption>();
+  const [subjectSelect, setSubjectSelect] = useState(null);
   const [RequestDetail, setRequestDetail] = useState('');
 
   const clickpage = () => {
@@ -32,15 +32,24 @@ export default function CorrectionRequest({ setCurrentPage, setisLoading }: Sett
       修正対象: subjectSelect,
       修正内容: RequestDetail
     }
-    const result = await GASPostInsert('CorrectionRequestInsert', '修正依頼', RequestInsertList);
-    if(result['result']){
+    if (subjectSelect === null){
+      alert('修正依頼対象が選択されていません')
       setisLoading(false);
-      alert('修正依頼を送信しました。');
+    }else if (RequestDetail === ''){
+      alert('修正内容が入力されていません')
+      setisLoading(false);
     }else{
-      setisLoading(false);
-      alert('修正依頼の送信が失敗しました。');
+      const result = await GASPostInsert('CorrectionRequestInsert', '修正依頼', RequestInsertList);
+      if(result['result']){
+        setisLoading(false);
+        alert('修正依頼を送信しました。');
+        setSubjectSelect(null);
+        setRequestDetail('');
+      }else{
+        setisLoading(false);
+        alert('修正依頼の送信が失敗しました。');
+      }
     }
-    
   };
 
   const clickRequestHistory = () => {
@@ -58,7 +67,7 @@ export default function CorrectionRequest({ setCurrentPage, setisLoading }: Sett
   useEffect(() => {
     localCorrectionRequestListSet()
     const cachedData = localStorage.getItem('CorrectionRequestList');
-      setSelectOptions(cachedData ? JSON.parse(cachedData) : []);
+    setSelectOptions(cachedData ? JSON.parse(cachedData) : []);
   },[])
 
   return (
