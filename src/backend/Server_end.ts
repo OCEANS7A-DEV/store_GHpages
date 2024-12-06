@@ -88,21 +88,18 @@ export const GASPostInsert = async (
   sheet: string,
   datail: any,
 ) => {
-  console.log(datail);
   try {
+    const id = sessionStorage.getItem('LoginID')
     const response = await fetch(
       URL_STRING,
       {
         method: 'POST',
-        mode: 'no-cors',
-        headers: {
-          "Content-Type" : "application/x-www-form-urlencoded",
-        },
         body: JSON.stringify({
           action: actionName,
-          sub_action: 'post',
+          sub_action: 'get',
           sheetName: sheet,
           data: datail,
+          insertID: id
         }),
       },
     );
@@ -110,7 +107,7 @@ export const GASPostInsert = async (
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const result = await response.json();
-    console.log(result);
+    return result
   } catch (error) {
     console.error('Error:', error);
     throw error;

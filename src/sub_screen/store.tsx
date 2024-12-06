@@ -6,8 +6,8 @@ import ConfirmDialog from './orderDialog';
 import { FormDataKeepSet, KeepFormDataGet } from '../backend/WebStorage';
 import WordSearch from './ProductSearchWord';
 import SaveConfirmDialog from './SaveConfirmDialog';
-import DetailDialog from './ProductdetailDialog.tsx';
-import NonConfirmDialog from './NonOrderDialog.tsx';
+import DetailDialog from './ProductdetailDialog';
+import NonConfirmDialog from './NonOrderDialog';
 
 interface SelectData {
   value: string;

@@ -19,7 +19,7 @@
 
 
 
-.Request_Select {
+.Request_Select_Area {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -51,4 +51,10 @@
   outline: none;
   border:1px solid #2ca9e1;
   box-shadow: 0 0 20px 0 rgba(44, 169, 225, 1);
+}
+
+
+.Request_Select__control {
+  margin-bottom: 40px;
+  min-width: 200px;
 }

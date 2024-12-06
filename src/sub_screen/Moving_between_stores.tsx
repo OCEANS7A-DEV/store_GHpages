@@ -285,7 +285,7 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
     insertPost();
     setusedDialogOpen(false);
     setisLoading(false);
-    alert('店舗間移動の入力が完了しました。\n修正があれば本部連絡ください。');
+    alert('店舗間移動の入力が完了しました。\n修正があれば修正依頼より修正内容を入力し\n送信してください。');
     localStorage.setItem('Already_ordered', JSON.stringify(usedformData));
     setusedFormData(initialusedFormData);
     localStorage.removeItem(storename);

@@ -1,7 +1,8 @@
 import React, { useState, useRef, ChangeEvent, useEffect } from 'react';
 import { localCorrectionRequestListSet } from '../backend/WebStorage';
+
+import { GASPostInsert } from '../backend/Server_end';
 import Select from 'react-select';
-import '../css/store.css';
 import '../css/Request.css';
 
 
@@ -17,23 +18,29 @@ interface SelectOption {
 }
 
 export default function CorrectionRequest({ setCurrentPage, setisLoading }: SettingProps) {
-  const [selectStore, setSelectStore] = useState('');
   const [selectOptions, setSelectOptions] = useState<SelectOption[]>([]);
   const [subjectSelect, setSubjectSelect] = useState<SelectOption>();
-  const [RequestDate, setRequestDate] = useState('');
   const [RequestDetail, setRequestDetail] = useState('');
 
   const clickpage = () => {
     setCurrentPage('topPage');
   };
 
-  const RequestInsert = () => {
+  const RequestInsert = async () => {
+    setisLoading(true);
     const RequestInsertList = {
       修正対象: subjectSelect,
-      修正対象日: RequestDate,
       修正内容: RequestDetail
     }
-    console.log(RequestInsertList);
+    const result = await GASPostInsert('CorrectionRequestInsert', '修正依頼', RequestInsertList);
+    if(result['result']){
+      setisLoading(false);
+      alert('修正依頼を送信しました。');
+    }else{
+      setisLoading(false);
+      alert('修正依頼の送信が失敗しました。');
+    }
+    
   };
 
   const clickRequestHistory = () => {
@@ -44,16 +51,11 @@ export default function CorrectionRequest({ setCurrentPage, setisLoading }: Sett
     setSubjectSelect(selectedOption);
   };
 
-  const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setRequestDate(event.target.value)
-  };
-
   const handleDetailChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setRequestDetail(event.target.value)
   };
 
   useEffect(() => {
-    setSelectStore(localStorage.getItem('StoreSetName'))
     localCorrectionRequestListSet()
     const cachedData = localStorage.getItem('CorrectionRequestList');
       setSelectOptions(cachedData ? JSON.parse(cachedData) : []);
@@ -62,29 +64,19 @@ export default function CorrectionRequest({ setCurrentPage, setisLoading }: Sett
   return (
     <div className="RequestWindow">
       <div className="window_top">
-        <h2 className='store_name'> 修正依頼: {selectStore} 店</h2>
+        <h2 className='store_name'>修正依頼</h2>
       </div>
       <div className='form_area'>
         <div className="Request_area">
-          <div className="Request_Select">
+          <div className="Request_Select_Area">
             <Select
-              className='Select_custom'
-              placeholder="修正対象"
+              classNamePrefix='Request_Select'
+              placeholder="修正依頼対象"
               isSearchable={true}
               value={subjectSelect}
               onChange={handleSubjectChange}
               options={selectOptions}
             />  
-          </div>
-          <div className="Request_datearea">
-            <h3 className="Request_h3">修正内容の修正対象日:　</h3>
-            <input
-              className="Request_dateinput"
-              type="date"
-              value={RequestDate}
-              max="9999-12-31"
-              onChange={(e) => handleDateChange(e)}
-            />
           </div>
           <textarea
             className="Request_textarea"
