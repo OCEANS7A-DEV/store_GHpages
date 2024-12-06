@@ -35,7 +35,7 @@ export default function CorrectionRequest({ setCurrentPage, setisLoading }: Sett
     if (subjectSelect === null){
       alert('修正依頼対象が選択されていません')
       setisLoading(false);
-    }else if (RequestDetail === ''){
+    }else if (RequestDetail.replace(/(\r\n|\n|\r)/g, '') === ''){
       alert('修正内容が入力されていません')
       setisLoading(false);
     }else{
