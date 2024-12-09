@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
-import '../css/usedHistory.css';
-import { MovingHistoryGet } from '../backend/Server_end';
+import '../css/RequestHistory.css';
+import { RequestHistoryGet } from '../backend/Server_end';
 
 
 
@@ -49,7 +49,7 @@ interface SettingProps {
 }
 
 
-export default function UsedHistory({ setCurrentPage, setisLoading }: SettingProps) {
+export default function RequestHistory({ setCurrentPage, setisLoading }: SettingProps) {
   const [years, setyears] = useState<SelectOption>();
   const [yearsOptions, setyearsOptions] = useState<SelectOption[]>([]);
   const [months, setmonths] = useState<SelectOption>();
@@ -66,7 +66,7 @@ export default function UsedHistory({ setCurrentPage, setisLoading }: SettingPro
   };
 
   const clickpage = () => {
-    setCurrentPage('used');
+    setCurrentPage('Request');
   };
 
   const historysearch = async () => {
@@ -76,9 +76,17 @@ export default function UsedHistory({ setCurrentPage, setisLoading }: SettingPro
     }
     setisLoading(true);
     const searchDate = `${years.value}/${months.value}`;
-    const result = await MovingHistoryGet(searchDate,'修正依頼');
+    const result = await RequestHistoryGet(searchDate,'修正依頼');
     sethistorydata(result);
     setisLoading(false);
+  };
+
+  const colorset = (value: string) => {
+    if (value == '修正済'){
+      return 'green';
+    }else if(value == '未修正'){
+      return 'red';
+    }
   };
 
 
@@ -119,33 +127,34 @@ export default function UsedHistory({ setCurrentPage, setisLoading }: SettingPro
           <table className="usedhistory-table">
             <thead>
                 <tr>
-                  <th className="usedDate">月日</th>
-                  <th className="usedCode">商品ナンバー</th>
-                  <th className="usedName">商品名</th>
-                  <th className="usedNumber">数量</th>
-                  <th className="usedMethod">使用方法</th>
-                  <th className="usedIndividual">個人購入</th>
-                  <th className="usedremarks">備考</th>
+                  <th className="requestDate">送信日時</th>
+                  <th className="requestCode">修正対象</th>
+                  <th className="requestName">修正内容</th>
+                  <th className="requestNumber">修正状態</th>
                 </tr>
               </thead>
           </table>
         </div>
         <div className='historydata-table'>
-          <table className="usedhistory-table">
+          <table className="requesthistory-table">
             <tbody>
               {historydata.map((data, index) => (
                 <tr key={index}>
-                  <td className="dataDate">{new Date(data[0]).toLocaleDateString('ja-JP', {
+                  <td className="requestDate">{new Date(data[3]).toLocaleDateString('ja-JP', {
                       year: 'numeric',
                       month: '2-digit',
                       day: '2-digit'
                       })}</td>
-                  <td className="dataCode">{data[2]}</td>
-                  <td className="dataName">{data[3]}</td>
-                  <td className="dataNumber">{data[4]}</td>
-                  <td className="dataMethod">{data[5]}</td>
-                  <td className="dataIndividual">{data[6]}</td>
-                  <td className="dataRemarks">{data[7]}</td>
+                  <td className="requestCode">{data[0]}</td>
+                  <td className="requestName">
+                    {data[1].split('\n').map((line, index) => (
+                      <React.Fragment key={index}>
+                        {line}
+                        <br />
+                      </React.Fragment>
+                    ))}
+                  </td>
+                  <td className="requestNumber" style={{color: colorset(data[4])}}>{data[4]}</td>
                 </tr>
               ))}
             </tbody>
@@ -154,7 +163,7 @@ export default function UsedHistory({ setCurrentPage, setisLoading }: SettingPro
       </div>
       <div className="button_area">
         <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>
-          ＜＜ 使用商品入力へ
+          ＜＜ 修正依頼入力へ
         </a>
       </div>
     </div>

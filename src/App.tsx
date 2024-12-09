@@ -14,6 +14,7 @@ import InventoryMoving from './sub_screen/Moving_between_stores';
 import InventoryDirect from './sub_screen/DirectPurchase';
 import OceanCatalog from './sub_screen/Ocean_catalog';
 import CorrectionRequest from './sub_screen/CorrectionRequest';
+import RequestHistory from './sub_screen/Request_History';
 
 
 
@@ -52,6 +53,8 @@ export default function App() {
         return <OceanCatalog setCurrentPage={setCurrentPage} setisLoading={setisLoading}/>;
       case 'Request':
         return <CorrectionRequest setCurrentPage={setCurrentPage} setisLoading={setisLoading}/>;
+      case 'RequestHistory':
+        return <RequestHistory setCurrentPage={setCurrentPage} setisLoading={setisLoading}/>;
       default:
         return null;
     }

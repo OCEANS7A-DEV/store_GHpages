@@ -53,7 +53,7 @@ export default function CorrectionRequest({ setCurrentPage, setisLoading }: Sett
   };
 
   const clickRequestHistory = () => {
-
+    setCurrentPage('RequestHistory');
   };
 
   const handleSubjectChange= (selectedOption: SelectOption | []) => {
@@ -100,9 +100,9 @@ export default function CorrectionRequest({ setCurrentPage, setisLoading }: Sett
         <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>
           ＜＜ 戻る
         </a>
-        {/* <a className="buttonUnderlineSt" type="button" onClick={clickRequestHistory}>
+        <a className="buttonUnderlineSt" type="button" onClick={clickRequestHistory}>
           修正依頼履歴へ
-        </a> */}
+        </a>
         <a className="buttonUnderlineSt" type="button" onClick={RequestInsert}>修正依頼送信 ＞＞</a>
       </div>
     </div>

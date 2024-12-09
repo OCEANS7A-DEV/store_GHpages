@@ -311,7 +311,40 @@ export const MovingHistoryGet = async(
       throw new Error(`HTTP error! status: ${response.status}`)
     }
     const result = await response.json();
-    console.log(result)
+    //console.log(result)
+    return result;
+  }catch(e){
+    return (e);
+  }
+};
+
+export const RequestHistoryGet = async(
+  SearchDate: string,
+  sheetname: string
+) => {
+  try {
+    const loginID = sessionStorage.getItem('LoginID');
+    const response = await fetch(
+      URL_STRING,
+      {
+        method: 'POST',
+        headers: {
+          "Content-Type" : "application/x-www-form-urlencoded",
+        },
+        body: JSON.stringify({
+          action: 'RequestGet',
+          sub_action: 'get',
+          date: SearchDate,
+          sheetName: sheetname,
+          id: loginID,
+        })
+      },
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const result = await response.json();
+    //console.log(result)
     return result;
   }catch(e){
     return (e);
@@ -421,7 +454,7 @@ export const ProcessingMethodGet = async (
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const result = await response.json();
-    console.log(result)
+    //console.log(result)
     return result;
   } catch (error) {
     console.error('Error:', error);

@@ -93,7 +93,7 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
       const dataget = async () => {
         try {
           const Date = await PeriodDateGet();
-          console.log(Date)
+          //console.log(Date)
           setPeriodDate(Date);
           const orderData = await HistoryGet(`${Date[0]}/${Date[1]}`, storename, '店舗へ');
           const data = await StoreInventoryGet(storename);
