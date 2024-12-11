@@ -4,7 +4,7 @@ import '../css/InventoryUsed.css';
 import { InventorySearch, GASPostInsertStore, processlistGet, ProcessingMethodGet } from '../backend/Server_end';
 import UsedDialog from './usedDialog';
 import WordSearch from './ProductSearchWord';
-import DetailDialog from './ProductdetailDialog.tsx';
+import DetailDialog from './ProductdetailDialog';
 
 
 
@@ -62,8 +62,8 @@ const ProcessingMethodList = async () => {
   const testMethod = MethodList.filter((row) => row[0] !== "");
 
   ProcessingMethod.splice(0, ProcessingMethod.length, ...testMethod.map(method => ({
-    value: method,
-    label: method,
+    value: method[0],
+    label: method[0],
   })));
   // ローカルストレージに保存
   localStorage.setItem('processMethodList', JSON.stringify(ProcessingMethod));
@@ -318,24 +318,30 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
   const DetailhandleConfirmAdd = async (data: any) => {
     const Vacant = usedformData.findIndex(({ 商品コード }) => 商品コード === '');
     let returnData = [...usedformData];
-    const newData = {
+    const newData: any = {
       商品コード: data[1],
-      商品名: data[2]
+      商品名: data[2],
     };
-
-    if (Vacant !== -1){
-      if (!usedformData[Vacant].月日){
-        newData.月日 = usedformData[Vacant-1].月日
+  
+    console.log(Vacant);
+  
+    if (Vacant !== -1) {
+      // Vacant のチェックと 月日 のガード処理
+      if (usedformData[Vacant] && !usedformData[Vacant].月日) {
+        newData.月日 = usedformData[Vacant - 1]?.月日 || 'デフォルト値'; // デフォルト値を設定
       }
       returnData[Vacant] = {
         ...returnData[Vacant],
-        ...newData
+        ...newData,
       };
-    }else{
+    } else {
       setADDType(true);
-      if (!usedformData[returnData.length - 1].月日){
-        newData.月日 = usedformData[returnData.length - 1].月日
+  
+      // returnData の長さに基づく 月日 のガード処理
+      if (usedformData[returnData.length - 1] && !usedformData[returnData.length - 1].月日) {
+        newData.月日 = usedformData[returnData.length - 1]?.月日 || 'デフォルト値';
       }
+  
       returnData.push({
         月日: newData.月日,
         商品コード: newData.商品コード,
@@ -344,12 +350,16 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
         使用方法: [],
         個人購入: '',
         備考: '',
-        ProcessingMethod: []
+        ProcessingMethod: [],
       });
     }
+  
+    // quantityRefs チェック
     if (quantityRefs.current[Vacant]) {
       quantityRefs.current[Vacant].focus();
     }
+  
+    // データの更新
     await setusedFormData(returnData);
     setDetailisDialogOpen(false);
   };
