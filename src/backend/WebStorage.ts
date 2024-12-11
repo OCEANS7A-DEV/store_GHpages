@@ -59,7 +59,6 @@ export const localStorageSet = async (
 
 export const localExclusion = (store: string, pageName: string) => {
   const data = JSON.parse(sessionStorage.getItem('data'));
-  console.log(data)
   let result = [];
   if(store !== "SQ" && pageName === 'used'){
     result = data.filter(row => row[0] !== "社外製品等" && Number.isInteger(row[1]));
