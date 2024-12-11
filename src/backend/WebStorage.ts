@@ -57,7 +57,6 @@ export const localStorageSet = async (
   sessionStorage.setItem('data', JSON.stringify(data));
 };
 
-
 export const localExclusion = (store: string, pageName: string) => {
   const data = JSON.parse(sessionStorage.getItem('data'));
   console.log(data)
