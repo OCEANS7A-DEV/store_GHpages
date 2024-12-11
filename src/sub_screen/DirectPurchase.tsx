@@ -195,8 +195,8 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
         } else {
           addNewForm();
           setTimeout(() => {
-            if (codeRefs.current[nextIndex]) {
-              codeRefs.current[nextIndex].focus();
+            if (dateRefs.current[nextIndex]) {
+              dateRefs.current[nextIndex].focus();
             }
           }, 0);
         }
@@ -420,6 +420,13 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
                 onChange={(e) => numberchange(index, '商品コード', e)}
                 onKeyDown={(e) => handleKeyDown(index, e, '商品コード')}
                 onBlur={() => handleBlur(index, '商品コード')}
+                onFocus={() => {
+                  const newusedFormData = [...usedformData];
+                  if(!usedformData[index].月日 && index > 0){
+                    newusedFormData[index].月日 = usedformData[index-1].月日
+                    setusedFormData(newusedFormData);
+                  }
+                }}
                 inputMode="numeric"
               />
               <input
