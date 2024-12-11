@@ -401,7 +401,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
   };
 
   useEffect(() => {
-    const method = JSON.parse(localStorage.getItem('processMethodList'));
+    const method = JSON.parse(localStorage.getItem('processMethodList') || "[]");
     console.log(method)
   
     // ローカルストレージのデータをProcessingMethodに上書き
