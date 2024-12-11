@@ -59,11 +59,12 @@ const ProcessingMethodList = async () => {
   const MethodList = await ProcessingMethodGet();
   
   // 新しい配列を生成して上書き
-  ProcessingMethod.splice(0, ProcessingMethod.length, ...MethodList.map(method => ({
+  const testMethod = MethodList.filter((row) => row[0] !== "");
+
+  ProcessingMethod.splice(0, ProcessingMethod.length, ...testMethod.map(method => ({
     value: method,
     label: method,
   })));
-
   // ローカルストレージに保存
   localStorage.setItem('processMethodList', JSON.stringify(ProcessingMethod));
 };
@@ -390,16 +391,17 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
   };
 
   useEffect(() => {
-    const method = JSON.parse(localStorage.getItem('processMethodList') || "[]");
+    const method = JSON.parse(localStorage.getItem('processMethodList'));
+    console.log(method)
   
     // ローカルストレージのデータをProcessingMethodに上書き
     ProcessingMethod.splice(0, ProcessingMethod.length, ...method);
   
     // ProcessingMethodListでデータを更新
-    (async () => {
-      await ProcessingMethodList();
-      await processlistGet();
-    })();
+
+    ProcessingMethodList();
+    processlistGet();
+
   }, []);
 
   useEffect(() => {
