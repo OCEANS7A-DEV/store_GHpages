@@ -67,7 +67,7 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
   const storename = localStorage.getItem('StoreSetName');
   const codeRefs = useRef([]);
   const quantityRefs = useRef([]);
-  const personalRefs = useRef([]);
+  const dateRefs = useRef([]);
   const remarksRefs = useRef([]);
   const message = "店舗直接購入のデータは以下の通りです\n以下の内容でよろしければOKをクリックしてください\n内容の変更がある場合にはキャンセルをクリックしてください";
   const [searchData, setsearchData] = useState<any>([]);
@@ -177,6 +177,10 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
       if (fieldType === '商品コード') {
         if (quantityRefs.current[index]) {
           quantityRefs.current[index].focus();
+        }
+      }else if (fieldType === '月日'){
+        if (codeRefs.current[index]) {
+          codeRefs.current[index].focus();
         }
       } else if (fieldType === '数量'){
         if (remarksRefs.current[index]) {
@@ -399,9 +403,11 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
               <input
                 type="date"
                 className="insert_date"
-                max="9999-12-31"
                 value={data.月日}
+                max="9999-12-31"
+                ref={(el) => (dateRefs.current[index] = el)}
                 onChange={(e) => handleChange(index, '月日', e)}
+                onKeyDown={(e) => handleKeyDown(index, e, '月日')}
               />            
               <input
                 title="入力は半角のみです"
