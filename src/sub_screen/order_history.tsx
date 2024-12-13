@@ -150,11 +150,6 @@ export default function OrderHistory({ setCurrentPage, setisLoading }: SettingPr
   useEffect(() => {
     const yearlist = Yearlist();
     setyearsOptions(yearlist);
-    const Explanationimageset = async () => {
-      const ImageURL = await ExplanationImageGet('進行度合い説明');
-      setexplanationIMAGE(ImageURL);
-    };
-    Explanationimageset();
     const processlistdata = localStorage.getItem('processlist');
     setprocesslist(JSON.parse(processlistdata));
     setprogressmax(Object.keys(JSON.parse(processlistdata)).length);

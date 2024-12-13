@@ -65,7 +65,6 @@ export default function CorrectionRequest({ setCurrentPage, setisLoading }: Sett
   };
 
   useEffect(() => {
-    localCorrectionRequestListSet()
     const cachedData = localStorage.getItem('CorrectionRequestList');
     setSelectOptions(cachedData ? JSON.parse(cachedData) : []);
   },[])

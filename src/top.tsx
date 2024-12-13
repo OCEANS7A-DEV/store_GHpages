@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
-import { localStorageSet, localStoreSet, localExclusion } from './backend/WebStorage';
+import { localStorageSet, localStoreSet, localExclusion, localCorrectionRequestListSet } from './backend/WebStorage';
 
 import './css/top.css';
 
@@ -20,6 +20,7 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
 
   useEffect(() => {
     localStorageSet();
+    localCorrectionRequestListSet()
     const getLocalStorageSize = async () => {
       const cachedData = await localStorage.getItem('storeData');
       setSelectOptions(cachedData ? JSON.parse(cachedData) : []);

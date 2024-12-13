@@ -5,7 +5,7 @@ import * as jaconv from 'jaconv';
 export default function main(){}
 
 export const localStoreSet = async () => {
-  const storeData = await ListGet('店舗一覧');
+  const storeData = await ListGet('A2:B');
   const options = storeData.map((store: string) => ({
     value: store,
     label: store,
@@ -15,7 +15,7 @@ export const localStoreSet = async () => {
 }
 
 export const localCorrectionRequestListSet = async () => {
-  const ListData = await ListGet('修正対象');
+  const ListData = await ListGet('Q2:Q');
   const options = ListData.map((List: string) => ({
     value: List,
     label: List,

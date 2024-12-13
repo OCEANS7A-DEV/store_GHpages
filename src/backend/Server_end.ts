@@ -1,4 +1,10 @@
 const URL_STRING = "https://script.google.com/macros/s/AKfycbyzFig3cgYpdipQY0jXwVq0AiF0AE-a2sPZCB-UIel6cgZb5VrExHpzhIVKvZrRkHnZ/exec";
+
+const LOGIN_URL = 'https://script.google.com/macros/s/AKfycbzST1TSt2AuocFqtXj3KMhoyb26BTzFmhzWIMHfe4bVDzSEhmMmCBuwMU-sXp_DyxLc/exec';
+
+const Get_URL = 'https://script.google.com/macros/s/AKfycbwdZ3lhe2QH2BChceXrTsxzGAkUd9EgZ2AZ7pWXWlMJvwtOtOcjXDTOXUmdBRJgCs25/exec';
+
+
 export default async function main() {};
 
 export const InventorySearch = async(
@@ -8,12 +14,11 @@ export const InventorySearch = async(
 ) => {
   try {
     const response = await fetch(
-      URL_STRING,
+      Get_URL,
       {
         method: 'POST',
         body: JSON.stringify({
           action: 'inventoryGet',
-          sub_action: 'get',
           searchWord: SearchWord,
           sheetName: sheetname,
           searchColumn: SearchColumn,
@@ -31,16 +36,17 @@ export const InventorySearch = async(
 };
 
 
+
+
 export const ColorListGet = async (
 ) => {
   try {
     const response = await fetch(
-      URL_STRING,
+      Get_URL,
       {
         method: 'POST',
         body: JSON.stringify({
           action: 'colorsGet',
-          sub_action: 'get',
           sheetName: '商品詳細一覧',
           searchColumn: '商品コード',
         })
@@ -50,6 +56,7 @@ export const ColorListGet = async (
       throw new Error(`HTTP error! status: ${response.status}`)
     }
     const result = await response.json();
+    //console.log(result)
     return result;
 
   }catch(e){
@@ -57,9 +64,9 @@ export const ColorListGet = async (
   }
 };
 
-export const ListGet = async (columnName: string) => {
+export const ListGet = async (Range: string) => {// Rangeは例'A2:B'のような形
   try {
-    const response = await fetch(URL_STRING, {
+    const response = await fetch(Get_URL, {
       method: 'POST',
       headers: {
         "Content-Type" : "application/x-www-form-urlencoded",
@@ -67,14 +74,14 @@ export const ListGet = async (columnName: string) => {
       body: JSON.stringify({
         sheetName: 'その他一覧',
         action: 'ListGet',
-        select: columnName,
-        sub_action: 'get',
+        ranges: Range,
       })
     });
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const result = await response.json();
+    //console.log(result)
     return result;
   } catch (error) {
     console.error('Error:', error);
@@ -183,12 +190,11 @@ export const AllData = async(
 ) => {
   try {
     const response = await fetch(
-      URL_STRING,
+      Get_URL,
       {
         method: 'POST',
         body: JSON.stringify({
           action: 'allData',
-          sub_action: 'get',
           sheetName: '在庫一覧',
         })
       },
@@ -213,8 +219,6 @@ export const judgmentPOST = async(
         method: 'POST',
         body: JSON.stringify({
           action: 'judgment',
-          sub_action: 'get',
-          sheetName: '店舗へ',
         })
       },
     );
@@ -262,7 +266,7 @@ export const HistoryGet = async(
 ) => {
   try {
     const response = await fetch(
-      "https://script.google.com/macros/s/AKfycbyzFig3cgYpdipQY0jXwVq0AiF0AE-a2sPZCB-UIel6cgZb5VrExHpzhIVKvZrRkHnZ/exec",
+      Get_URL,
       {
         method: 'POST',
         headers: {
@@ -270,7 +274,6 @@ export const HistoryGet = async(
         },
         body: JSON.stringify({
           action: 'historyGet',
-          sub_action: 'get',
           date: SearchDate,
           sheetName: sheetname,
           store: Searchstore,
@@ -293,7 +296,7 @@ export const MovingHistoryGet = async(
 ) => {
   try {
     const response = await fetch(
-      "https://script.google.com/macros/s/AKfycbyzFig3cgYpdipQY0jXwVq0AiF0AE-a2sPZCB-UIel6cgZb5VrExHpzhIVKvZrRkHnZ/exec",
+      Get_URL,
       {
         method: 'POST',
         headers: {
@@ -325,7 +328,7 @@ export const RequestHistoryGet = async(
   try {
     const loginID = sessionStorage.getItem('LoginID');
     const response = await fetch(
-      URL_STRING,
+      Get_URL,
       {
         method: 'POST',
         headers: {
@@ -358,7 +361,7 @@ export const ExplanationImageGet = async(
 ) => {
   try {
     const response = await fetch(
-      URL_STRING,
+      Get_URL,
       {
         method: 'POST',
         headers: {
@@ -385,7 +388,7 @@ export const ExplanationImageGet = async(
 export const processlistGet = async () => {
   try {
     const response = await fetch(
-      URL_STRING,
+      Get_URL,
       {
         method: 'POST',
         body: JSON.stringify({
@@ -438,7 +441,7 @@ export const proccessReceiving = async (
 export const ProcessingMethodGet = async (
 ) => {
   try {
-    const response = await fetch(URL_STRING, {
+    const response = await fetch(Get_URL, {
       method: 'POST',
       headers: {
         "Content-Type" : "application/x-www-form-urlencoded",
@@ -468,7 +471,7 @@ export const StoreInventoryGet = async(
 ) => {
   try {
     const response = await fetch(
-      URL_STRING,
+      Get_URL,
       {
         method: 'POST',
         headers: {
@@ -529,16 +532,14 @@ export const Loginjudgement = async (
 ) => {
   try {
     const response = await fetch(
-      URL_STRING,
+      LOGIN_URL,
       {
         method: 'POST',
         headers: {
           "Content-Type" : "application/x-www-form-urlencoded",
         },
         body: JSON.stringify({
-          action: 'Loginjudgement',
-          sub_action: 'get',
-          sheetName: 'アカウント一覧',
+          action: 'Login',
           loginid: loginID,
           password: passWord,
           platform: device,
@@ -548,11 +549,41 @@ export const Loginjudgement = async (
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
-    
     const result = await response.json();
+    LoginLogInsert(result)
     return result;
   }catch(e){
     return (e);
   }
 };
+
+export const LoginLogInsert = async (
+  data: any,
+) => {
+  try {
+    
+    const response = await fetch(
+      LOGIN_URL,
+      {
+        method: 'POST',
+        headers: {
+          "Content-Type" : "application/x-www-form-urlencoded",
+        },
+        body: JSON.stringify({
+          action: 'Insert',
+          datas: data
+        })
+      },
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const result = await response.json();
+    //console.log(result)
+  
+  }catch(e){
+    return (e);
+  }
+};
+
 

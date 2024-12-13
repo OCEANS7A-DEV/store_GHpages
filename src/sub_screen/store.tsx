@@ -218,7 +218,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   };
 
   const insertPost = async () => {
-    await GASPostInsertStore('insert', '店舗へ', formData, storename, defaultDate);
+    GASPostInsertStore('insert', '店舗へ', formData, storename, defaultDate);
   };
 
   const removeForm = (index: number) => {
