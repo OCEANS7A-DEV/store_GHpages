@@ -4,8 +4,9 @@ import * as jaconv from 'jaconv';
 
 export default function main(){}
 
+
 export const localStoreSet = async () => {
-  const storeData = await ListGet('A2:B');
+  const storeData = await ListGet('A2:A');
   const options = storeData.map((store: string) => ({
     value: store,
     label: store,
