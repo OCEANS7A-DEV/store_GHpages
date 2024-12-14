@@ -129,7 +129,9 @@ export const GASPostInsertStore = async (
   insertDate: string,
 ) => {
   const formatDate = insertDate.replace(/-/g, "/");
-  const id = sessionStorage.getItem('LoginID')
+  const id = sessionStorage.getItem('LoginID');
+  console.log(datail);
+  return
   try {
     await fetch(
       URL_STRING,

@@ -5,7 +5,7 @@ import '../css/Direct.css';
 import { InventorySearch, GASPostInsertStore } from '../backend/Server_end';
 import DirectDialog from './DirectDialog';
 import WordSearch from './ProductSearchWord';
-import DetailDialog from './ProductdetailDialog.tsx';
+import DetailDialog from './ProductdetailDialog';
 
 
 

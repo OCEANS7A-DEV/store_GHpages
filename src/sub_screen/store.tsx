@@ -218,6 +218,38 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   };
 
   const insertPost = async () => {
+    const id = sessionStorage.getItem('LoginID');
+
+    const now = new Date();
+
+    const formatted = new Intl.DateTimeFormat('ja-JP', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    }).format(now);
+
+    //console.log(defaultDate)
+    const InsertData = [];
+    const formfilter = formData.filter(row => row.商品コード !== "" && row.商品名 !== "");
+    console.log(formfilter)
+    for (let i = 0; i < formData.length; i++) {
+
+      if(formData[i].商品コード !== ""){
+
+        let setdata = [defaultDate, storename, formfilter[i].業者, formfilter[i].商品コード,
+        formfilter[i].商品名, formfilter[i].商品詳細, formfilter[i].数量, "", formfilter[i].商品単価,
+          '=SUM(INDIRECT("G"&ROW()) * INDIRECT("I"&ROW()))', formfilter[i].個人購入,
+          formfilter[i].備考, "未印刷", id, formatted];
+        InsertData.push(setdata);
+      }
+
+    }
+    console.log(InsertData)
+
+    return
     GASPostInsertStore('insert', '店舗へ', formData, storename, defaultDate);
   };
 
@@ -311,8 +343,6 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
       var rownumber = 1
       
       for (const row of formData) {
-        console.log(row.商品詳細)
-        console.log(row.selectOptions)
         if (row.商品名 !== "" && row.商品コード == "") {
           nullset.push(`${rownumber}つ目のデータ、商品名はあるが、商品ナンバーが入力されていません。`);
           cancelcount ++
