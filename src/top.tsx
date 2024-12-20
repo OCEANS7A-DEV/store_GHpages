@@ -27,6 +27,7 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
         value: setStore,
         label: setStore
       }
+      
       setStoreSelect(setSelect);
       const cachedData = await localStorage.getItem('storeData');
       setSelectOptions(cachedData ? JSON.parse(cachedData) : []);
