@@ -22,6 +22,12 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
     localStorageSet();
     localCorrectionRequestListSet()
     const getLocalStorageSize = async () => {
+      const setStore = localStorage.getItem('StoreSetName') ?? '';
+      const setSelect: SelectOption = {
+        value: setStore,
+        label: setStore
+      }
+      setStoreSelect(setSelect);
       const cachedData = await localStorage.getItem('storeData');
       setSelectOptions(cachedData ? JSON.parse(cachedData) : []);
       const storeSelectupdate = await localStoreSet();
@@ -35,13 +41,6 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
         )
       }
       setSelectOptions(storeSelectupdate);
-      const setStore = localStorage.getItem('StoreSetName') ?? '';
-      const setSelect: SelectOption = {
-        value: setStore,
-        label: setStore
-      }
-      
-      setStoreSelect(setSelect);
     }
     getLocalStorageSize()
     
