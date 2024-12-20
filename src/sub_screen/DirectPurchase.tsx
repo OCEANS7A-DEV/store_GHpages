@@ -1,5 +1,4 @@
 import React, { useState, useRef, ChangeEvent, useEffect } from 'react';
-import Select from 'react-select';
 import '../css/InventoryUsed.css';
 import '../css/Direct.css';
 import { InventorySearch, GASPostInsertStore } from '../backend/Server_end';
@@ -43,7 +42,7 @@ const colorlistGet = async (code: any) => {
   return returnData;
 };
 
-const usedfieldDataList = ['月日', '商品コード', '商品名', '商品詳細', '数量', '備考'];
+
 
 const productSearch = (code: number) => {
   const storageGet = JSON.parse(sessionStorage.getItem('data') ?? '');

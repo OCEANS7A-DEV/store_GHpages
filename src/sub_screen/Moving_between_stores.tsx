@@ -105,7 +105,6 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
   const inputStoreRefs = useRef([]);
   const codeRefs = useRef([]);
   const quantityRefs = useRef([]);
-  const personalRefs = useRef([]);
   const remarksRefs = useRef([]);
   const message = "店舗間移動は以下の通りです\n以下の内容でよろしければOKをクリックしてください\n内容の変更がある場合にはキャンセルをクリックしてください";
   const [searchData, setsearchData] = useState<any>([]);
@@ -126,10 +125,6 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
 
   const clickpage = () => {
     setCurrentPage('topPage');
-  };
-
-  const clickInventorypage = () => {
-    setCurrentPage('storeinventory');
   };
 
   const handleChange = (

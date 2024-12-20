@@ -73,6 +73,7 @@ const getNearestMonday = () => {
 
   return `${year}-${month}-${day}`; // yyyy-mm-dd形式で返す
 };
+
 const getCurrentDateTimeJST = () => {
   const date = new Date();
   const options = {
