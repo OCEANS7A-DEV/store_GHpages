@@ -16,7 +16,7 @@ export const localStoreSet = async () => {
 }
 
 export const localCorrectionRequestListSet = async () => {
-  const ListData = await ListGet('Q2:Q');
+  const ListData = await ListGet('N2:N');
   const options = ListData.map((List: string) => ({
     value: List,
     label: List,

@@ -27,10 +27,11 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
         value: setStore,
         label: setStore
       }
-      
       setStoreSelect(setSelect);
+
       const cachedData = await localStorage.getItem('storeData');
       setSelectOptions(cachedData ? JSON.parse(cachedData) : []);
+
       const storeSelectupdate = await localStoreSet();
       const authorityType = sessionStorage.getItem('authority');
       if (authorityType === '本部') {
@@ -42,6 +43,7 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
         )
       }
       setSelectOptions(storeSelectupdate);
+      
     }
     getLocalStorageSize()
     
