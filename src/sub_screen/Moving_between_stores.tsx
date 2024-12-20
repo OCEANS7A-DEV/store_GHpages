@@ -1,7 +1,7 @@
 import React, { useState, useRef, ChangeEvent, useEffect } from 'react';
 import Select from 'react-select';
 import '../css/InventoryUsed.css';
-import { InventorySearch, GASPostInsertMoving, processlistGet, ProcessingMethodGet } from '../backend/Server_end';
+import { InventorySearch, GASPostInsertStore, processlistGet, ProcessingMethodGet } from '../backend/Server_end';
 import MovingDialog from './MovingDialog';
 import WordSearch from './ProductSearchWord';
 import DetailDialog from './ProductdetailDialog.tsx';
@@ -66,6 +66,24 @@ const ProcessingMethodList = async () => {
   }
 };
 
+const getCurrentDateTimeJST = () => {
+  const date = new Date();
+  const options = {
+      timeZone: 'Asia/Tokyo',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false, // 24時間表記
+  };
+
+  const formatter = new Intl.DateTimeFormat('ja-JP', options);
+  const parts = formatter.formatToParts(date);
+  const formattedDate = `${parts[0].value}-${parts[2].value}-${parts[4].value} ${parts[6].value}:${parts[8].value}:${parts[10].value}`;
+  return formattedDate;
+}
 
 
 export default function InventoryMoving({ setCurrentPage, setisLoading }: SettingProps) {
@@ -181,7 +199,26 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
   };
 
   const insertPost = async () => {
-    await GASPostInsertMoving('Movinginsert', '店舗間移動', usedformData);
+    const formResult = [];
+    const date = getCurrentDateTimeJST();
+    const id = sessionStorage.getItem('LoginID');
+    const filterData = usedformData.filter(row => row.商品コード !== "");
+
+    for (let i = 0; i < filterData.length; i++){
+      let setData = [
+        filterData[i].月日,
+        filterData[i].出庫店舗,
+        filterData[i].入庫店舗,
+        filterData[i].商品コード,
+        filterData[i].商品名,
+        filterData[i].数量,
+        filterData[i].備考,
+        id,
+        date
+      ];
+      formResult.push(setData)
+    }
+    GASPostInsertStore('insert', '店舗間移動', formResult);
   };
 
   const removeForm = (index: number) => {

@@ -73,7 +73,24 @@ const getNearestMonday = () => {
 
   return `${year}-${month}-${day}`; // yyyy-mm-dd形式で返す
 };
+const getCurrentDateTimeJST = () => {
+  const date = new Date();
+  const options = {
+      timeZone: 'Asia/Tokyo',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false, // 24時間表記
+  };
 
+  const formatter = new Intl.DateTimeFormat('ja-JP', options);
+  const parts = formatter.formatToParts(date);
+  const formattedDate = `${parts[0].value}-${parts[2].value}-${parts[4].value} ${parts[6].value}:${parts[8].value}:${parts[10].value}`;
+  return formattedDate;
+}
 
 
 
@@ -198,12 +215,6 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
       newFormData[index].selectOptions = nullData;
     }
     setFormData(newFormData);
-    if (detailRefs.current[index]) {
-      detailRefs.current[index].focus();
-      setTimeout(() => {
-        detailRefs.current[index].openMenu();
-      }, 50);
-    };
   };
 
   const numberchange = async (
@@ -218,7 +229,36 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   };
 
   const insertPost = async () => {
-    GASPostInsertStore('insert', '店舗へ', formData, storename, defaultDate);
+    const filterData = formData.filter(row => row.業者 !== "");
+    const date = getCurrentDateTimeJST();
+    //console.log(now)
+    const formResult = [];
+    const id = sessionStorage.getItem('LoginID');
+    //console.log(filterData)
+    for (let i = 0; i < filterData.length; i++){
+      //console.log(filterData[i].商品詳細.value)
+      let setData = [
+        defaultDate,
+        storename, 
+        filterData[i].業者, 
+        filterData[i].商品コード, 
+        filterData[i].商品名, 
+        filterData[i].商品詳細.value, 
+        filterData[i].数量, 
+        '', 
+        filterData[i].商品単価, 
+        '=SUM(INDIRECT("G"&ROW()) * INDIRECT("I"&ROW()))', 
+        filterData[i].個人購入, 
+        filterData[i].備考, 
+        '未印刷', 
+        id, 
+        date
+      ]
+      formResult.push(setData)
+    }
+    //console.log(formResult)
+    //return
+    GASPostInsertStore('insert', '店舗へ', formResult);
   };
 
   const removeForm = (index: number) => {
@@ -243,11 +283,9 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     if (e.key === 'Enter') {
       e.preventDefault();
       if (fieldType === '商品コード') {
+        
         if (detailRefs.current[index]) {
           detailRefs.current[index].focus();
-          setTimeout(() => {
-            detailRefs.current[index].openMenu();
-          }, 50);
         }
       }else if (fieldType === '商品詳細'){
         if (quantityRefs.current[index]) {
@@ -311,8 +349,8 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
       var rownumber = 1
       
       for (const row of formData) {
-        console.log(row.商品詳細)
-        console.log(row.selectOptions)
+        //console.log(row.商品詳細)
+        //console.log(row.selectOptions)
         if (row.商品名 !== "" && row.商品コード == "") {
           nullset.push(`${rownumber}つ目のデータ、商品名はあるが、商品ナンバーが入力されていません。`);
           cancelcount ++
