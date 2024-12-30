@@ -496,13 +496,13 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
               className="insert_Select"
               key={index}
               options={selectOptions}
-              value={data.出庫店舗 || []}
+              value={usedformData[index].出庫店舗 || []}
               isSearchable={true}
               ref={(el) => (outputStoreRefs.current[index] = el)}
               onKeyDown={(e) => handleKeyDown(index, e, '出庫')}
               onChange={(selectOptions) => {
                 const newusedFormData = [...usedformData];
-                newusedFormData[index].出庫店舗 = selectOptions || [];
+                newusedFormData[index].出庫店舗 = selectOptions;
                 setusedFormData(newusedFormData);
               }}
               onFocus={() => {
@@ -528,13 +528,13 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
               className="insert_Select"
               key={index}
               options={selectOptions}
-              value={data.入庫店舗 || []}
-              isSearchable={false}
+              value={usedformData[index].入庫店舗 || []}
+              isSearchable={true}
               ref={(el) => (inputStoreRefs.current[index] = el)}
               onKeyDown={(e) => handleKeyDown(index, e, '入庫')}
               onChange={(selectOptions) => {
                 const newusedFormData = [...usedformData];
-                newusedFormData[index].入庫店舗 = selectOptions || [];
+                newusedFormData[index].入庫店舗 = selectOptions;
                 setusedFormData(newusedFormData);
               }}
               onFocus={() => {
