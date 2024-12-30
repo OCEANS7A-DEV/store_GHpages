@@ -202,8 +202,8 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
     for (let i = 0; i < filterData.length; i++){
       let setData = [
         filterData[i].月日,
-        filterData[i].出庫店舗,
-        filterData[i].入庫店舗,
+        filterData[i].出庫店舗.value,
+        filterData[i].入庫店舗.value,
         filterData[i].商品コード,
         filterData[i].商品名,
         filterData[i].数量,
@@ -365,7 +365,7 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
       });
     }
     
-    
+
     await setusedFormData(returnData);
     setDetailisDialogOpen(false);
   };
