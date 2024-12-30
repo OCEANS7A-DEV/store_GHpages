@@ -364,9 +364,8 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
         備考: '',
       });
     }
-    if (quantityRefs.current[Vacant]) {
-      quantityRefs.current[Vacant].focus();
-    }
+    
+    
     await setusedFormData(returnData);
     setDetailisDialogOpen(false);
   };
