@@ -15,6 +15,7 @@ import InventoryDirect from './sub_screen/DirectPurchase';
 import OceanCatalog from './sub_screen/Ocean_catalog';
 import CorrectionRequest from './sub_screen/CorrectionRequest';
 import RequestHistory from './sub_screen/Request_History';
+import { Toaster } from 'react-hot-toast';
 
 
 
@@ -61,24 +62,28 @@ export default function App() {
   };
 
   return (
-    <TransitionGroup component={null}>
-      <CSSTransition
-        key={currentPage}
-        timeout={{ enter: 500, exit: 300 }}
-        classNames="fade"
-        nodeRef={nodeRef}
-        unmountOnExit
-      >
-        <div>
-          <div ref={nodeRef} className="page">
-            {getPageComponent(currentPage)}
+    <>
+      <Toaster/>
+      <TransitionGroup component={null}>
+        <CSSTransition
+          key={currentPage}
+          timeout={{ enter: 500, exit: 300 }}
+          classNames="fade"
+          nodeRef={nodeRef}
+          unmountOnExit
+        >
+          <div>
+            <div ref={nodeRef} className="page">
+              {getPageComponent(currentPage)}
+            </div>
+            <div className="Loadingarea">
+              <LoadingDisplay isLoading={isLoading} />
+            </div>
           </div>
-          <div className="Loadingarea">
-            <LoadingDisplay isLoading={isLoading} />
-          </div>
-        </div>
-      </CSSTransition>
-    </TransitionGroup>
+        </CSSTransition>
+      </TransitionGroup>
+    </>
+    
   );
 }
 

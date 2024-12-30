@@ -8,6 +8,7 @@ import WordSearch from './ProductSearchWord';
 import SaveConfirmDialog from './SaveConfirmDialog';
 import DetailDialog from './ProductdetailDialog';
 import NonConfirmDialog from './NonOrderDialog';
+import toast from 'react-hot-toast';
 
 interface SelectData {
   value: string;
@@ -199,7 +200,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
         colorlistGet(Number(value)),
       ]);
       if(ResultData[10] === false){
-        alert(`商品ナンバー: ${ResultData[1]}, 商品名: ${ResultData[2]}\nこの商品は本部への注文ができません。`)
+        toast.error(`商品ナンバー: ${ResultData[1]}, 商品名: ${ResultData[2]}\nこの商品は本部への注文ができません。`)
         const DataIndex = formData.findIndex(({商品コード}) => 商品コード == ResultData[1])
         removeForm(DataIndex)
         return
@@ -209,7 +210,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     } catch (error) {
       const ResultData = await productSearch(Number(value));
       if(ResultData[10] === false){
-        alert(`商品ナンバー: ${ResultData[1]}, 商品名: ${ResultData[2]}\nこの商品は本部への注文ができません。`)
+        toast.error(`商品ナンバー: ${ResultData[1]}, 商品名: ${ResultData[2]}\nこの商品は本部への注文ができません。`)
         const DataIndex = formData.findIndex(({商品コード}) => 商品コード == ResultData[1])
 
         removeForm(DataIndex)
@@ -345,7 +346,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     setisLoading(true);
     const judgment = await judgmentPOST();
     if (judgment === '発注不可'){
-      alert('今回の注文は締め切られています\n次回の注文日で再度お願いします');
+      toast.error('今回の注文は締め切られています\n次回の注文日で再度お願いします');
       setDialogOpen(false);
     }else{
       var nullset = ['注文データのエラー']
@@ -382,7 +383,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
       insertPost();
       setDialogOpen(false);
       setisLoading(false);
-      alert('発注が完了しました\n保存してあるデータは自動で削除されます');
+      toast.success('発注が完了しました\n保存してあるデータは自動で削除されます');
       localStorage.setItem('Already_ordered', JSON.stringify(formData));
       setFormData(initialFormData);
       localStorage.removeItem(storename);
@@ -391,7 +392,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   };
 
   const handleCancel = () => {
-    alert('キャンセルされました');
+    toast.success('キャンセルされました');
     setDialogOpen(false);
   };
 
@@ -470,7 +471,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
 
   const DetailhandleConfirmAdd = async (data: any) => {
     if(data[10] === false){
-      alert('この商品は注文できません。')
+      toast.error('この商品は注文できません。')
       return
     }
     const Vacant = formData.findIndex(({ 商品コード }) => 商品コード === '');
@@ -578,7 +579,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     GASPostInsertStore('insert', '店舗へ', nonData);
     setNonisDialogOpen(false);
     setisLoading(false);
-    alert('注文無しで送信されました\n注文がある場合はこのまま注文してください');
+    toast.success('注文無しで送信されました\n注文がある場合はこのまま注文してください');
   };
 
   const NonhandleCancel = () => {
