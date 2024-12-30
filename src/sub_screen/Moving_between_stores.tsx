@@ -548,7 +548,7 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
                 setusedFormData(newusedFormData);
                 setMenuIsOpen((prev) => ({
                   ...prev,
-                  出庫: { ...prev.入庫, [index]: false },
+                  入庫: { ...prev.入庫, [index]: false },
                 }));
               }}
               onFocus={() => {
