@@ -118,6 +118,10 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
   const [OCcondition, setOCcondition] = useState<string>(">>");
   const [OCtitle,setOCtitle] = useState<string>('商品検索ウィンドウを開きます');
   const [addType, setADDType] = useState(false);
+  const [menuIsOpen, setMenuIsOpen] = useState<{ [key: string]: { [index: number]: boolean } }>({
+    出庫: {},
+    入庫: {}
+  });
 
 
 
@@ -494,16 +498,19 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
             />            
             <Select
               className="insert_Select"
-              key={index}
               options={selectOptions}
-              value={usedformData[index].出庫店舗 || []}
+              value={data.出庫店舗 || []}
               isSearchable={true}
               ref={(el) => (outputStoreRefs.current[index] = el)}
               onKeyDown={(e) => handleKeyDown(index, e, '出庫')}
               onChange={(selectOptions) => {
                 const newusedFormData = [...usedformData];
-                newusedFormData[index].出庫店舗 = selectOptions;
+                newusedFormData[index].出庫店舗 = selectOptions || [];
                 setusedFormData(newusedFormData);
+                setMenuIsOpen((prev) => ({
+                  ...prev,
+                  出庫: { ...prev.出庫, [index]: false },
+                }));
               }}
               onFocus={() => {
                 const newusedFormData = [...usedformData];
@@ -511,45 +518,54 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
                   newusedFormData[index].月日 = usedformData[index-1].月日
                   setusedFormData(newusedFormData);
                 }
-                newusedFormData[index].出庫店舗.menuIsOpen = true; // フォーカス時にメニューを開く
-                setusedFormData(newusedFormData);
+                setMenuIsOpen((prev) => ({
+                  ...prev,
+                  出庫: { ...prev.出庫, [index]: true },
+                }));
               }}
               onBlur={() => {
-                const newusedFormData = [...usedformData];
-                newusedFormData[index].出庫店舗.menuIsOpen = false; // フォーカス外れ時にメニューを閉じる
-                setusedFormData(newusedFormData);
+                setMenuIsOpen((prev) => ({
+                  ...prev,
+                  出庫: { ...prev.出庫, [index]: false },
+                }));
               }}
               menuPlacement="auto"
               menuPortalTarget={document.body}
-              menuIsOpen={usedformData[index].出庫店舗.menuIsOpen}
+              menuIsOpen={!!menuIsOpen.出庫[index]}  // 出庫用の開閉状態
               placeholder="出庫店舗選択"
             />
+
             <Select
               className="insert_Select"
-              key={index}
               options={selectOptions}
-              value={usedformData[index].入庫店舗 || []}
+              value={data.入庫店舗 || []}
               isSearchable={true}
               ref={(el) => (inputStoreRefs.current[index] = el)}
               onKeyDown={(e) => handleKeyDown(index, e, '入庫')}
               onChange={(selectOptions) => {
                 const newusedFormData = [...usedformData];
-                newusedFormData[index].入庫店舗 = selectOptions;
+                newusedFormData[index].入庫店舗 = selectOptions || [];
                 setusedFormData(newusedFormData);
+                setMenuIsOpen((prev) => ({
+                  ...prev,
+                  出庫: { ...prev.入庫, [index]: false },
+                }));
               }}
               onFocus={() => {
-                const newusedFormData = [...usedformData];
-                newusedFormData[index].入庫店舗.menuIsOpen = true; // フォーカス時にメニューを開く
-                setusedFormData(newusedFormData);
+                setMenuIsOpen((prev) => ({
+                  ...prev,
+                  入庫: { ...prev.入庫, [index]: true },
+                }));
               }}
               onBlur={() => {
-                const newusedFormData = [...usedformData];
-                newusedFormData[index].入庫店舗.menuIsOpen = false; // フォーカス外れ時にメニューを閉じる
-                setusedFormData(newusedFormData);
+                setMenuIsOpen((prev) => ({
+                  ...prev,
+                  入庫: { ...prev.入庫, [index]: false },
+                }));
               }}
               menuPlacement="auto"
               menuPortalTarget={document.body}
-              menuIsOpen={usedformData[index].入庫店舗.menuIsOpen}
+              menuIsOpen={!!menuIsOpen.入庫[index]}  // 入庫用の開閉状態
               placeholder="入庫店舗選択"
             />
             <input
