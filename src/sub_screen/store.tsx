@@ -133,6 +133,9 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   const [OCtitle,setOCtitle] = useState<string>('商品検索ウィンドウを開きます');
   const [addType, setADDType] = useState(false);
   const [defaultDate, setDefaultDate] = useState('');
+  const id = sessionStorage.getItem('LoginID');
+
+
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDefaultDate(event.target.value);
@@ -234,7 +237,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     const date = getCurrentDateTimeJST();
     //console.log(now)
     const formResult = [];
-    const id = sessionStorage.getItem('LoginID');
+    
     //console.log(filterData)
     for (let i = 0; i < filterData.length; i++){
       //console.log(filterData[i].商品詳細.value)
@@ -554,7 +557,25 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
 
   const NonhandleConfirm = async () => {
     await setisLoading(true);
-    await GASPostInsertStore('Noninsert', '店舗へ', nonOrderData, storename);
+    const date = getCurrentDateTimeJST();
+    const nonData = [
+      defaultDate,
+      storename,
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      '注文無', 
+      id, 
+      date
+    ]
+    GASPostInsertStore('insert', '店舗へ', nonData);
     setNonisDialogOpen(false);
     setisLoading(false);
     alert('注文無しで送信されました\n注文がある場合はこのまま注文してください');
