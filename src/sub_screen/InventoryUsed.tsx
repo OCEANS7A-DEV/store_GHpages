@@ -5,7 +5,7 @@ import { InventorySearch, GASPostInsertStore, processlistGet, ProcessingMethodGe
 import UsedDialog from './usedDialog';
 import WordSearch from './ProductSearchWord';
 import DetailDialog from './ProductdetailDialog';
-
+import toast from 'react-hot-toast';
 
 
 interface UsedInsertData {
@@ -336,7 +336,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
     insertPost();
     setusedDialogOpen(false);
     setisLoading(false);
-    alert('使用商品の入力が完了しました。\n修正があれば修正依頼より修正内容を入力し\n送信してください。');
+    toast.success('使用商品の入力が完了しました。\n修正があれば修正依頼より修正内容を入力し\n送信してください。');
     localStorage.setItem('Already_ordered', JSON.stringify(usedformData));
     setusedFormData(initialusedFormData);
     localStorage.removeItem(storename);
@@ -344,7 +344,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
   };
 
   const handleCancel = () => {
-    alert('キャンセルされました');
+    toast.success('キャンセルされました');
     setusedDialogOpen(false);
   };
 
