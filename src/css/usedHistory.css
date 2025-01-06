@@ -3,37 +3,44 @@
 }
 
 
-.usedDate, .dataDate {
+.usedDate, .useddataDate {
   max-width: 100px;
   min-width: 100px;
 }
 
-.usedCode, .dataCode {
+.usedCode, .useddataCode {
   max-width: 90px;
   min-width: 90px;
 }
 
-.usedName, .dataName {
+.usedName, .useddataName {
   text-align: left;
   min-width: 350px;
   max-width: 350px;
+  overflow: hidden;
 }
 
-.usedNumber, .dataNumber{
+.usedNumber, .useddataNumber{
   min-width: 30px;
   max-width: 30px;
 }
 
-.usedMethod, .dataMethod{
-  min-width: 60px;
-  max-width: 60px;
+.usedMethod, .useddataMethod{
+  text-align: center;
+  min-width: 80px;
+  max-width: 80px;
 }
 
-.usedIndividual, .dataIndividual{
-  min-width: 200px;
-  max-width: 200px;
+.usedPrice, .useddataPrice{
+  min-width: 70px;
+  max-width: 70px;
 }
-.usedremarks, .dataRemarks{
+
+.usedIndividual, .useddataIndividual{
+  min-width: 80px;
+  max-width: 80px;
+}
+.usedremarks, .useddataRemarks{
   min-width: 200px;
   max-width: 200px;
 }
@@ -136,9 +143,6 @@ a {
   overflow: hidden;
 }
 
-.dataMethod{
-  text-align: center;
-}
 
 .historydata-table{
   height: calc(100vh - 200px);

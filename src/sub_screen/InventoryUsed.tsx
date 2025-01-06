@@ -17,6 +17,7 @@ interface UsedInsertData {
   備考: string;
   使用方法: { value: string; label: string }[];
   ProcessingMethod: { value: string; label: string }[];
+  商品単価: string;
 }
 
 interface SettingProps {
@@ -99,7 +100,8 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
     使用方法: [],
     個人購入: '',
     備考: '',
-    ProcessingMethod: []
+    ProcessingMethod: [],
+    商品単価: ''
   }));
   const [usedformData, setusedFormData] = useState<UsedInsertData[]>(initialusedFormData);
   const storename = localStorage.getItem('StoreSetName');
@@ -145,7 +147,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
   };
 
   const addNewForm = async () => {
-    console.log('空データ追加')
+    //console.log('空データ追加')
     const newusedFormData = [...usedformData];
     for (let i = 0; i < 20; i++) {
       newusedFormData.push({
@@ -156,7 +158,8 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
         使用方法: [],
         個人購入: '',
         備考: '',
-        ProcessingMethod: []
+        ProcessingMethod: [],
+        商品単価: ''
       });
     }
     setusedFormData(newusedFormData);
@@ -175,6 +178,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
           ...newusedFormData[index],
           商品コード: ResultData[1],
           商品名: ResultData[2],
+          商品単価: ResultData[3]
         };
       }
     };
@@ -214,6 +218,8 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
         filterData[i].商品コード,
         filterData[i].商品名,
         filterData[i].数量,
+        filterData[i].商品単価,
+        '=SUM(INDIRECT("E"&ROW()) * INDIRECT("F"&ROW()))',
         filterData[i].使用方法.value,
         filterData[i].個人購入,
         filterData[i].備考,
@@ -236,7 +242,8 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
       使用方法: [],
       個人購入: '',
       備考: '',
-      ProcessingMethod: []
+      ProcessingMethod: [],
+      商品単価: ''
     });
     setusedFormData(newusedFormData);
     codeRefs.current.splice(index, 1);
@@ -388,6 +395,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
         個人購入: '',
         備考: '',
         ProcessingMethod: [],
+        商品単価: ''
       });
     }
   

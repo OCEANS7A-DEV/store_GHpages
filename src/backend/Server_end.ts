@@ -277,6 +277,40 @@ export const HistoryGet = async(
       throw new Error(`HTTP error! status: ${response.status}`)
     }
     const result = await response.json();
+    console.log(result)
+    return result;
+  }catch(e){
+    return (e);
+  }
+};
+
+export const UsedHistoryGet = async(
+  SearchDate: string,
+  Searchstore: string,
+  sheetname: string
+) => {
+  //console.log(SearchDate)
+  try {
+    const response = await fetch(
+      Get_URL,
+      {
+        method: 'POST',
+        headers: {
+          "Content-Type" : "application/x-www-form-urlencoded",
+        },
+        body: JSON.stringify({
+          action: 'usedhistoryGet',
+          date: SearchDate,
+          sheetName: sheetname,
+          store: Searchstore,
+        })
+      },
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const result = await response.json();
+    console.log(result)
     return result;
   }catch(e){
     return (e);

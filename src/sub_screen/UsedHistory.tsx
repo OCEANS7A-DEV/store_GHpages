@@ -4,7 +4,7 @@ import Select from 'react-select';
 //import '../css/store.css';
 //import '../css/order_history.css';
 import '../css/usedHistory.css';
-import { HistoryGet } from '../backend/Server_end';
+import { UsedHistoryGet } from '../backend/Server_end';
 
 
 const Yearlist = () => {
@@ -55,6 +55,7 @@ export default function UsedHistory({ setCurrentPage, setisLoading }: SettingPro
   const [monthsOptions, setmonthsOptions] = useState<SelectOption[]>([]);
   const storename = localStorage.getItem('StoreSetName') || '';
   const [historydata, sethistorydata] = useState<any[]>([]);
+  const [TotalData, setTotalData] = useState('');
 
   const handleyearChange = (selectedOption: SelectOption | []) => {
     setyears(selectedOption);
@@ -74,9 +75,15 @@ export default function UsedHistory({ setCurrentPage, setisLoading }: SettingPro
       return;
     }
     setisLoading(true);
-    const searchDate = `${years.value}/${months.value}`;
-    const result = await HistoryGet(searchDate, storename, '店舗使用商品');
+    const searchDate = `${years.value}/${String(months.value).padStart(2, "0")}`;
+    const result = await UsedHistoryGet(searchDate, storename, '店舗使用商品');
     sethistorydata(result);
+    const filterdata = result.filter(row => row[7] !== "個人購入")// 業務　店販
+    const total = filterdata.reduce(function(sum, element){
+      return sum + element[6];
+    }, 0);
+    //console.log(total)
+    setTotalData(total)
     setisLoading(false);
   };
 
@@ -112,7 +119,9 @@ export default function UsedHistory({ setCurrentPage, setisLoading }: SettingPro
         <a className="buttonUnderlineH" id="main_back" type="button" onClick={historysearch}>
           検索
         </a>
+        <div>使用商品の合計金額　￥{TotalData.toLocaleString('ja-JP')}</div>
       </div>
+      
       <div className="usedhistory-area">
         <div>
           <table className="usedhistory-table">
@@ -122,6 +131,7 @@ export default function UsedHistory({ setCurrentPage, setisLoading }: SettingPro
                   <th className="usedCode">商品ナンバー</th>
                   <th className="usedName">商品名</th>
                   <th className="usedNumber">数量</th>
+                  <th className="usedPrice">商品単価</th>
                   <th className="usedMethod">使用方法</th>
                   <th className="usedIndividual">個人購入</th>
                   <th className="usedremarks">備考</th>
@@ -139,12 +149,14 @@ export default function UsedHistory({ setCurrentPage, setisLoading }: SettingPro
                       month: '2-digit',
                       day: '2-digit'
                       })}</td>
-                  <td className="dataCode">{data[2]}</td>
-                  <td className="dataName">{data[3]}</td>
-                  <td className="dataNumber">{data[4]}</td>
-                  <td className="dataMethod">{data[5]}</td>
-                  <td className="dataIndividual">{data[6]}</td>
-                  <td className="dataRemarks">{data[7]}</td>
+                  <td className="useddataCode">{data[2]}</td>
+                  <td className="useddataName">{data[3]}</td>
+                  <td className="useddataNumber">{data[4]}</td>
+                  <td className="useddataPrice">{data[5].toLocaleString('ja-JP')}</td>
+                  {/* <td className="useddataSUM">{data[6]}</td> */}
+                  <td className="useddataMethod">{data[7]}</td>
+                  <td className="useddataIndividual">{data[8]}</td>
+                  <td className="useddataRemarks">{data[9]}</td>
                 </tr>
               ))}
             </tbody>

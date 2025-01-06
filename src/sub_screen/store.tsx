@@ -142,6 +142,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     setDefaultDate(event.target.value);
   };
 
+  
   const clickpage = () => {
     setCurrentPage('topPage');
   };
