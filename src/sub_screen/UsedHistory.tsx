@@ -121,7 +121,6 @@ export default function UsedHistory({ setCurrentPage, setisLoading }: SettingPro
         </a>
         <div>使用商品の合計金額　￥{TotalData.toLocaleString('ja-JP')}</div>
       </div>
-      
       <div className="usedhistory-area">
         <div>
           <table className="usedhistory-table">
