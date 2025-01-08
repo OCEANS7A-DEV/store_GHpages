@@ -123,7 +123,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   const [SaveisDialogOpen, setSaveDialogOpen] = useState(false);
   const [Savetype, setSavetype] = useState<string>('');
   const [searchData, setsearchData] = useState<any>([]);
-  const DetailMessage = `業者名: ${searchData[0] || ''}　　||　　商品ナンバー: ${searchData[1] || ''}\n商品単価: ${(searchData[3] !== undefined && searchData[3] !== null) ? searchData[3].toLocaleString() : ''}円　　||　　店販価格: ${(searchData[5] !== undefined && searchData[5] !== null) ? searchData[5].toLocaleString() : ''}`
+  const DetailMessage = `業者名: ${searchData[0] || ''}　　||　　商品ナンバー: ${searchData[1] || ''}\n商品単価: ${(searchData[4] !== undefined && searchData[4] !== null) ? searchData[4].toLocaleString() : ''}円　　||　　店販価格: ${(searchData[5] !== undefined && searchData[5] !== null) ? searchData[5].toLocaleString() : ''}`
   const [DetailisDialogOpen, setDetailisDialogOpen] = useState(false);
   const [DetailIMAGE, setDetailIMAGE] = useState<string>('');
   const [searchtabledata, setsearchtabledata] = useState<any>([]);
@@ -190,7 +190,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
             ...obj,
             [fieldDataList[i]]: item,
           }), {}),
-          商品単価: ResultData[3],
+          商品単価: ResultData[4],
           商品詳細: formData[index].商品詳細,
         };
       }

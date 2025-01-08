@@ -178,7 +178,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
           ...newusedFormData[index],
           商品コード: ResultData[1],
           商品名: ResultData[2],
-          商品単価: ResultData[3]
+          商品単価: ResultData[4]
         };
       }
     };
