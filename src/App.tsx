@@ -1,11 +1,7 @@
 import { useState } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import './App.css';
-<<<<<<< HEAD
-import React, { useRef } from 'react';
-=======
 import { useRef } from 'react';
->>>>>>> ed4bf5b747ac86d2c1bef468c0f8418404317fec
 import StorePage from './sub_screen/store';
 import OrderHistory from './sub_screen/order_history';
 import InventoryUsed from './sub_screen/InventoryUsed';
