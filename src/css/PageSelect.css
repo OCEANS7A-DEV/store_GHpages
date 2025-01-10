@@ -1,0 +1,32 @@
+.select-window {
+  width: 100vw;
+  display:flex;
+  flex-flow: column;
+  align-items: center;
+}
+
+.select-BG {
+  width: 400px;
+  margin-top: 40px;
+  background-color: aliceblue;
+  border-radius: 20px;
+}
+
+.select-page {
+  display:flex;
+  flex-flow: column;
+  align-items: center;
+}
+
+.select-page button {
+  width: 100px;
+  height: 45px;
+  margin: 20px;
+  white-space: nowrap;
+  padding: 10px 15px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}

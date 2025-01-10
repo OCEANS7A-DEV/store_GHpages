@@ -1,0 +1,165 @@
+.store-inventory-window {
+  height: calc(100vh - 80px);
+}
+
+.in-table-area{
+  padding: 20px;
+  padding-top: 0px;
+}
+
+.store-inventory-h2 {
+  margin: 10px;
+}
+
+.inventory-table-area {
+  height: calc(100vh - 165px);
+  overflow-y: scroll;
+}
+
+.inventory-table {
+  flex-shrink: 1;
+  border-collapse: collapse; /* テーブルの境界線を結合 */
+}
+
+.inventory-head {
+  flex-shrink: 1;
+  height: 30px;
+  border-collapse: collapse;
+}
+
+
+.confirm-dialog-button {
+  display: flex;
+  justify-content: center; /* ボタンを中央に配置 */
+  padding: 10px 0;
+  border-top: 1px solid #ccc;
+  background-color: white;
+  flex-shrink: 0;
+}
+
+.confirm-dialog-button button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+
+
+td {
+  white-space: nowrap;
+  border: 1px solid #222; /* 境界線 */
+  padding: 8px;           /* セルの内側に余白 */
+  text-align: left;       /* テキストを左揃え */
+
+}
+
+th {
+  white-space: nowrap;
+  border: 1px solid #222; /* 境界線 */
+  padding: 8px;
+  background-color: #f2f2f2; /* ヘッダーの背景色 */
+  font-weight: bold;         /* ヘッダーの太字 */
+}
+
+.inventory-table tr:nth-child(even) {
+  background-color: #f9f9f9; /* 偶数行の背景色を変更 */
+}
+
+.inventory-table tr:nth-child(odd) {
+  background-color: #e6e6e6; /* 奇数行の背景色 */
+}
+
+
+.DIcode {
+  text-align: right;
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+}
+
+.DIname {
+  text-align: left;
+  max-width: 400px;
+  overflow: hidden;
+  min-width: 400px;
+}
+
+.thDIcode {
+  text-align: center;
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  font-size: 16px;
+}
+
+.thDIname {
+  text-align: center;
+  max-width: 400px;
+  overflow: hidden;
+  min-width: 400px;
+  font-size: 18px;
+}
+.thDIprenumber, .thDInumber, .thDIratio, .thDIorder, .thDIused {
+  text-align: center;
+  max-width: 60px;
+  min-width: 60px;
+}
+
+
+.DIprenumber, .DInumber, .DIratio, .DIorder, .DIused {
+  font-size: 18px;
+  max-width: 60px;
+  min-width: 60px;
+}
+
+td {
+  text-align: right;
+}
+
+
+.buttonUnderlineIn {
+  width: 100%;
+  flex: 1; /* 各ボタンが同じ幅を持つようにする */
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: right;
+  justify-content: right;
+  overflow: hidden;
+  font-size: 18px;
+  color: #4682b4;
+  text-align: right;
+  overflow-wrap: anywhere;
+  background: transparent;
+  white-space: nowrap;
+  margin: 0 0px; /* 左右に適度なスペース */
+}
+
+.buttonUnderlineIn::after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 2px;
+  content: "";
+  background-color: #4682b4;
+  transform: scaleX(0);
+  transform-origin: right top;
+}
+
+@media (any-hover: hover) {
+  .buttonUnderlineIn::after {
+    transition: transform 0.2s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+
+  .buttonUnderlineIn:hover::after {
+    transition: transform 0.4s cubic-bezier(0.9, 0, 0, 1);
+    transform: scaleX(1);
+    transform-origin: left top;
+  }
+}

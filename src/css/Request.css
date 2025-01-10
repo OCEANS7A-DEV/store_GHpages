@@ -1,0 +1,60 @@
+.Request_textarea {
+  font-size: 20px;
+  width: 600px;
+  padding: 8px;
+  border-radius: 10px;
+}
+
+.Request_area {
+  height: 320px;
+  max-height: 320px;
+  width: 630px;
+  padding: 30px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, .5);
+  display: inline-block;
+  margin: 0 auto;
+}
+
+
+
+.Request_Select_Area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Request_datearea {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Request_dateinput{
+  height: 25px;
+  padding: 4px;
+  border-radius: 10px;
+}
+
+.Request_dateinput:focus{
+  padding: 5px;
+  outline: none;
+  border-radius: 10px;
+  border:1px solid #2ca9e1;
+  box-shadow: 0 0 20px 0 rgba(44, 169, 225, 1);
+}
+
+.Request_textarea:focus{
+  border-radius: 10px;
+  outline: none;
+  border:1px solid #2ca9e1;
+  box-shadow: 0 0 20px 0 rgba(44, 169, 225, 1);
+}
+
+
+.Request_Select__control {
+  margin-bottom: 40px;
+  min-width: 200px;
+}
