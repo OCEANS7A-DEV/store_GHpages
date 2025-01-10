@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import './App.css';
+<<<<<<< HEAD
 import React, { useRef } from 'react';
+=======
+import { useRef } from 'react';
+>>>>>>> ed4bf5b747ac86d2c1bef468c0f8418404317fec
 import StorePage from './sub_screen/store';
 import OrderHistory from './sub_screen/order_history';
 import InventoryUsed from './sub_screen/InventoryUsed';
@@ -15,6 +19,10 @@ import InventoryDirect from './sub_screen/DirectPurchase';
 import OceanCatalog from './sub_screen/Ocean_catalog';
 import CorrectionRequest from './sub_screen/CorrectionRequest';
 import RequestHistory from './sub_screen/Request_History';
+<<<<<<< HEAD
+=======
+import { Toaster } from 'react-hot-toast';
+>>>>>>> ed4bf5b747ac86d2c1bef468c0f8418404317fec
 
 
 
@@ -61,6 +69,7 @@ export default function App() {
   };
 
   return (
+<<<<<<< HEAD
     <TransitionGroup component={null}>
       <CSSTransition
         key={currentPage}
@@ -79,6 +88,30 @@ export default function App() {
         </div>
       </CSSTransition>
     </TransitionGroup>
+=======
+    <>
+      <Toaster/>
+      <TransitionGroup component={null}>
+        <CSSTransition
+          key={currentPage}
+          timeout={{ enter: 500, exit: 300 }}
+          classNames="fade"
+          nodeRef={nodeRef}
+          unmountOnExit
+        >
+          <div>
+            <div ref={nodeRef} className="page">
+              {getPageComponent(currentPage)}
+            </div>
+            <div className="Loadingarea">
+              <LoadingDisplay isLoading={isLoading} />
+            </div>
+          </div>
+        </CSSTransition>
+      </TransitionGroup>
+    </>
+    
+>>>>>>> ed4bf5b747ac86d2c1bef468c0f8418404317fec
   );
 }
 

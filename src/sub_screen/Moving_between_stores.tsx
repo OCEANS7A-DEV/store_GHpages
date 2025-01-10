@@ -1,10 +1,17 @@
 import React, { useState, useRef, ChangeEvent, useEffect } from 'react';
 import Select from 'react-select';
 import '../css/InventoryUsed.css';
+<<<<<<< HEAD
 import { InventorySearch, GASPostInsertMoving, processlistGet, ProcessingMethodGet } from '../backend/Server_end';
 import MovingDialog from './MovingDialog';
 import WordSearch from './ProductSearchWord';
 import DetailDialog from './ProductdetailDialog';
+=======
+import { InventorySearch, GASPostInsertStore, processlistGet, ProcessingMethodGet } from '../backend/Server_end';
+import MovingDialog from './MovingDialog';
+import WordSearch from './ProductSearchWord';
+import DetailDialog from './ProductdetailDialog.tsx';
+>>>>>>> ed4bf5b747ac86d2c1bef468c0f8418404317fec
 
 
 
@@ -66,6 +73,27 @@ const ProcessingMethodList = async () => {
   }
 };
 
+<<<<<<< HEAD
+=======
+const getCurrentDateTimeJST = () => {
+  const date = new Date();
+  const options = {
+      timeZone: 'Asia/Tokyo',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false, // 24時間表記
+  };
+
+  const formatter = new Intl.DateTimeFormat('ja-JP', options);
+  const parts = formatter.formatToParts(date);
+  const formattedDate = `${parts[0].value}-${parts[2].value}-${parts[4].value} ${parts[6].value}:${parts[8].value}:${parts[10].value}`;
+  return formattedDate;
+}
+>>>>>>> ed4bf5b747ac86d2c1bef468c0f8418404317fec
 
 
 export default function InventoryMoving({ setCurrentPage, setisLoading }: SettingProps) {
@@ -87,7 +115,10 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
   const inputStoreRefs = useRef([]);
   const codeRefs = useRef([]);
   const quantityRefs = useRef([]);
+<<<<<<< HEAD
   const personalRefs = useRef([]);
+=======
+>>>>>>> ed4bf5b747ac86d2c1bef468c0f8418404317fec
   const remarksRefs = useRef([]);
   const message = "店舗間移動は以下の通りです\n以下の内容でよろしければOKをクリックしてください\n内容の変更がある場合にはキャンセルをクリックしてください";
   const [searchData, setsearchData] = useState<any>([]);
@@ -101,6 +132,13 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
   const [OCcondition, setOCcondition] = useState<string>(">>");
   const [OCtitle,setOCtitle] = useState<string>('商品検索ウィンドウを開きます');
   const [addType, setADDType] = useState(false);
+<<<<<<< HEAD
+=======
+  const [menuIsOpen, setMenuIsOpen] = useState<{ [key: string]: { [index: number]: boolean } }>({
+    出庫: {},
+    入庫: {}
+  });
+>>>>>>> ed4bf5b747ac86d2c1bef468c0f8418404317fec
 
 
 
@@ -110,10 +148,13 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
     setCurrentPage('topPage');
   };
 
+<<<<<<< HEAD
   const clickInventorypage = () => {
     setCurrentPage('storeinventory');
   };
 
+=======
+>>>>>>> ed4bf5b747ac86d2c1bef468c0f8418404317fec
   const handleChange = (
     index: number,
     field: keyof UsedInsertData,
@@ -181,7 +222,30 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
   };
 
   const insertPost = async () => {
+<<<<<<< HEAD
     await GASPostInsertMoving('Movinginsert', '店舗間移動', usedformData);
+=======
+    const formResult = [];
+    const date = getCurrentDateTimeJST();
+    const id = sessionStorage.getItem('LoginID');
+    const filterData = usedformData.filter(row => row.商品コード !== "");
+
+    for (let i = 0; i < filterData.length; i++){
+      let setData = [
+        filterData[i].月日,
+        filterData[i].出庫店舗.value,
+        filterData[i].入庫店舗.value,
+        filterData[i].商品コード,
+        filterData[i].商品名,
+        filterData[i].数量,
+        filterData[i].備考,
+        id,
+        date
+      ];
+      formResult.push(setData)
+    }
+    GASPostInsertStore('insert', '店舗間移動', formResult);
+>>>>>>> ed4bf5b747ac86d2c1bef468c0f8418404317fec
   };
 
   const removeForm = (index: number) => {
@@ -332,9 +396,14 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
         備考: '',
       });
     }
+<<<<<<< HEAD
     if (quantityRefs.current[Vacant]) {
       quantityRefs.current[Vacant].focus();
     }
+=======
+    
+
+>>>>>>> ed4bf5b747ac86d2c1bef468c0f8418404317fec
     await setusedFormData(returnData);
     setDetailisDialogOpen(false);
   };
@@ -406,7 +475,11 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
         <h2 className='store_name'>店舗間移動用ページ</h2>
       </div>
       <div className='form_area'>
+<<<<<<< HEAD
         <div className="searchArea">
+=======
+      <div className="searchArea">
+>>>>>>> ed4bf5b747ac86d2c1bef468c0f8418404317fec
           <div
             className="searchareawindow"
             style={{
@@ -450,6 +523,7 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
           </a>
         </div>
         <div className='in-area'>
+<<<<<<< HEAD
           <div className="in-area-header">
             <table className="order_table_header">
               <thead>
@@ -604,6 +678,136 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
               </tbody>
             </table>
           </div>
+=======
+          {usedformData.map((data, index) => (
+          <div key={index} className="insert_area">
+            <input
+              type="date"
+              className="insert_date"
+              max="9999-12-31"
+              value={data.月日}
+              ref={(el) => (dateRefs.current[index] = el)}
+              onKeyDown={(e) => handleKeyDown(index, e, '月日')}
+              onChange={(e) => handleChange(index, '月日', e)}
+            />            
+            <Select
+              className="insert_Select"
+              options={selectOptions}
+              value={data.出庫店舗 || []}
+              isSearchable={true}
+              ref={(el) => (outputStoreRefs.current[index] = el)}
+              onKeyDown={(e) => handleKeyDown(index, e, '出庫')}
+              onChange={(selectOptions) => {
+                const newusedFormData = [...usedformData];
+                newusedFormData[index].出庫店舗 = selectOptions || [];
+                setusedFormData(newusedFormData);
+                setMenuIsOpen((prev) => ({
+                  ...prev,
+                  出庫: { ...prev.出庫, [index]: false },
+                }));
+              }}
+              onFocus={() => {
+                const newusedFormData = [...usedformData];
+                if(!usedformData[index].月日 && index > 0){
+                  newusedFormData[index].月日 = usedformData[index-1].月日
+                  setusedFormData(newusedFormData);
+                }
+                setMenuIsOpen((prev) => ({
+                  ...prev,
+                  出庫: { ...prev.出庫, [index]: true },
+                }));
+              }}
+              onBlur={() => {
+                setMenuIsOpen((prev) => ({
+                  ...prev,
+                  出庫: { ...prev.出庫, [index]: false },
+                }));
+              }}
+              menuPlacement="auto"
+              menuPortalTarget={document.body}
+              menuIsOpen={!!menuIsOpen.出庫[index]}  // 出庫用の開閉状態
+              placeholder="出庫店舗選択"
+            />
+
+            <Select
+              className="insert_Select"
+              options={selectOptions}
+              value={data.入庫店舗 || []}
+              isSearchable={true}
+              ref={(el) => (inputStoreRefs.current[index] = el)}
+              onKeyDown={(e) => handleKeyDown(index, e, '入庫')}
+              onChange={(selectOptions) => {
+                const newusedFormData = [...usedformData];
+                newusedFormData[index].入庫店舗 = selectOptions || [];
+                setusedFormData(newusedFormData);
+                setMenuIsOpen((prev) => ({
+                  ...prev,
+                  入庫: { ...prev.入庫, [index]: false },
+                }));
+              }}
+              onFocus={() => {
+                setMenuIsOpen((prev) => ({
+                  ...prev,
+                  入庫: { ...prev.入庫, [index]: true },
+                }));
+              }}
+              onBlur={() => {
+                setMenuIsOpen((prev) => ({
+                  ...prev,
+                  入庫: { ...prev.入庫, [index]: false },
+                }));
+              }}
+              menuPlacement="auto"
+              menuPortalTarget={document.body}
+              menuIsOpen={!!menuIsOpen.入庫[index]}  // 入庫用の開閉状態
+              placeholder="入庫店舗選択"
+            />
+            <input
+              title="入力は半角のみです"
+              type="tel"
+              pattern="^[0-9\-\/]+$"
+              placeholder="商品ナンバー"
+              className="insert_code"
+              value={data.商品コード}
+              ref={(el) => (codeRefs.current[index] = el)}
+              onChange={(e) => numberchange(index, '商品コード', e)}
+              onKeyDown={(e) => handleKeyDown(index, e, '商品コード')}
+              onBlur={() => handleBlur(index, '商品コード')}
+              inputMode="numeric"
+            />
+            <input
+              type="text"
+              placeholder="商品名"
+              className="insert_name"
+              value={data.商品名}
+              onChange={(e) => handleChange(index, '商品名', e)}
+            />
+            <input
+              type="text"
+              pattern="^[0-9]+$"
+              placeholder="数量"
+              className="insert_quantity"
+              inputMode="numeric"
+              value={data.数量}
+              ref={(el) => (quantityRefs.current[index] = el)}
+              onChange={(e) => numberchange(index, '数量', e)}
+              onKeyDown={(e) => handleKeyDown(index, e, '数量')}
+            />
+            <input
+              type="text"
+              placeholder="備考"
+              className="remarks"
+              value={data.備考}
+              ref={(el) => (remarksRefs.current[index] = el)}
+              onChange={(e) => handleChange(index, '備考', e)}
+              onKeyDown={(e) => handleKeyDown(index, e, '備考')}
+            />
+            <button type="button" className="delete_button" onClick={() => removeForm(index)}>
+              削除
+            </button>
+          </div>
+        ))}
+>>>>>>> ed4bf5b747ac86d2c1bef468c0f8418404317fec
       </div>
       <div className="button_area">
         <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>
