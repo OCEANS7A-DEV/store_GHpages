@@ -1,8 +1,4 @@
 import React, { useState, useRef, ChangeEvent, useEffect } from 'react';
-<<<<<<< HEAD
-import Select from 'react-select';
-=======
->>>>>>> ed4bf5b747ac86d2c1bef468c0f8418404317fec
 import '../css/InventoryUsed.css';
 import '../css/Direct.css';
 import { InventorySearch, GASPostInsertStore } from '../backend/Server_end';
@@ -46,11 +42,6 @@ const colorlistGet = async (code: any) => {
   return returnData;
 };
 
-<<<<<<< HEAD
-const usedfieldDataList = ['月日', '商品コード', '商品名', '商品詳細', '数量', '備考'];
-=======
-
->>>>>>> ed4bf5b747ac86d2c1bef468c0f8418404317fec
 
 const productSearch = (code: number) => {
   const storageGet = JSON.parse(sessionStorage.getItem('data') ?? '');
@@ -58,9 +49,6 @@ const productSearch = (code: number) => {
   return product;
 };
 
-<<<<<<< HEAD
-
-=======
 const getCurrentDateTimeJST = () => {
   const date = new Date();
   const options = {
@@ -79,7 +67,6 @@ const getCurrentDateTimeJST = () => {
   const formattedDate = `${parts[0].value}-${parts[2].value}-${parts[4].value} ${parts[6].value}:${parts[8].value}:${parts[10].value}`;
   return formattedDate;
 }
->>>>>>> ed4bf5b747ac86d2c1bef468c0f8418404317fec
 
 export default function InventoryDirect({ setCurrentPage, setisLoading }: SettingProps) {
   const [isusedDialogOpen, setusedDialogOpen] = useState(false);
@@ -182,9 +169,6 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
   };
 
   const insertPost = async () => {
-<<<<<<< HEAD
-    await GASPostInsertStore('insert', '直接購入', usedformData, storename, '');
-=======
     const formResult = [];
     const date = getCurrentDateTimeJST();
     const id = sessionStorage.getItem('LoginID');
@@ -204,7 +188,6 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
       formResult.push(setData)
     }
     GASPostInsertStore('insert', '直接購入', formResult);
->>>>>>> ed4bf5b747ac86d2c1bef468c0f8418404317fec
   };
 
   const removeForm = (index: number) => {
@@ -448,7 +431,6 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
             </a>
           </div>
           <div className='in-area' id='Direct'>
-<<<<<<< HEAD
             <div className="in-area-header">
               <table className="order_table_header">
                 <thead>
@@ -544,71 +526,6 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
               </tbody>
             </table>
           </div>
-=======
-            {usedformData.map((data, index) => (
-            <div key={index} className="insert_area">
-              <input
-                type="date"
-                className="insert_date"
-                value={data.月日}
-                max="9999-12-31"
-                ref={(el) => (dateRefs.current[index] = el)}
-                onChange={(e) => handleChange(index, '月日', e)}
-                onKeyDown={(e) => handleKeyDown(index, e, '月日')}
-              />            
-              <input
-                title="入力は半角のみです"
-                type="tel"
-                pattern="^[0-9\-\/]+$"
-                placeholder="商品ナンバー"
-                className="insert_code"
-                value={data.商品コード}
-                ref={(el) => (codeRefs.current[index] = el)}
-                onChange={(e) => numberchange(index, '商品コード', e)}
-                onKeyDown={(e) => handleKeyDown(index, e, '商品コード')}
-                onBlur={() => handleBlur(index, '商品コード')}
-                onFocus={() => {
-                  const newusedFormData = [...usedformData];
-                  if(!usedformData[index].月日 && index > 0){
-                    newusedFormData[index].月日 = usedformData[index-1].月日
-                    setusedFormData(newusedFormData);
-                  }
-                }}
-                inputMode="numeric"
-              />
-              <input
-                type="text"
-                placeholder="商品名"
-                className="insert_name"
-                value={data.商品名}
-                onChange={(e) => handleChange(index, '商品名', e)}
-              />
-              <input
-                type="text"
-                pattern="^[0-9]+$"
-                placeholder="数量"
-                className="insert_quantity"
-                inputMode="numeric"
-                value={data.数量}
-                ref={(el) => (quantityRefs.current[index] = el)}
-                onChange={(e) => numberchange(index, '数量', e)}
-                onKeyDown={(e) => handleKeyDown(index, e, '数量')}
-              />
-              <input
-                type="text"
-                placeholder="備考"
-                className="remarks"
-                value={data.備考}
-                ref={(el) => (remarksRefs.current[index] = el)}
-                onChange={(e) => handleChange(index, '備考', e)}
-                onKeyDown={(e) => handleKeyDown(index, e, '備考')}
-              />
-              <button type="button" className="delete_button" onClick={() => removeForm(index)}>
-                削除
-              </button>
-            </div>
-          ))}
->>>>>>> ed4bf5b747ac86d2c1bef468c0f8418404317fec
         </div>
         <div className="button_area">
           <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>

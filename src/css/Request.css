@@ -20,10 +20,6 @@
 
 
 .Request_Select_Area {
-<<<<<<< HEAD
-=======
-  margin: 20px;
->>>>>>> ed4bf5b747ac86d2c1bef468c0f8418404317fec
   display: flex;
   justify-content: center;
   align-items: center;
@@ -59,9 +55,6 @@
 
 
 .Request_Select__control {
-<<<<<<< HEAD
   margin-bottom: 40px;
-=======
->>>>>>> ed4bf5b747ac86d2c1bef468c0f8418404317fec
   min-width: 200px;
 }

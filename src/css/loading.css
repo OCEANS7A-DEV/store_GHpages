@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 .loading-overlay {
   position: fixed; /* 画面全体に表示 */
   top: 0;
@@ -17,23 +16,3 @@
   align-items: center;
   justify-content: center;
 }
-=======
-.loading-overlay {
-  position: fixed; /* 画面全体に表示 */
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5); /* 半透明の背景色 */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: calc(infinity); /* 最前面に表示 */
-}
-
-.loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
->>>>>>> ed4bf5b747ac86d2c1bef468c0f8418404317fec
