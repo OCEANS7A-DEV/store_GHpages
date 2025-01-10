@@ -62,7 +62,6 @@ const CatalogDetailDialog: React.FC<DetailDialogProps> = ({ title, message, Data
               ))}
             </p>
             <div className='detail-dialog-button'>
-              
             </div>
           </div>
         </div>
