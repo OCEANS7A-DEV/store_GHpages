@@ -163,3 +163,39 @@ td {
     transform-origin: left top;
   }
 }
+
+
+
+
+
+.in-stock-code,.in-stock-number{
+  max-width: 100px;
+  min-width: 100px;
+}
+
+.in-stock-name{
+  max-width: 500px;
+  min-width: 500px;
+}
+
+.in-stock-table-body .in-stock-name {
+  text-align: left;
+}
+
+.date-select-area {
+  display: flex;
+  align-items: center;
+}
+.in-stock-number {
+  padding: 0;
+}
+
+
+.in-stock-quantity {
+  height: 38px;
+  border: none;
+  width: 90px;
+}
+
+
+

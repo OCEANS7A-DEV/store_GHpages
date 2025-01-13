@@ -82,7 +82,7 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
                 <a className="buttonUnderline" type="button" onClick={() => {setPage('storePage')}}>本部発注</a>
                 <a className="buttonUnderline" type="button" onClick={() => {setPage('used')}}>使用商品</a>
                 <a className="buttonUnderline" type="button" onClick={() => {setPage('DirectPage')}}>直接購入</a>
-                <a></a>
+                <a className="buttonUnderline" type="button" onClick={() => {setPage('InventoryNumsSet')}}>在庫数入力</a>
               </div>
             </div>
           </div>

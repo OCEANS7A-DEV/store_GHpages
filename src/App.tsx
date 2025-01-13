@@ -15,6 +15,7 @@ import InventoryDirect from './sub_screen/DirectPurchase';
 import OceanCatalog from './sub_screen/Ocean_catalog';
 import CorrectionRequest from './sub_screen/CorrectionRequest';
 import RequestHistory from './sub_screen/Request_History';
+import StoreInventoryNumsSet from './sub_screen/InventoryNumsSet';
 import { Toaster } from 'react-hot-toast';
 
 
@@ -56,6 +57,8 @@ export default function App() {
         return <CorrectionRequest setCurrentPage={setCurrentPage} setisLoading={setisLoading}/>;
       case 'RequestHistory':
         return <RequestHistory setCurrentPage={setCurrentPage} setisLoading={setisLoading}/>;
+      case 'InventoryNumsSet':
+        return <StoreInventoryNumsSet setCurrentPage={setCurrentPage} setisLoading={setisLoading}/>;
       default:
         return null;
     }

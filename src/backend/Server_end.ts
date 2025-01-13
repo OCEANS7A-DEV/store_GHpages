@@ -582,3 +582,54 @@ export const LoginLogInsert = async (
 };
 
 
+export const CurrentlyAvailableDataGet = async () => {
+  try {
+    const response = await fetch(
+      Get_URL,
+      {
+        method: 'POST',
+        headers: {
+          "Content-Type" : "application/x-www-form-urlencoded",
+        },
+        body: JSON.stringify({
+          action: 'CurrentlyAvailableDataGet',
+          sub_action: 'get',
+          sheetName: '店舗在庫一覧',
+        })
+      },
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const result = await response.json();
+    return result;
+  }catch(e){
+    return (e);
+  }
+};
+
+export const syncDataGet = async () => {
+  try {
+    const response = await fetch(
+      Get_URL,
+      {
+        method: 'POST',
+        headers: {
+          "Content-Type" : "application/x-www-form-urlencoded",
+        },
+        body: JSON.stringify({
+          action: 'CurrentlyAvailableDataGet',
+          sub_action: 'get',
+          sheetName: '同期在庫',
+        })
+      },
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const result = await response.json();
+    return result;
+  }catch(e){
+    return (e);
+  }
+};
