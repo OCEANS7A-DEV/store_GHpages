@@ -1,9 +1,9 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import Select from 'react-select';
 import '../css/store.css';
-import { StoreInventoryGet, PeriodDateGet, HistoryGet, CurrentlyAvailableDataGet, syncDataGet } from '../backend/Server_end.ts';
+import { StoreInventoryGet, PeriodDateGet, HistoryGet, CurrentlyAvailableDataGet, syncDataGet, GASPostInsertStore } from '../backend/Server_end';
 import '../css/StoreInventory.css';
-import HistoryInsertCheck, {HistoryUsedCheck} from './historycheckDialog.tsx';
+import HistoryInsertCheck, {HistoryUsedCheck} from './historycheckDialog';
 import '../css/usedHistory.css';
 
 interface SettingProps {
@@ -97,14 +97,6 @@ export default function StoreInventoryNumsSet({ setCurrentPage, setisLoading }: 
     setCurrentPage('used');
   };
 
-  const colorset = (value) => {
-    if (value[0] == '+'){
-      return 'green';
-    }else if(value[0] == '-'){
-      return 'red';
-    }
-  };
-
   const Arraymap = (array1, array2, column) => {
     const array2Map = new Map(array2.map(item => [item[0], item]));
     array1.map(item => {
@@ -160,7 +152,6 @@ export default function StoreInventoryNumsSet({ setCurrentPage, setisLoading }: 
     const id = sessionStorage.getItem('LoginID');
     const data = await CurrentlyAvailableDataGet();
     const columnIndex = data[1].indexOf(storename);
-    
     const ResultData = await data.filter(row => row[columnIndex] === true)
     //console.log(ResultData)
     syncData(columnIndex,ResultData)
@@ -174,6 +165,7 @@ export default function StoreInventoryNumsSet({ setCurrentPage, setisLoading }: 
         商品単価: rowdata[4],
       })
     }
+    console.log(InventoryData)
     setAvailableData(InventoryData)
   }
 
@@ -188,6 +180,7 @@ export default function StoreInventoryNumsSet({ setCurrentPage, setisLoading }: 
 
   //修正
   const InventoryDifferenceNumber = () => {
+    console.log(InventoryNumsData)
     if (!years || !months) {
       alert("年または月が選択されていません");
       return;
@@ -210,27 +203,30 @@ export default function StoreInventoryNumsSet({ setCurrentPage, setisLoading }: 
       //console.log(resultrow) // resultrow[2] ?? 0
       let setnum = 0
       if(resultrow['在庫数'] !== ""){
-        setnum = Number(resultrow['在庫数'])
+        setnum += Number(resultrow['在庫数'])
       }
 
       let resultnum = InventoryNumsData[i]['在庫数'] - setnum
-      if (resultnum < 0)
-      ResultData.push([
-        UsedDate,
-        storename,
-        resultrow['商品コード'],
-        resultrow['商品名'],
-        resultnum,
-        resultrow['商品単価'],
-        '=SUM(INDIRECT("E"&ROW()) * INDIRECT("F"&ROW()))',
-        '業務',
-        '',
-        '',
-        id,
-        formatted,
-      ])
+      if (resultnum !== 0) {
+        ResultData.push([
+          UsedDate,
+          storename,
+          resultrow['商品コード'],
+          resultrow['商品名'],
+          resultnum,
+          resultrow['商品単価'],
+          '=SUM(INDIRECT("E"&ROW()) * INDIRECT("F"&ROW()))',
+          '業務',
+          '',
+          '現在の在庫数により自動計算',
+          id,
+          formatted,
+        ])
+      }
     }
     console.log(ResultData)
+    return
+    GASPostInsertStore('insert', '店舗商品使用', ResultData)
   }
 
 

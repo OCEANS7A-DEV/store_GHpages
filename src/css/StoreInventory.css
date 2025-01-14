@@ -185,6 +185,7 @@ td {
 .date-select-area {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 .in-stock-number {
   padding: 0;
@@ -196,6 +197,8 @@ td {
   border: none;
   width: 90px;
 }
+
+
 
 
 
