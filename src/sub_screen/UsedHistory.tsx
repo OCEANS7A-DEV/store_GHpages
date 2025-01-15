@@ -168,8 +168,8 @@ export default function UsedHistory({ setCurrentPage, setisLoading }: SettingPro
         </div>
       </div>
       <div className="button_area">
-        <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>
-          ＜＜ 使用商品入力へ
+        <a className="buttonUnderlineSt" id="main_back" type="button" onClick={() => {setCurrentPage('InventoryNumsSet')}}>
+          ＜＜ 在庫数入力へ
         </a>
       </div>
     </div>
