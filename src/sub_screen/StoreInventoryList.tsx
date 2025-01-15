@@ -95,11 +95,11 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
           const Date = await PeriodDateGet();
           //console.log(Date)
           setPeriodDate(Date);
-          const orderData = await HistoryGet(`${Date[0]}/${Date[1]}`, storename, '店舗へ');
+          const orderData = await HistoryGet(`${Date[0]}/${Date[1]}`, storename, '店舗へ', 'yyyy');
           const data = await StoreInventoryGet(storename);
           const Ordermap = await Arraymap(orderData,data,5)
           setmonthinsert(orderData);
-          const UsedData = await HistoryGet(`${Date[0]}/${Date[1]}`, storename, '店舗使用商品');
+          const UsedData = await HistoryGet(`${Date[0]}/${Date[1]}`, storename, '店舗使用商品', 'yyyy/MM');
           const RESULTmap = ArrayUsedmap(UsedData,Ordermap,6)
           setmonthused(UsedData);
           setInventoryData(RESULTmap);

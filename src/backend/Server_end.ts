@@ -257,7 +257,8 @@ export const IMAGEGET = async(
 export const HistoryGet = async(
   SearchDate: string,
   Searchstore: string,
-  sheetname: string
+  sheetname: string,
+  searchtype: string
 ) => {
   try {
     const response = await fetch(
@@ -272,6 +273,7 @@ export const HistoryGet = async(
           date: SearchDate,
           sheetName: sheetname,
           store: Searchstore,
+          searchType: searchtype
         })
       },
     );

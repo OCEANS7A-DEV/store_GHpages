@@ -56,6 +56,8 @@ export default function UsedHistory({ setCurrentPage, setisLoading }: SettingPro
   const storename = localStorage.getItem('StoreSetName') || '';
   const [historydata, sethistorydata] = useState<any[]>([]);
 
+  const [totalAmount, setTotalAmount] = useState(0);
+
   const handleyearChange = (selectedOption: SelectOption | []) => {
     setyears(selectedOption);
   };
@@ -75,7 +77,14 @@ export default function UsedHistory({ setCurrentPage, setisLoading }: SettingPro
     }
     setisLoading(true);
     const searchDate = `${years.value}/${months.value}`;
-    const result = await HistoryGet(searchDate, storename, '店舗使用商品');
+    const result = await HistoryGet(searchDate, storename, '店舗使用商品','yyyy/MM');
+    console.log(result)
+    let total = 0;
+    for (let i = 0; i < result.length; i++){
+      total += result[i][6]
+    }
+    console.log(total)
+    setTotalAmount(total)
     sethistorydata(result);
     setisLoading(false);
   };
@@ -112,6 +121,9 @@ export default function UsedHistory({ setCurrentPage, setisLoading }: SettingPro
         <a className="buttonUnderlineH" id="main_back" type="button" onClick={historysearch}>
           検索
         </a>
+        <div className="usedtotalAmount">
+          <h2>{storename} 店: 月間使用合計金額 ¥{totalAmount.toLocaleString('ja-JP')}</h2>
+        </div>
       </div>
       <div className="usedhistory-area">
         <div>
@@ -122,6 +134,8 @@ export default function UsedHistory({ setCurrentPage, setisLoading }: SettingPro
                   <th className="usedCode">商品ナンバー</th>
                   <th className="usedName">商品名</th>
                   <th className="usedNumber">数量</th>
+                  <th className="usedNums-th">商品単価</th>
+                  <th className="usedNums-th">合計金額</th>
                   <th className="usedMethod">使用方法</th>
                   <th className="usedIndividual">個人購入</th>
                   <th className="usedremarks">備考</th>
@@ -140,11 +154,13 @@ export default function UsedHistory({ setCurrentPage, setisLoading }: SettingPro
                       day: '2-digit'
                       })}</td>
                   <td className="dataCode">{data[2]}</td>
-                  <td className="dataName">{data[3]}</td>
-                  <td className="dataNumber">{data[4]}</td>
-                  <td className="dataMethod">{data[5]}</td>
-                  <td className="dataIndividual">{data[6]}</td>
-                  <td className="dataRemarks">{data[7]}</td>
+                  <td className="usedName">{data[3]}</td>
+                  <td className="usedNumber">{data[4]}</td>
+                  <td className="usedNums-td">{data[5].toLocaleString('ja-JP')}</td>
+                  <td className="usedNums-td">{data[6].toLocaleString('ja-JP')}</td>
+                  <td className="dataIndividual">{data[7]}</td>
+                  <td className="dataIndividual">{data[8]}</td>
+                  <td className="dataRemarks">{data[9]}</td>
                 </tr>
               ))}
             </tbody>

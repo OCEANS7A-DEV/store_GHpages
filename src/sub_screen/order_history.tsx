@@ -92,7 +92,7 @@ export default function OrderHistory({ setCurrentPage, setisLoading }: SettingPr
     }
     setisLoading(true)
     const searchDate = `${years.value}`;
-    const result = await HistoryGet(searchDate, storename, '店舗へ')
+    const result = await HistoryGet(searchDate, storename, '店舗へ', 'yyyy')
     const groupeddata = await groupDataByFirstColumn(result);
     console.log(groupeddata);
     await sethistorydata(groupeddata);
