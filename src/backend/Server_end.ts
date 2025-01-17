@@ -126,8 +126,6 @@ export const GASPostInsertStore = async (
   sheet: string,
   datail: any,
 ) => {
-  console.log(datail);
-  //return
   try {
     await fetch(
       URL_STRING,

@@ -250,7 +250,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
         formfilter[i].商品詳細.value,
         formfilter[i].数量,
         "",
-        formfilter[i].商品単価,
+        Number(formfilter[i].商品単価),
         '=SUM(INDIRECT("G"&ROW()) * INDIRECT("I"&ROW()))',
         formfilter[i].個人購入,
         formfilter[i].備考,

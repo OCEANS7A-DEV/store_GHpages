@@ -99,25 +99,56 @@ export default function StoreInventoryNumsSet({ setCurrentPage, setisLoading }: 
 
 
   const findColumnIndex = async () => {
-    //const id = sessionStorage.getItem('LoginID');
-    const data = await CurrentlyAvailableDataGet();
-    const columnIndex = data[1].indexOf(storename);
-    const ResultData = await data.filter(row => row[columnIndex] === true)
-    //console.log(ResultData)
-    syncData(columnIndex,ResultData)
-    const InventoryData = []
-    for (let i = 0; i < ResultData.length; i++){
-      let rowdata = storageGet.find(row => row[1] === ResultData[i][0]);
-      InventoryData.push({
-        商品コード: rowdata[1],
-        商品名: rowdata[2],
-        在庫数: '',
-        商品単価: rowdata[4],
-      })
+    try {
+      // データ取得
+      const data = await CurrentlyAvailableDataGet();
+      if (!data || data.length < 2) {
+        console.error("Data is invalid or empty.");
+        return;
+      }
+  
+      // カラムインデックスを取得
+      const columnIndex = data[1].indexOf(storename);
+      if (columnIndex === -1) {
+        console.error("Store name not found in data.");
+        return;
+      }
+  
+      // 条件に一致する行をフィルタ
+      const ResultData = data.filter(row => row[columnIndex] === true);
+      syncData(columnIndex,ResultData)
+      // 在庫データ作成
+      const InventoryData = ResultData.map(row => {
+        const rowdata = storageGet.find(item => item[1] === row[0]);
+        if (!rowdata) {
+          console.warn("Matching row not found in storageGet for:", row[0]);
+          return null; // 見つからない場合はスキップ
+        }
+        return {
+          商品コード: rowdata[1],
+          商品名: rowdata[2],
+          在庫数: '', // 必要に応じて在庫数を更新
+          商品単価: rowdata[4],
+          商品タイプ: rowdata[7]
+        };
+      }).filter(item => item !== null); // nullを削除
+  
+      // 商品タイプでソート
+      const sortedProducts = InventoryData.sort((a, b) => {
+        const typeA = parseInt(a.商品タイプ.match(/\[(\d+)\]/)?.[1] || '0', 10);
+        const typeB = parseInt(b.商品タイプ.match(/\[(\d+)\]/)?.[1] || '0', 10);
+        return typeA - typeB;
+      });
+  
+      // データをセット
+      //console.log(sortedProducts);
+      setAvailableData(sortedProducts);
+    } catch (error) {
+      console.error("Error in findColumnIndex:", error);
     }
-    //console.log(InventoryData)
-    setAvailableData(InventoryData)
-  }
+  };
+
+
 
   const getLastDayOfMonth = (year: number, month: number): string  => {
     // 月は 1 月を 1、2 月を 2 と指定するが、Date コンストラクタでは 0 ベースなので調整
@@ -130,7 +161,7 @@ export default function StoreInventoryNumsSet({ setCurrentPage, setisLoading }: 
 
   //修正
   const InventoryDifferenceNumber = () => {
-    console.log(InventoryNumsData)
+    //console.log(InventoryNumsData)
     if (!years || !months) {
       alert("年または月が選択されていません");
       return;
@@ -150,7 +181,7 @@ export default function StoreInventoryNumsSet({ setCurrentPage, setisLoading }: 
     for (let i = 0; i < InventoryNumsData.length; i++){
 
       let resultrow = AvailableData.find(row => row["商品コード"] == InventoryNumsData[i]["商品コード"])
-      //console.log(resultrow) // resultrow[2] ?? 0
+      console.log(resultrow)
       let setnum = 0
       if(resultrow['在庫数'] !== ""){
         setnum += Number(resultrow['在庫数'])
@@ -176,7 +207,7 @@ export default function StoreInventoryNumsSet({ setCurrentPage, setisLoading }: 
     }
     console.log(ResultData)
     //return
-    GASPostInsertStore('insert', '店舗商品使用', ResultData)
+    GASPostInsertStore('insert', '店舗使用商品', ResultData)
   }
 
 
