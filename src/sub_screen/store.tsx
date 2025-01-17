@@ -93,7 +93,6 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   }));
   const storename = localStorage.getItem('StoreSetName');
   const [formData, setFormData] = useState<InsertData[]>(KeepFormDataGet(storename));
-  
   const codeRefs = useRef([]);
   const quantityRefs = useRef([]);
   const personalRefs = useRef([]);
@@ -115,6 +114,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   const [OCtitle,setOCtitle] = useState<string>('商品検索ウィンドウを開きます');
   const [addType, setADDType] = useState(false);
   const [defaultDate, setDefaultDate] = useState('');
+  const storeType = localStorage.getItem('StoreSetType');
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDefaultDate(event.target.value);
@@ -160,6 +160,13 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     const searchresult = productSearch(value);
     const newFormData = [...formData];
     const updateFormData = (ResultData: any) => {
+      //console.log(ResultData)
+      let price = 0;
+      if (storeType === "DM" || storeType === "FC"){
+        price = ResultData[4]
+      }else{
+        price = ResultData[5]
+      }
       if (ResultData !== null) {
         newFormData[index] = {
           ...newFormData[index],
@@ -167,7 +174,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
             ...obj,
             [fieldDataList[i]]: item,
           }), {}),
-          商品単価: ResultData[4],
+          商品単価: price,
           商品詳細: formData[index].商品詳細,
         };
       }

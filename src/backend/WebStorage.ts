@@ -6,11 +6,14 @@ export default function main(){}
 
 
 export const localStoreSet = async () => {
-  const storeData = await ListGet('A2:A');
-  const options = storeData.map((store: string) => ({
-    value: store,
-    label: store,
+  const storeData = await ListGet('A2:B');
+  
+  const options = storeData.map((store: any) => ({
+    value: store[0],
+    label: store[0],
+    type: store[1]
   }));
+  //console.log(options)
   localStorage.setItem('storeData', JSON.stringify(options))
   return options;
 }

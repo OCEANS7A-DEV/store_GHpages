@@ -7,6 +7,7 @@ import './css/top.css';
 interface SelectOption {
   value: string;
   label: string;
+  type: string;
 }
 
 interface SettingProps {
@@ -36,9 +37,12 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
       }
       setSelectOptions(storeSelectupdate);
       const setStore = localStorage.getItem('StoreSetName') ?? '';
+      const setType = localStorage.getItem('StoreSetType') ?? '';
+      //console.log(setType)
       const setSelect: SelectOption = {
         value: setStore,
-        label: setStore
+        label: setStore,
+        type: setType
       }
       
       setStoreSelect(setSelect);
@@ -57,6 +61,7 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
       localExclusion(set, pageName);
       
       localStorage.setItem('StoreSetName', set);
+      localStorage.setItem('StoreSetType', storeSelect.type);
       setCurrentPage(pageName);
     } else {
       alert('店舗を選択してください。');
