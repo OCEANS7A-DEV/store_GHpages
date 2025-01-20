@@ -465,21 +465,17 @@ export const StoreInventoryGet = async(
   store: string,
 ) => {
   try {
-    //console.log(store)
-    const response = await fetch(
-      Get_URL,
-      {
-        method: 'POST',
-        headers: {
-          "Content-Type" : "application/x-www-form-urlencoded",
-        },
-        body: JSON.stringify({
-          action: 'storeInventoryListGet',
-          sheetName: '同期在庫',
-          storeName: store,
-        })
+    const response = await fetch(Get_URL,{
+      method: 'POST',
+      headers: {
+        "Content-Type" : "application/x-www-form-urlencoded",
       },
-    );
+      body: JSON.stringify({
+        action: 'storeInventoryListGet',
+        sheetName: '同期在庫',
+        storeName: store,
+      })
+    });
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }

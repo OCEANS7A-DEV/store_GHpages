@@ -86,6 +86,15 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
   };
 
 
+  const before = (num) => {
+    let result = 0;
+    if(num - 1 === 0){
+      result = 12
+    }else{
+      result = num - 1
+    }
+    return result
+  }
 
 
 
@@ -132,10 +141,10 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
                 <th className="thDIcode">商品ナンバー</th>
                 <th className="thDIname">商品名</th>
                 <th className="thDInumber">現状在庫</th>
-                <th className="thDIprenumber">{periodDate[1]-1}月末</th>
+                <th className="thDIprenumber">{before(periodDate[1])}月末</th>
                 <th className="thDIorder">{periodDate[1]}月入</th>
                 <th className="thDIused">{periodDate[1]}月出</th>
-                <th className="thDIratio">{periodDate[1]-1}月比</th>
+                <th className="thDIratio">{before(periodDate[1])}月比</th>
               </tr>
             </thead>
           </table>
