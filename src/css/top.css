@@ -1,5 +1,5 @@
 .top-window {
-  margin-top: 100px;
+  margin-top: 20px;
   width: 100vw;
   display: flex;
   justify-content: center;
@@ -80,3 +80,37 @@ a {
     transform-origin: left top;
   }
 } */
+
+.help-information-button {
+  text-align: left;
+}
+
+.buttonUnderlinehelp {
+  font-size: 20px;
+  cursor: pointer;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  align-items: center;
+  text-decoration: none;
+  line-height: 24px;
+  outline: none;
+  color: white;
+  border-radius: 40px;
+  border:1px solid #1B85FB;
+  background-color: rgba(0, 0, 0, .2);
+  -webkit-transition: all .3s;
+  transition: all .3s;
+  margin: 4px;
+}
+
+.buttonUnderlinehelp:hover {
+  color: #fff;
+  border:1px solid #1B85FB;
+  background-color: rgba(111, 111, 111, 0.2);
+}
+
+.buttonUnderlinehelp:active {
+  transform: scale(0.5);
+}

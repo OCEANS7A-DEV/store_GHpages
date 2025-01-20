@@ -465,6 +465,7 @@ export const StoreInventoryGet = async(
   store: string,
 ) => {
   try {
+    //console.log(store)
     const response = await fetch(
       Get_URL,
       {
@@ -473,8 +474,7 @@ export const StoreInventoryGet = async(
           "Content-Type" : "application/x-www-form-urlencoded",
         },
         body: JSON.stringify({
-          action: 'StoreInventoryListGet',
-          sub_action: 'get',
+          action: 'storeInventoryListGet',
           sheetName: '同期在庫',
           storeName: store,
         })
@@ -484,6 +484,7 @@ export const StoreInventoryGet = async(
       throw new Error(`HTTP error! status: ${response.status}`)
     }
     const result = await response.json();
+    console.log(result)
     return result;
   }catch(e){
     return (e);
@@ -494,7 +495,7 @@ export const StoreInventoryGet = async(
 export const PeriodDateGet = async () => {
   try {
     const response = await fetch(
-      URL_STRING,
+      Get_URL,
       {
         method: 'POST',
         headers: {
@@ -502,7 +503,6 @@ export const PeriodDateGet = async () => {
         },
         body: JSON.stringify({
           action: 'PeriodDateGet',
-          sub_action: 'get',
           sheetName: '期間在庫',
         })
       },

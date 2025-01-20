@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import { localStorageSet, localStoreSet, localExclusion, localCorrectionRequestListSet } from './backend/WebStorage';
 
+import HelpDialog from './sub_screen/helpDialog';
 import './css/top.css';
 
 interface SelectOption {
@@ -18,6 +19,7 @@ interface SettingProps {
 export default function TopPage({ setCurrentPage }: SettingProps) {
   const [storeSelect, setStoreSelect] = useState<SelectOption>();
   const [selectOptions, setSelectOptions] = useState<SelectOption[]>([]);
+  const [isHelpDialogOpen, setHelpDialogOpen] = useState(false);
 
   useEffect(() => {
     localStorageSet();
@@ -67,41 +69,66 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
       alert('店舗を選択してください。');
     }
   };
+  const handleConfirm = async () => {
+    setHelpDialogOpen(false)
+  };
+  const handleCancel = async () => {
+    setHelpDialogOpen(false)
+  };
 
   return (
-    <div className="top-window">
-      <div>
-        <div className="top-BG">
-          <h2 className="top-title">店舗選択画面</h2>
-          <div className="default-page">
-            <Select
-              className='Select_custom'
-              placeholder="店舗選択"
-              isSearchable={true}
-              value={storeSelect}
-              onChange={handleStoreChange}
-              options={selectOptions}
-            />
-            <div className="SelectMethod">
-              <div>
-                <a className="buttonUnderline" type="button" onClick={() => {setPage('storePage')}}>本部発注</a>
-                {/* <a className="buttonUnderline" type="button" onClick={() => {setPage('used')}}>使用商品</a> */}
-                <a className="buttonUnderline" type="button" onClick={() => {setPage('InventoryNumsSet')}}>在庫数入力</a>
-                <a className="buttonUnderline" type="button" onClick={() => {setPage('DirectPage')}}>直接購入</a>
+    <>
+      <div className="help-information-button">
+        <a
+          className="buttonUnderlinehelp"
+          type="button"
+          title="ヘルプ"
+          onClick={() => {setHelpDialogOpen(true)}}
+        >
+          ?
+        </a>
+        <HelpDialog
+          title="ヘルプ表示テスト"
+          message=''
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+          isOpen={isHelpDialogOpen}
+        />
+      </div>
+      <div className="top-window">
+        <div>
+          <div className="top-BG">
+            <h2 className="top-title">店舗選択画面</h2>
+            <div className="default-page">
+              <Select
+                className='Select_custom'
+                placeholder="店舗選択"
+                isSearchable={true}
+                value={storeSelect}
+                onChange={handleStoreChange}
+                options={selectOptions}
+              />
+              <div className="SelectMethod">
+                <div>
+                  <a className="buttonUnderline" type="button" onClick={() => {setPage('storePage')}}>注文発注</a>
+                  {/* <a className="buttonUnderline" type="button" onClick={() => {setPage('used')}}>使用商品</a> */}
+                  <a className="buttonUnderline" type="button" onClick={() => {setPage('InventoryNumsSet')}}>在庫数入力</a>
+                  <a className="buttonUnderline" type="button" onClick={() => {setPage('DirectPage')}}>直接購入</a>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="ToFrom">
-          <h2 className="top-title">商品の店舗間移動</h2>
-          <a className="buttonUnderline" type="button" onClick={() => {setCurrentPage('Moving')}}>店舗間移動</a>
-        </div>
-        <div className="ToFrom">
-          <h2 className="top-title">送信済みデータや</h2>
-          <h2 className="top-title">システムに関する修正依頼</h2>
-          <a className="buttonUnderline" type="button" onClick={() => {setCurrentPage('Request')}}>修正依頼</a>
+          <div className="ToFrom">
+            <h2 className="top-title">商品の店舗間移動</h2>
+            <a className="buttonUnderline" type="button" onClick={() => {setCurrentPage('Moving')}}>店舗間移動</a>
+          </div>
+          <div className="ToFrom">
+            <h2 className="top-title">送信済みデータや</h2>
+            <h2 className="top-title">システムに関する修正依頼</h2>
+            <a className="buttonUnderline" type="button" onClick={() => {setCurrentPage('Request')}}>修正依頼</a>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

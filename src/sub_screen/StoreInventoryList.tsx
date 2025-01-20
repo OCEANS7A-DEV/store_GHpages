@@ -41,6 +41,7 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
   };
 
   const Arraymap = (array1, array2, column) => {
+    //console.log(array1)
     const array2Map = new Map(array2.map(item => [item[0], item]));
     array1.map(item => {
       const number = item[3];
@@ -92,15 +93,21 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
     const fetchData = async () => {
       const dataget = async () => {
         try {
-          const Date = await PeriodDateGet();
-          //console.log(Date)
-          setPeriodDate(Date);
-          const orderData = await HistoryGet(`${Date[0]}/${Date[1]}`, storename, '店舗へ', 'yyyy');
+          const DateList = await PeriodDateGet();
+          setPeriodDate(DateList);
+          const lastDate = new Date(DateList[0], DateList[1], 0); // 翌月の 0 日はその月の月末
+          const yyyy = lastDate.getFullYear();
+          const mm = String(lastDate.getMonth() + 1).padStart(2, "0");
+          const orderData = await HistoryGet(String(DateList[0]), storename, '店舗へ', 'yyyy');
+
           const data = await StoreInventoryGet(storename);
+          console.log(data)
           const Ordermap = await Arraymap(orderData,data,5)
           setmonthinsert(orderData);
-          const UsedData = await HistoryGet(`${Date[0]}/${Date[1]}`, storename, '店舗使用商品', 'yyyy/MM');
+          const UsedData = await HistoryGet(`${yyyy}/${mm}`, storename, '店舗使用商品', 'yyyy/MM');
+          console.log(UsedData)
           const RESULTmap = ArrayUsedmap(UsedData,Ordermap,6)
+          
           setmonthused(UsedData);
           setInventoryData(RESULTmap);
         } catch (error) {
