@@ -7,16 +7,19 @@ export default function main(){}
 
 export const localStoreSet = async () => {
   const storeData = await ListGet('A2:B');
+
+  const options = storeData
+    .filter((store: any) => store[1] !== '') // type が空文字列のデータを除外
+    .map((store: any) => ({
+      value: store[0],
+      label: store[0],
+      type: store[1]
+    }));
   
-  const options = storeData.map((store: any) => ({
-    value: store[0],
-    label: store[0],
-    type: store[1]
-  }));
   //console.log(options)
-  localStorage.setItem('storeData', JSON.stringify(options))
+  localStorage.setItem('storeData', JSON.stringify(options));
   return options;
-}
+};
 
 export const localCorrectionRequestListSet = async () => {
   const ListData = await ListGet('Q2:Q');
