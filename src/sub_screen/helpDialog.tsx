@@ -17,8 +17,8 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ title, message, onConfirm, onCa
     <div className="order-confirm-dialog-overlay">
       <div className="order-confirm-dialog">
         <div className='order-confirm-dialog-button'>
+          
           <button onClick={onConfirm}>OK</button>
-          <button onClick={onCancel}>キャンセル</button>
         </div>
       </div>
     </div>,

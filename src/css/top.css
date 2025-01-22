@@ -26,8 +26,8 @@
   display: flex;
   flex-flow: column;
   justify-content: center;
-  align-items: center; /* 縦方向も中央揃え */
-  margin-top: 20px; /* 適度なスペースを追加 */
+  align-items: center;
+  margin-top: 20px;
 }
 
 .SelectMethod{
@@ -85,6 +85,7 @@ a {
   text-align: left;
 }
 
+
 .buttonUnderlinehelp {
   font-size: 20px;
   cursor: pointer;
@@ -103,6 +104,7 @@ a {
   -webkit-transition: all .3s;
   transition: all .3s;
   margin: 4px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, .5);
 }
 
 .buttonUnderlinehelp:hover {
