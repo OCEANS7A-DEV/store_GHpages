@@ -306,7 +306,7 @@ export default function StoreInventoryNumsSet({ setCurrentPage, setisLoading }: 
           履歴へ
         </a>
         <a className="buttonUnderlineSt" id="main_back" type="button" onClick={InventoryDifferenceNumber}>
-          データ確認
+          在庫数データ送信
         </a>
       </div>
     </div>
