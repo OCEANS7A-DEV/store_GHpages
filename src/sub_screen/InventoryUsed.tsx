@@ -381,7 +381,6 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
       if (usedformData[returnData.length - 1] && !usedformData[returnData.length - 1].月日) {
         newData.月日 = usedformData[returnData.length - 1]?.月日 || 'デフォルト値';
       }
-  
       returnData.push({
         月日: newData.月日,
         商品コード: newData.商品コード,
@@ -391,6 +390,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
         個人購入: '',
         備考: '',
         ProcessingMethod: [],
+        商品単価: 0
       });
     }
   
