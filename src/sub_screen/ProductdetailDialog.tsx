@@ -23,6 +23,7 @@ const DetailDialog: React.FC<DetailDialogProps> = ({ title, message, Data, onCon
   if (!isOpen) return null;
   const [isNextButton, setisNextButton] = useState(false);
   const [isBeforeButton, setisBeforeButton] = useState(false);
+  const [priceColumn, setPriceColumn] = useState(4);
 
   useEffect(() => {
     const index = searchtabledata.findIndex(subArray =>
@@ -35,8 +36,13 @@ const DetailDialog: React.FC<DetailDialogProps> = ({ title, message, Data, onCon
     if (index < searchtabledata.length - 1){
       setisNextButton(true);
     }
+    if (localStorage.getItem('StoreSetType') !== 'VC') {
+      setPriceColumn(4)
+    }else{
+      setPriceColumn(5)
+    }
   },[])
-
+  //const DetailMessage = `業者名: ${searchData[0] || ''}　　||　　商品ナンバー: ${searchData[1] || ''}\n商品単価: ${(searchData[3] !== undefined && searchData[3] !== null) ? searchData[3].toLocaleString() : ''}円　　||　　店販価格: ${(searchData[5] !== undefined && searchData[5] !== null) ? searchData[5].toLocaleString() : ''}`
 
   return ReactDOM.createPortal(
     <div className="detail-dialog-overlay">
@@ -54,14 +60,16 @@ const DetailDialog: React.FC<DetailDialogProps> = ({ title, message, Data, onCon
             }}>次の商品へ</button>
           </div>
           <div className="detail-top-main">
-            <p>
-              {message.split('\n').map((line, index) => (
-                <React.Fragment key={index}>
-                  {line}
-                  <br />
-                </React.Fragment>
-              ))}
-            </p>
+            <table>
+              <tr>
+                <td>業者名: {Data[0]}</td>
+                <td>商品ナンバー: {Data[1]}</td>
+              </tr>
+              <tr>
+                <td>商品単価: {Data[priceColumn].toLocaleString()}円</td>
+                <td>店販価格: {Data[6].toLocaleString()}円</td>
+              </tr>
+            </table>
             <div className='detail-dialog-button'>
               <button onClick={() => {insert(Data)}}>{addButtonName}</button>
             </div>

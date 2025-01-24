@@ -76,6 +76,11 @@
   justify-content: space-around;
   align-items: center;
 }
+
+.detail-top-main td {
+  text-align: left;
+}
+
 .detail-title {
   text-align: center;
   display: flex;
