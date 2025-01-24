@@ -1,7 +1,7 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import ReactDOM from 'react-dom';
 import '../css/orderDialog.css';
-import { helpGet } from '../backend/Server_end';
+import { helpGet, ImageUrlSet } from '../backend/Server_end';
 
 interface HelpDialogProps {
   title: string;
@@ -91,9 +91,9 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ title, message, onConfirm, onCa
             </div>
           </div>
           <h2>操作ヘルプ</h2>
-          <div>
+          {/* <div>
             <img src="https://lh3.googleusercontent.com/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFhbm"/>
-          </div>
+          </div> */}
         </div>
         <div className="help-detail">
           {
@@ -110,14 +110,7 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ title, message, onConfirm, onCa
                     {row[columnIndexNum]}
                   </a>
                   ) : (
-                    <span>
-                      {row[columnIndexNum].split('\n').map((line, i) => (
-                        <React.Fragment key={i}>
-                          {line}
-                          <br />
-                        </React.Fragment>
-                      ))}
-                    </span>
+                    <img src={ImageUrlSet(row[columnIndexNum])}/>
                   )
                 }
                   
