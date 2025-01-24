@@ -1,7 +1,7 @@
 import React, { useState, useRef, ChangeEvent, useEffect } from 'react';
 import '../css/InventoryUsed.css';
 import '../css/Direct.css';
-import { InventorySearch, GASPostInsertStore } from '../backend/Server_end';
+import { InventorySearch, GASPostInsertStore, ImageUrlSet } from '../backend/Server_end';
 import DirectDialog from './DirectDialog';
 import WordSearch from './ProductSearchWord';
 import DetailDialog from './ProductdetailDialog';
@@ -342,10 +342,10 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
     setDetailisDialogOpen(false);
     setsearchDataIndex(updateindex);
     setisLoading(true);
-    var match = 'https://drive.google.com/file/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFhbm/preview';// 画像がないとき用のURL
+    var match = 'https://lh3.googleusercontent.com/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFhbm';// 画像がないとき用のURL
     const image = await InventorySearch(searchtabledata[updateindex][1],"商品コード","商品画像");// 商品画像検索
-    if (image[2] !== ''){
-      match = image[2];
+    if (image[2] !== ''){// 商品画像のURLがあればそのURLを上書き
+      match = ImageUrlSet(image[2]);
     }
     await setDetailIMAGE(match);
     await setsearchData(searchtabledata[updateindex]);
@@ -358,10 +358,10 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
     setDetailisDialogOpen(false);
     setsearchDataIndex(updateindex);
     setisLoading(true);
-    var match = 'https://drive.google.com/file/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFhbm/preview';// 画像がないとき用のURL
+var match = 'https://lh3.googleusercontent.com/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFhbm';// 画像がないとき用のURL
     const image = await InventorySearch(searchtabledata[updateindex][1],"商品コード","商品画像");// 商品画像検索
-    if (image[2] !== ''){
-      match = image[2];
+    if (image[2] !== ''){// 商品画像のURLがあればそのURLを上書き
+      match = ImageUrlSet(image[2]);
     }
     await setDetailIMAGE(match);
     await setsearchData(searchtabledata[updateindex]);

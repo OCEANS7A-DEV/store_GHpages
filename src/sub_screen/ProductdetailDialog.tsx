@@ -68,7 +68,7 @@ const DetailDialog: React.FC<DetailDialogProps> = ({ title, message, Data, onCon
           </div>
         </div>
         <div className="detail-dialog-image">
-          {image ? <iframe src={image} title="Product Image"></iframe> : null}
+          <img src={image} title="Product Image"/>
         </div>
         <div>
           <div className='detail-dialog-button'>

@@ -16,7 +16,7 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ title, message, onConfirm, onCa
 
   if (!isOpen) return null;
   
-  const [nowStatus, setNowStatus] = useState('');
+  //const [nowStatus, setNowStatus] = useState('');
   const [columnIndexNum, setColumnIndexNum] = useState(0);
   const [helpData, setHelpData] = useState([]);
   const [helpfilter, sethelpfilter] = useState([]);
@@ -33,7 +33,7 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ title, message, onConfirm, onCa
 
   const helpClicked = (set: string) => {
     if(columnIndexNum + 1 < maxlength ){
-      setNowStatus(set);
+      //setNowStatus(set);
       const historydata = history;
       historydata.push(set);
       sethistory(historydata)
@@ -43,6 +43,7 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ title, message, onConfirm, onCa
   }
 
   const backClick = () => {
+    //console.log(columnIndexNum)
     if(columnIndexNum !== 0){
       setColumnIndexNum(columnIndexNum - 1);
       setNowLength(nowLength - 1);
@@ -73,7 +74,6 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ title, message, onConfirm, onCa
   return ReactDOM.createPortal(
     <div className="order-confirm-dialog-overlay">
       <div className="order-confirm-dialog">
-        
         <div className="help-top">
           <div className="help-button-area">
             <div className="backButton">
@@ -90,8 +90,10 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ title, message, onConfirm, onCa
               </a>
             </div>
           </div>
-          
           <h2>操作ヘルプ</h2>
+          <div>
+            <img src="https://lh3.googleusercontent.com/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFhbm"/>
+          </div>
         </div>
         <div className="help-detail">
           {

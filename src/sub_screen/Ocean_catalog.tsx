@@ -1,5 +1,6 @@
 import React, { useState, ChangeEvent } from 'react';
 import { FormDataKeepSet, KeepFormDataGet } from '../backend/WebStorage';
+import { InventorySearch, ImageUrlSet } from '../backend/Server_end';
 import WordSearch from './catalogSearch';
 import CatalogDetailDialog from './catalog_Dialog';
 import '../css/Ocean_catalog.css';
@@ -25,10 +26,10 @@ export default function OceanCatalog({ setCurrentPage, setisLoading }: SettingPr
     setDetailisDialogOpen(false);
     setsearchDataIndex(updateindex);
     setisLoading(true);
-    var match = 'https://drive.google.com/file/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFhbm/preview';// 画像がないとき用のURL
+    var match = 'https://lh3.googleusercontent.com/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFhbm';// 画像がないとき用のURL
     const image = await InventorySearch(searchtabledata[updateindex][1],"商品コード","商品画像");// 商品画像検索
     if (image[2] !== ''){// 商品画像のURLがあればそのURLを上書き
-      match = image[2];
+      match = ImageUrlSet(image[2]);
     }
     await setDetailIMAGE(match);//画像をセット
     await setsearchData(searchtabledata[updateindex]);
@@ -41,10 +42,10 @@ export default function OceanCatalog({ setCurrentPage, setisLoading }: SettingPr
     setDetailisDialogOpen(false);
     setsearchDataIndex(updateindex);
     setisLoading(true);
-    var match = 'https://drive.google.com/file/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFhbm/preview';// 画像がないとき用のURL
+    var match = 'https://lh3.googleusercontent.com/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFhbm';// 画像がないとき用のURL
     const image = await InventorySearch(searchtabledata[updateindex][1],"商品コード","商品画像");// 商品画像検索
     if (image[2] !== ''){// 商品画像のURLがあればそのURLを上書き
-      match = image[2];
+      match = ImageUrlSet(image[2]);
     }
     await setDetailIMAGE(match);//画像をセット
     await setsearchData(searchtabledata[updateindex]);

@@ -651,3 +651,18 @@ export const helpGet = async() => {
     return (e);
   }
 };
+
+
+export const ImageUrlSet = (URL:string) => {
+  console.log(URL)
+  const match = URL.match(/\/file\/d\/([^/]+)/);
+  let fileId = ''
+  if (match && match[1]) {
+    fileId = match[1];
+    console.log("抽出したID:", fileId);
+  } else {
+    console.log("IDが見つかりませんでした");
+  }
+  const result = `https://lh3.googleusercontent.com/d/${fileId}`
+  return result
+}

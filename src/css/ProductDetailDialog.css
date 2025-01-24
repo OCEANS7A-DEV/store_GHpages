@@ -65,9 +65,8 @@
   margin-bottom: 10px;
 }
 
-.detail-dialog-image iframe {
+.detail-dialog-image img {
   width: 100%;
-  height: calc(100vh - 360px);
   max-height: 650px;
 }
 
