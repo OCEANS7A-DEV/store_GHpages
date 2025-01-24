@@ -17,7 +17,7 @@ import CorrectionRequest from './sub_screen/CorrectionRequest';
 import RequestHistory from './sub_screen/Request_History';
 import StoreInventoryNumsSet from './sub_screen/InventoryNumsSet';
 import { Toaster } from 'react-hot-toast';
-
+import HelpDialog from './sub_screen/helpDialog';
 
 
 import TopPage from './top';
@@ -27,6 +27,7 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState('loginPage');
   const nodeRef = useRef(null);
   const [isLoading, setisLoading] = useState(false);
+  const [isHelpDialogOpen, setHelpDialogOpen] = useState(false);
 
 
   const getPageComponent = (page: string) => {
@@ -64,9 +65,34 @@ export default function App() {
     }
   };
 
+  const handleConfirm = async () => {
+    setHelpDialogOpen(false)
+  };
+  const handleCancel = async () => {
+    setHelpDialogOpen(false)
+  };
+
   return (
     <>
       <Toaster/>
+      <div className="help-information-button">
+        <a
+          className="buttonUnderlinehelp"
+          role="button"
+          type="button"
+          title="ヘルプ"
+          onClick={() => {setHelpDialogOpen(true)}}
+        >
+          ?
+        </a>
+        <HelpDialog
+          title="ヘルプ表示テスト"
+          message=''
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+          isOpen={isHelpDialogOpen}
+        />
+      </div>
       <TransitionGroup component={null}>
         <CSSTransition
           key={currentPage}

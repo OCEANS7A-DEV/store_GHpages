@@ -78,23 +78,7 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
 
   return (
     <>
-      <div className="help-information-button">
-        <a
-          className="buttonUnderlinehelp"
-          type="button"
-          title="ヘルプ"
-          onClick={() => {setHelpDialogOpen(true)}}
-        >
-          ?
-        </a>
-        <HelpDialog
-          title="ヘルプ表示テスト"
-          message=''
-          onConfirm={handleConfirm}
-          onCancel={handleCancel}
-          isOpen={isHelpDialogOpen}
-        />
-      </div>
+      
       <div className="top-window">
         <div>
           <div className="top-BG">

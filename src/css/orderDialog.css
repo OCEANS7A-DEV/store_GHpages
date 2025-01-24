@@ -97,3 +97,84 @@
 
 
 
+
+.help-top{
+  text-align: center;
+}
+
+.help-top h2 {
+  margin: 0;
+}
+
+.backButton {
+  text-align: left;
+}
+
+.closeButton {
+  text-align: right;
+  border: none;
+}
+
+.help-button-area {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.help-detail {
+  text-align: center;
+  padding: auto;
+  margin: auto;
+}
+
+.Closebutton {
+  font-size: 30px;
+}
+
+
+.buttonUnderlineHelp {
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  overflow: hidden;
+  font-size: 15px;
+  color: #222;
+  text-align: center;
+  overflow-wrap: anywhere;
+  background: transparent;
+  white-space: nowrap;
+  margin: auto; /* 左右に適度なスペース */
+}
+
+.buttonUnderlineHelp::after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 2px;
+  content: "";
+  background-color: #6fa24a;
+  transform: scaleX(0);
+  transform-origin: right top;
+}
+
+.buttonUnderlineHelp:active {
+  transform: scale(0.9);
+}
+
+@media (any-hover: hover) {
+  .buttonUnderlineHelp::after {
+    transition: transform 0.2s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+
+  .buttonUnderlineHelp:hover::after {
+    transition: transform 0.4s cubic-bezier(0.9, 0, 0, 1);
+    transform: scaleX(1);
+    transform-origin: left top;
+  }
+}

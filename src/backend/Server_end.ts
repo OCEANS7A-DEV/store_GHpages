@@ -629,3 +629,25 @@ export const syncDataGet = async () => {
     return (e);
   }
 };
+
+export const helpGet = async() => {
+  try {
+    const response = await fetch(
+      Get_URL,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          action: 'helpGet',
+        })
+      },
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const result = await response.json();
+    return result;
+
+  }catch(e){
+    return (e);
+  }
+};
