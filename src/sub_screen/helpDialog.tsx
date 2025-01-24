@@ -43,11 +43,14 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ title, message, onConfirm, onCa
   }
 
   const backClick = () => {
-    setColumnIndexNum(columnIndexNum - 1);
-    setNowLength(nowLength - 1);
-    const historydata = history;
-    historydata.pop();
-    sethistory(historydata)
+    if(columnIndexNum !== 0){
+      setColumnIndexNum(columnIndexNum - 1);
+      setNowLength(nowLength - 1);
+      const historydata = history;
+      historydata.pop();
+      sethistory(historydata)
+    }
+    
   }
 
 
