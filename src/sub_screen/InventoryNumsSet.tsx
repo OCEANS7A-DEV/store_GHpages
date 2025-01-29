@@ -31,7 +31,7 @@ const MonthList = () => {
   let returnData: SelectOption[] = [];
   for (let i = 0; i < 12; i++){
     const setdata = i + 1;
-    const labeldata = setdata + "月";
+    const labeldata = setdata + "月末";
     const DefAsArray: SelectOption = {
       value: setdata,
       label: labeldata,
