@@ -177,6 +177,7 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
           ...newusedFormData[index],
           商品コード: ResultData[1],
           商品名: ResultData[2],
+          商品単価: ResultData[4],
         };
       }
     };
