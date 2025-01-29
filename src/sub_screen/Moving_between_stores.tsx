@@ -219,7 +219,7 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
         filterData[i].商品名,
         filterData[i].数量,
         filterData[i].商品単価,
-        '=SUM(INDIRECT("F"&ROW()) * INDIRECT("H"&ROW()))',
+        '=SUM(INDIRECT("F"&ROW()) * INDIRECT("G"&ROW()))',
         filterData[i].備考,
         id,
         date
