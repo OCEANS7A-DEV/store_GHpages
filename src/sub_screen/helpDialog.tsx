@@ -91,9 +91,6 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ title, message, onConfirm, onCa
             </div>
           </div>
           <h2>操作ヘルプ</h2>
-          {/* <div>
-            <img src="https://lh3.googleusercontent.com/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFhbm"/>
-          </div> */}
         </div>
         <div className="help-detail">
           {

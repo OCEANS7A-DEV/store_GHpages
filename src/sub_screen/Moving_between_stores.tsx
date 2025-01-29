@@ -16,6 +16,7 @@ interface UsedInsertData {
   備考: string;
   出庫店舗: { value: string; label: string }[];
   入庫店舗: { value: string; label: string }[];
+  商品単価: number;
 }
 
 interface SettingProps {
@@ -97,6 +98,7 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
     出庫店舗: [],
     入庫店舗: [],
     備考: '',
+    商品単価: 0,
   }));
   const [usedformData, setusedFormData] = useState<UsedInsertData[]>(initialusedFormData);
   const storename = localStorage.getItem('StoreSetName');
@@ -156,6 +158,7 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
         出庫店舗: [],
         入庫店舗: [],
         備考: '',
+        商品単価: 0,
       });
     }
     setusedFormData(newusedFormData);
@@ -215,6 +218,8 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
         filterData[i].商品コード,
         filterData[i].商品名,
         filterData[i].数量,
+        filterData[i].商品単価,
+        '=SUM(INDIRECT("F"&ROW()) * INDIRECT("H"&ROW()))',
         filterData[i].備考,
         id,
         date
@@ -234,6 +239,7 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
       出庫店舗: [],
       入庫店舗: [],
       備考: '',
+      商品単価: 0
     });
     setusedFormData(newusedFormData);
     codeRefs.current.splice(index, 1);
@@ -367,6 +373,7 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
         商品コード: newData.商品コード,
         商品名: newData.商品名,
         数量: '',
+        商品単価: 0,
         出庫店舗: [],
         入庫店舗: [],
         備考: '',
