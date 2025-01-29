@@ -589,7 +589,6 @@ export const CurrentlyAvailableDataGet = async () => {
         },
         body: JSON.stringify({
           action: 'CurrentlyAvailableDataGet',
-          sub_action: 'get',
           sheetName: '店舗在庫一覧',
         })
       },
@@ -598,6 +597,7 @@ export const CurrentlyAvailableDataGet = async () => {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
     const result = await response.json();
+    //console.log(result)
     return result;
   }catch(e){
     return (e);
@@ -624,6 +624,7 @@ export const syncDataGet = async () => {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
     const result = await response.json();
+    //console.log(result)
     return result;
   }catch(e){
     return (e);

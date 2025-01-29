@@ -86,6 +86,7 @@ export default function StoreInventoryNumsSet({ setCurrentPage, setisLoading }: 
   const syncData = async (column: number, ResultData:any) => {
     const searchData = []
     const data = await syncDataGet();
+    //console.log(data)
     for (let i = 0; i < ResultData.length; i++){
       let rowdata = data.find(row => row[0] === ResultData[i][0]);
       searchData.push({
@@ -102,6 +103,7 @@ export default function StoreInventoryNumsSet({ setCurrentPage, setisLoading }: 
     try {
       // データ取得
       const data = await CurrentlyAvailableDataGet();
+      //console.log(data)
       if (!data || data.length < 2) {
         console.error("Data is invalid or empty.");
         return;
@@ -134,6 +136,7 @@ export default function StoreInventoryNumsSet({ setCurrentPage, setisLoading }: 
       }).filter(item => item !== null); // nullを削除
   
       // 商品タイプでソート
+      //console.log(InventoryData)
       const sortedProducts = InventoryData.sort((a, b) => {
         const typeA = parseInt(a.商品タイプ.match(/\[(\d+)\]/)?.[1] || '0', 10);
         const typeB = parseInt(b.商品タイプ.match(/\[(\d+)\]/)?.[1] || '0', 10);
