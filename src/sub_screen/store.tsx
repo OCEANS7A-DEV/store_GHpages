@@ -700,7 +700,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
               <thead>
                 <tr>
                   <th className="insert_vendor_header">業者</th>
-                  <th className="insert_code_header">商品コード</th>
+                  <th className="insert_code_header">商品ナンバー</th>
                   <th className="insert_name_header">商品名</th>
                   <th className="insert_Select_header">商品詳細</th>
                   <th className="insert_quantity_header">数量</th>
