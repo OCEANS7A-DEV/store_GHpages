@@ -192,6 +192,9 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
       }
       updateFormData(ResultData);
       newFormData[index].selectOptions = options || nullData;
+      if (detailRefs.current[index]) {
+        detailRefs.current[index].focus(); 
+      };
     } catch (error) {
       const ResultData = await productSearch(Number(value));
       if(ResultData[10] === false){
@@ -203,12 +206,14 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
       }
       updateFormData(ResultData);
       newFormData[index].selectOptions = nullData;
+      if (quantityRefs.current[index]) {
+        quantityRefs.current[index].focus();
+      }
     }
     setFormData(newFormData);
-    if (detailRefs.current[index]) {
-      detailRefs.current[index].focus();
-      
-    };
+    // if (detailRefs.current[index]) {
+    //   detailRefs.current[index].focus(); 
+    // };
   };
 
   const numberchange = async (
@@ -285,9 +290,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     if (e.key === 'Enter') {
       e.preventDefault();
       if (fieldType === '商品コード') {
-        if (detailRefs.current[index]) {
-          detailRefs.current[index].focus();
-        }
+        searchDataChange(index, formData[index][fieldType])
       }else if (fieldType === '商品詳細'){
         if (quantityRefs.current[index]) {
           quantityRefs.current[index].focus();
@@ -329,7 +332,10 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   };
 
   const handleBlur = (index: number, fieldType: '商品コード') => {
+    console.log('handleBlur')
     if (formData[index][fieldType]) {
+      console.log(formData[index][fieldType])
+      console.log(index)
       searchDataChange(index, formData[index][fieldType]);
     }
   };

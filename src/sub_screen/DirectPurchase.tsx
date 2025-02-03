@@ -238,7 +238,9 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
   };
 
   const handleBlur = (index: number, fieldType: '商品コード') => {
+    console.log('handleBlur')
     if (usedformData[index][fieldType]) {
+      console.log(usedformData[index][fieldType])
       usedsearchDataChange(index, usedformData[index][fieldType]);
     }
   };
