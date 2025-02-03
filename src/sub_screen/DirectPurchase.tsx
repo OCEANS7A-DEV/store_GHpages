@@ -436,7 +436,7 @@ var match = 'https://lh3.googleusercontent.com/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFh
                 <thead>
                   <tr>
                     <th className="insert_date_header">月日</th>
-                    <th className="insert_code_header">商品コード</th>
+                    <th className="insert_code_header">商品ナンバー</th>
                     <th className="insert_name_header">商品名</th>
                     <th className="insert_quantity_header">数量</th>
                     <th className="remarks_header">備考</th>
@@ -461,7 +461,7 @@ var match = 'https://lh3.googleusercontent.com/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFh
                         onKeyDown={(e) => handleKeyDown(index, e, '月日')}
                       />
                     </td>
-                    <td>
+                    <td className="insert_code_td">
                       <input
                         title="入力は半角のみです"
                         type="tel"

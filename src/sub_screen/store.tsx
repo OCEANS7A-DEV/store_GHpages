@@ -727,7 +727,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
                       />
                     </td>
                     
-                    <td>
+                    <td className="insert_code_td">
                       <input
                         title="入力は半角のみです"
                         type="tel"
