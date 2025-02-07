@@ -133,7 +133,7 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
     index: number,
     value: any
   ) => {
-    const searchresult = productSearch(value);
+    //const searchresult = productSearch(value);
     const newusedFormData = [...usedformData];
     const updateFormData = (ResultData: any) => {
       if (ResultData !== null) {
@@ -162,7 +162,7 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
     field: keyof UsedInsertData,
     event: ChangeEvent<HTMLInputElement>,
   ) => {
-    const CodeValue = event.target.value.replace(/[^0-9]/g, '');
+    const CodeValue = event.target.value.replace(/[^0-9A-Za-z\-]/g, '');
     const newusedFormData = [...usedformData];
     newusedFormData[index][field] = CodeValue;
     setusedFormData(newusedFormData);
@@ -238,9 +238,9 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
   };
 
   const handleBlur = (index: number, fieldType: '商品コード') => {
-    console.log('handleBlur')
+    //console.log('handleBlur')
     if (usedformData[index][fieldType]) {
-      console.log(usedformData[index][fieldType])
+      //console.log(usedformData[index][fieldType])
       usedsearchDataChange(index, usedformData[index][fieldType]);
     }
   };
