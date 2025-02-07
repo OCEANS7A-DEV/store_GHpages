@@ -157,10 +157,9 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     index: number,
     value: any
   ) => {
-    const searchresult = productSearch(value);
+    //const searchresult = productSearch(value);
     const newFormData = [...formData];
     const updateFormData = (ResultData: any) => {
-      //console.log(ResultData)
       let price = 0;
       if (storeType === "DM" || storeType === "FC"){
         price = ResultData[4]
@@ -211,9 +210,6 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
       }
     }
     setFormData(newFormData);
-    // if (detailRefs.current[index]) {
-    //   detailRefs.current[index].focus(); 
-    // };
   };
 
   const numberchange = async (
@@ -241,10 +237,8 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
       second: '2-digit',
     }).format(now);
 
-    //console.log(defaultDate)
     const InsertData = [];
     const formfilter = formData.filter(row => row.商品コード !== "" && row.商品名 !== "");
-    //console.log(formfilter)
     for (let i = 0; i < formfilter.length; i++) {
       let setdata = [
         defaultDate,
@@ -263,10 +257,10 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
         id,
         formatted];
       InsertData.push(setdata);
-      
     }
     GASPostInsertStore('insert', '店舗へ', InsertData);
   };
+
 
   const removeForm = (index: number) => {
     const newFormData = formData.filter((_, i) => i !== index);
@@ -285,6 +279,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     codeRefs.current.splice(index, 1);
     quantityRefs.current.splice(index, 1);
   };
+
 
   const handleKeyDown = async (index: number, e: React.KeyboardEvent<HTMLInputElement>, fieldType: string,) => {
     if (e.key === 'Enter') {
@@ -332,10 +327,10 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   };
 
   const handleBlur = (index: number, fieldType: '商品コード') => {
-    console.log('handleBlur')
+    //console.log('handleBlur')
     if (formData[index][fieldType]) {
-      console.log(formData[index][fieldType])
-      console.log(index)
+      // console.log(formData[index][fieldType])
+      // console.log(index)
       searchDataChange(index, formData[index][fieldType]);
     }
   };
@@ -396,15 +391,6 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     setDialogOpen(false);
   };
 
-  const handleSaveConfirmMessage = (action: string) => {
-    if (action === 'save'){
-      setSaveMessage("現在の入力内容を保存しますか？");
-    }else{
-      setSaveMessage("保存済みのデータで現在の入力内容を上書きしますか？");
-    }
-    setSavetype(action)
-    setSaveDialogOpen(true)
-  };
 
   const handleConfirmSave = async () => {
     const result = Savetype;
@@ -413,10 +399,8 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     } else {
       const Data = KeepFormDataGet(storename);
       const saveData: any[] = [];
-      const nullData = [];
       for (let i = 0; i < Data.length; i++) {
         let colordata: any[] = [];
-        let searchresult: any[] = [];
         if (Data[i].商品コード !== ''){
           try {
             [searchresult, colordata] = await Promise.all([
@@ -460,14 +444,17 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     setSaveDialogOpen(false);
   };
 
+
   const handleCancelSave = () => {
     alert('キャンセルされました');
     setSaveDialogOpen(false);
   }
 
+
   const DetailhandleConfirm = () => {
     setDetailisDialogOpen(false);
   };
+
 
   const DetailhandleConfirmAdd = async (data: any) => {
     if(data[10] === false){
@@ -515,21 +502,23 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     setCurrentPage('History');
   };
 
+
   const nextDatail = async () => {
     const updateindex = searchDataIndex + 1
     setDetailisDialogOpen(false);
     setsearchDataIndex(updateindex);
     setisLoading(true);
-    var match = 'https://lh3.googleusercontent.com/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFhbm';// 画像がないとき用のURL
-    const image = await InventorySearch(searchtabledata[updateindex][1],"商品コード","商品画像");// 商品画像検索
-    if (image[2] !== ''){// 商品画像のURLがあればそのURLを上書き
+    var match = 'https://lh3.googleusercontent.com/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFhbm';
+    const image = await InventorySearch(searchtabledata[updateindex][1],"商品コード","商品画像");
+    if (image[2] !== ''){
       match = ImageUrlSet(image[2]);
     }
-    await setDetailIMAGE(match);//画像をセット
+    await setDetailIMAGE(match);
     await setsearchData(searchtabledata[updateindex]);
     await setDetailisDialogOpen(true);
     setisLoading(false);
   };
+
 
   const beforeDatail = async () => {
     const updateindex = searchDataIndex - 1
@@ -609,7 +598,6 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   },[addType])
 
   useEffect(() => {
-    //console.log("セーブ")
     FormDataKeepSet(formData, storename);
   },[formData])
 
@@ -628,9 +616,6 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   return (
     <div className="window_area">
       <div className='window_top'>
-        {/* <a className="buttonUnderlineSt" type="button" onClick={() => handleSaveConfirmMessage('set')}>
-          保存データを反映
-        </a> */}
         <div className="order_top_area">
           <h2 className='store_name'> 注文日:</h2>
           <input
@@ -642,10 +627,6 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
           />
           <h2 className='store_name'> 注文商品入力: {storename} 店</h2>
         </div>
-
-        {/* <a className="buttonUnderlineSt" type="button" onClick={() => handleSaveConfirmMessage('save')}>
-          データを保存
-        </a> */}
         <SaveConfirmDialog
           title="確認"
           message={SaveMessage}

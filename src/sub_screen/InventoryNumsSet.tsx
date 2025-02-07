@@ -1,10 +1,11 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { useState, useEffect, ChangeEvent, useRef } from 'react';
 import Select from 'react-select';
 import '../css/store.css';
 import { StoreInventoryGet, PeriodDateGet, HistoryGet, CurrentlyAvailableDataGet, syncDataGet, GASPostInsertStore } from '../backend/Server_end';
 import '../css/StoreInventory.css';
 import HistoryInsertCheck, {HistoryUsedCheck} from './historycheckDialog';
 import '../css/usedHistory.css';
+import toast from 'react-hot-toast';
 
 interface SettingProps {
   setCurrentPage: (page: string) => void;
@@ -67,6 +68,7 @@ export default function StoreInventoryNumsSet({ setCurrentPage, setisLoading }: 
   const storename = localStorage.getItem('StoreSetName');
   const [AvailableData, setAvailableData] = useState([]);
 
+  const quantityRefs = useRef([]);
   const [InventoryNumsData, setInventoryNumsData] = useState([])
 
 
@@ -151,7 +153,12 @@ export default function StoreInventoryNumsSet({ setCurrentPage, setisLoading }: 
     }
   };
 
-
+const handleKeyDown = async (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      quantityRefs.current[index + 1].focus();
+    }
+  };
 
   const getLastDayOfMonth = (year: number, month: number): string  => {
     // 月は 1 月を 1、2 月を 2 と指定するが、Date コンストラクタでは 0 ベースなので調整
@@ -162,13 +169,14 @@ export default function StoreInventoryNumsSet({ setCurrentPage, setisLoading }: 
     return `${yyyy}-${mm}-${dd}`;
   }
 
-  //修正
   const InventoryDifferenceNumber = () => {
     //console.log(InventoryNumsData)
+
     if (!years || !months) {
       alert("年または月が選択されていません");
       return;
     }
+    setisLoading(true);
     const UsedDate = getLastDayOfMonth(years.value, months.value)
     const formatted = new Intl.DateTimeFormat('ja-JP', {
       year: 'numeric',
@@ -184,7 +192,7 @@ export default function StoreInventoryNumsSet({ setCurrentPage, setisLoading }: 
     for (let i = 0; i < InventoryNumsData.length; i++){
 
       let resultrow = AvailableData.find(row => row["商品コード"] == InventoryNumsData[i]["商品コード"])
-      console.log(resultrow)
+      //console.log(resultrow)
       let setnum = 0
       if(resultrow['在庫数'] !== ""){
         setnum += Number(resultrow['在庫数'])
@@ -208,9 +216,12 @@ export default function StoreInventoryNumsSet({ setCurrentPage, setisLoading }: 
         ])
       }
     }
-    console.log(ResultData)
+    //console.log(ResultData)
     //return
     GASPostInsertStore('insert', '店舗使用商品', ResultData)
+    findColumnIndex()
+    setisLoading(false);
+    toast.success('入力完了')
   }
 
 
@@ -289,6 +300,8 @@ export default function StoreInventoryNumsSet({ setCurrentPage, setisLoading }: 
                       className="in-stock-quantity"
                       inputMode="numeric"
                       value={row.在庫数}
+                      ref={(el) => (quantityRefs.current[index] = el)}
+                      onKeyDown={(e) => handleKeyDown(index, e)}
                       onChange={(e) => numberchange(index, '在庫数', e)}
                     />
                   </td>
