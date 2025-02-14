@@ -119,20 +119,16 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   const [OCtitle,setOCtitle] = useState<string>('商品検索ウィンドウを開きます');
   const [addType, setADDType] = useState(false);
   const [defaultDate, setDefaultDate] = useState('');
-  const storeType = localStorage.getItem('StoreSetType');
 
   const [OrderStatus, setOrderStatus] = useState('更新中...');
   const [OrderStatusColor, setOrderStatusColor] = useState('black');
-
   const [historyDialogOpen, sethistoryDialogOpen] = useState(false);
-
   const [orderdata, setorderdata] = useState<any>([]);
-
   const [processlist, setprocesslist] = useState([]);
   const [progressmax, setprogressmax] = useState<number>(0);
-  const progressColumnBehindNumber = 3;
 
-  const [isDisabled, setIsDisabled] = useState(true);
+  const storeType = localStorage.getItem('StoreSetType');
+  const progressColumnBehindNumber = 3;
   
   const confirmationMessage = `${new Date(defaultDate).toLocaleDateString("ja-JP")}の注文状況です`;
 
@@ -595,6 +591,17 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     setNonisDialogOpen(false);
   };
 
+  const DisabledChange = async () => {
+    const userType = await sessionStorage.getItem('authority');
+    console.log(userType);
+    if(userType !== '店舗'){
+      console.log('許可')
+      //setIsDisabledInput(true);
+    }else{
+      console.log('不許可')
+    }
+  };
+
   useEffect(() => {
     processlistGet();
     const setDate = getNearestMonday();
@@ -602,10 +609,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     const processlistdata = localStorage.getItem('processlist');
     setprocesslist(JSON.parse(processlistdata));
     setprogressmax(Object.keys(JSON.parse(processlistdata)).length);
-    const userType = sessionStorage.getItem('authority');
-    if(userType == '店舗用アカウント'){
-      setIsDisabled(false)
-    }
+    DisabledChange()
   }, []);
 
   useEffect(() => {
@@ -655,7 +659,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
             className="insert_order_date"
             max="9999-12-31"
             value={defaultDate}
-            disabled={isDisabled}
+            // disabled={isDisabledInput}
             onChange={(e) => {handleDateChange(e)}}
           />
           <div className="store_name_status" style={{ border: `1px solid ${OrderStatusColor}` }}><a className="buttonUnderlineD"  role="button" href="#" style={{ color: OrderStatusColor, fontSize: '20px' }} onClick={() => sethistoryDialogOpen(true)}>{OrderStatus}</a></div>
