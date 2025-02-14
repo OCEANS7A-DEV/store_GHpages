@@ -25,11 +25,23 @@
 
 .order_top_area {
   display: flex;
+  overflow: hidden;
 }
 
 .store_name {
   min-width: 80px;
   text-align: center;
+  white-space: nowrap;
+}
+
+.store_name_status {
+  font-size: 20px;
+  text-align: left;
+  margin: auto 0;
+  margin-right: 30px;
+  white-space: nowrap;
+  padding: 5px;
+  border-radius: 10px;
 }
 
 .form_area {
@@ -128,7 +140,7 @@
 .insert_order_date {
   height: 40px;
   margin-top: 16px;
-  margin-right: 20px;
+  margin-right: 10px;
 }
 
 
@@ -188,7 +200,7 @@
 }
 
 .insert_code_td {
-  width: 108px;
+  min-width: 108px;
 }
 
 .insert_code_header {

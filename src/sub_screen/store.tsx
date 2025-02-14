@@ -1,18 +1,15 @@
 import React, { useState, useRef, ChangeEvent, useEffect } from 'react';
 import Select from 'react-select';
 import '../css/store.css';
-import { InventorySearch, GASPostInsertStore, judgmentPOST, processlistGet, ImageUrlSet } from '../backend/Server_end';
+import { HistoryGet, InventorySearch, GASPostInsertStore, judgmentPOST, processlistGet, ImageUrlSet, proccessReceiving } from '../backend/Server_end';
 import ConfirmDialog from './orderDialog';
 import { FormDataKeepSet, KeepFormDataGet } from '../backend/WebStorage';
 import WordSearch from './ProductSearchWord';
-import SaveConfirmDialog from './SaveConfirmDialog';
 import DetailDialog from './ProductdetailDialog';
 import NonConfirmDialog from './NonOrderDialog';
+import OutOfStockStatus from './Out_of_stock_status';
 
-interface SelectData {
-  value: string;
-  label: string;
-}
+
 
 interface InsertData {
   業者: string;
@@ -75,6 +72,18 @@ const getNearestMonday = () => {
 };
 
 
+function groupDataByFirstColumn(data: any) {
+  const groupedData = {};
+  data.forEach(row => {
+    const key = row[0];
+    if (!groupedData[key]) {
+      groupedData[key] = [];
+    }
+    groupedData[key].push(row);
+  });
+  return groupedData;
+}
+
 
 
 export default function StorePage({ setCurrentPage, setisLoading }: SettingProps) {
@@ -91,7 +100,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     selectOptions: [],
     商品単価: ''
   }));
-  const storename = localStorage.getItem('StoreSetName');
+  const storename = localStorage.getItem('StoreSetName') ?? "";
   const [formData, setFormData] = useState<InsertData[]>(KeepFormDataGet(storename));
   const codeRefs = useRef([]);
   const quantityRefs = useRef([]);
@@ -99,11 +108,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   const remarksRefs = useRef([]);
   const detailRefs = useRef([]);
   const message = "注文内容は以下の通りです\n以下の内容でよろしければOKをクリックしてください\n内容の変更がある場合にはキャンセルをクリックしてください";
-  const [SaveMessage, setSaveMessage] = useState<string>('');
-  const [SaveisDialogOpen, setSaveDialogOpen] = useState(false);
-  const [Savetype, setSavetype] = useState<string>('');
   const [searchData, setsearchData] = useState<any>([]);
-  const DetailMessage = `業者名: ${searchData[0] || ''}　　||　　商品ナンバー: ${searchData[1] || ''}\n商品単価: ${(searchData[3] !== undefined && searchData[3] !== null) ? searchData[3].toLocaleString() : ''}円　　||　　店販価格: ${(searchData[5] !== undefined && searchData[5] !== null) ? searchData[5].toLocaleString() : ''}`
   const [DetailisDialogOpen, setDetailisDialogOpen] = useState(false);
   const [DetailIMAGE, setDetailIMAGE] = useState<string>('');
   const [searchtabledata, setsearchtabledata] = useState<any>([]);
@@ -116,9 +121,78 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   const [defaultDate, setDefaultDate] = useState('');
   const storeType = localStorage.getItem('StoreSetType');
 
+  const [OrderStatus, setOrderStatus] = useState('更新中...');
+  const [OrderStatusColor, setOrderStatusColor] = useState('black');
+
+  const [historyDialogOpen, sethistoryDialogOpen] = useState(false);
+
+  const [orderdata, setorderdata] = useState<any>([]);
+
+  const [processlist, setprocesslist] = useState([]);
+  const [progressmax, setprogressmax] = useState<number>(0);
+  const progressColumnBehindNumber = 3;
+  
+  const confirmationMessage = `${new Date(defaultDate).toLocaleDateString("ja-JP")}の注文状況です`;
+
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDefaultDate(event.target.value);
   };
+
+  const DateStatedata = async () => {
+    setOrderStatus('更新中...');
+    setOrderStatusColor('black');
+    const date = new Date(defaultDate);
+    const year = date.getFullYear();
+    const result = await HistoryGet(String(year), storename, '店舗へ', 'yyyy');
+    const groupeddata = await groupDataByFirstColumn(result);
+    const Dates = Object.keys(groupeddata);
+    const japanDates = Dates.map(Dates => {
+      const date = new Date(Dates);
+      return date.toLocaleDateString("ja-JP");
+    });
+    const researchDate = date.toLocaleDateString("ja-JP");
+    const dateIndex = japanDates.indexOf(researchDate);
+
+    if (dateIndex !== -1) {  // 修正: `-1` かどうかをチェック
+      const targetOrderDate = Dates[dateIndex];  // `dateIndex` が -1 のときエラー防止
+      if (targetOrderDate) {  // `undefined` のチェック
+        setorderdata(groupeddata[targetOrderDate]);
+      }else {
+        setorderdata([])
+      }
+      
+    }
+
+    if(japanDates.includes(researchDate)){
+      setOrderStatus('注文有');
+      setOrderStatusColor('green');
+    }else{
+      setOrderStatus('未注文');
+      setOrderStatusColor('red');
+    }
+  }
+
+  useEffect(() => {
+    if(orderdata.length > 0){
+      const test = orderdata[0][orderdata[0].length - progressColumnBehindNumber]
+      console.log(test)
+    }
+    
+  },[orderdata])
+
+  const progress = () => {
+    let processing = '';
+    if(orderdata.length > 0){
+      const data = orderdata[0][orderdata[0].length - progressColumnBehindNumber]
+      processing = processlist[data][1];
+    }
+    
+    return processing;
+  };
+
+  useEffect(() => {
+    DateStatedata();
+  },[defaultDate])
 
   const clickpage = () => {
     setCurrentPage('topPage');
@@ -151,7 +225,6 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     }
     setFormData(newFormData);
   };
-
 
   const searchDataChange = async (
     index: number,
@@ -382,8 +455,10 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
       localStorage.setItem('Already_ordered', JSON.stringify(formData));
       setFormData(initialFormData);
       localStorage.removeItem(storename);
+      
     }
     setisLoading(false);
+    DateStatedata();
   };
 
   const handleCancel = () => {
@@ -391,64 +466,6 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     setDialogOpen(false);
   };
 
-
-  const handleConfirmSave = async () => {
-    const result = Savetype;
-    if (result === 'save') {
-      FormDataKeepSet(formData, storename);
-    } else {
-      const Data = KeepFormDataGet(storename);
-      const saveData: any[] = [];
-      for (let i = 0; i < Data.length; i++) {
-        let colordata: any[] = [];
-        if (Data[i].商品コード !== ''){
-          try {
-            [searchresult, colordata] = await Promise.all([
-              productSearch(Number(Data[i].商品コード)),
-              colorlistGet(Number(Data[i].商品コード)),
-            ]);
-            colordata = colordata || [];
-          } catch (error) {
-            searchresult = await productSearch(Number(Data[i].商品コード));
-            colordata = [];
-          }
-          console.log(Data[i].商品詳細)
-          const pushdata = {
-            業者: Data[i].業者,  // searchresult が期待通りの構造か要確認
-            商品コード: Data[i].商品コード,
-            商品名: Data[i].商品名,
-            商品詳細: Data[i].商品詳細,
-            数量: Data[i].数量,
-            個人購入: Data[i].個人購入,
-            備考: Data[i].備考,
-            selectOptions: colordata,
-            商品単価: Data[i].商品単価,
-          };
-          saveData.push(pushdata);
-        }else{
-          saveData.push({
-            業者: '',
-            商品コード: '',
-            商品名: '',
-            商品詳細: [],
-            数量: '',
-            個人購入: '',
-            備考: '',
-            selectOptions: [],
-            商品単価: ''
-          });
-        }
-      }
-      setFormData(saveData);
-    }
-    setSaveDialogOpen(false);
-  };
-
-
-  const handleCancelSave = () => {
-    alert('キャンセルされました');
-    setSaveDialogOpen(false);
-  }
 
 
   const DetailhandleConfirm = () => {
@@ -588,6 +605,10 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     const setDate = getNearestMonday();
     setDefaultDate(setDate);
 
+    const processlistdata = localStorage.getItem('processlist');
+    setprocesslist(JSON.parse(processlistdata));
+    setprogressmax(Object.keys(JSON.parse(processlistdata)).length);
+
   }, []);
 
   useEffect(() => {
@@ -612,6 +633,20 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     }
   };
 
+  const historyhandleConfirm = () => {
+    sethistoryDialogOpen(false);
+  };
+
+  const ExecuteGoodsReceipt = async () => {
+    setisLoading(true)
+    await proccessReceiving(new Date(defaultDate).toLocaleDateString('ja-JP'), storename)
+    await sethistoryDialogOpen(false);
+    setisLoading(false);
+    alert('入庫処理をしました')
+    //historysearch();
+  };
+
+
 
   return (
     <div className="window_area">
@@ -625,15 +660,20 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
             value={defaultDate}
             onChange={(e) => {handleDateChange(e)}}
           />
+          <div className="store_name_status" style={{ border: `1px solid ${OrderStatusColor}` }}><a className="buttonUnderlineD"  role="button" href="#" style={{ color: OrderStatusColor, fontSize: '20px' }} onClick={() => sethistoryDialogOpen(true)}>{OrderStatus}</a></div>
+          <OutOfStockStatus
+            title="注文確認"
+            message={confirmationMessage}
+            tableData={orderdata}
+            onConfirm={historyhandleConfirm}
+            isOpen={historyDialogOpen}
+            processlistdata={processlist}
+            ExecuteGoodsReceipt={ExecuteGoodsReceipt}
+            Dialogmaxprocess={progressmax}
+            progressdata={progress}
+          />
           <h2 className='store_name'> 注文商品入力: {storename} 店</h2>
         </div>
-        <SaveConfirmDialog
-          title="確認"
-          message={SaveMessage}
-          onConfirm={handleConfirmSave}
-          onCancel={handleCancelSave}
-          isOpen={SaveisDialogOpen}
-        />
       </div>
       <div className='form_area'>
         <div className="searchArea">
@@ -659,7 +699,6 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
             <DetailDialog
               Data={searchData}
               title={searchData[2]}
-              message={DetailMessage}
               onConfirm={DetailhandleConfirm}
               isOpen={DetailisDialogOpen}
               image={DetailIMAGE}
@@ -797,6 +836,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
                         onKeyDown={(e) => handleKeyDown(index, e, '個人購入')}
                       />
                     </td>
+
                     <td>
                       <input
                         type="text"
@@ -808,11 +848,13 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
                         onKeyDown={(e) => handleKeyDown(index, e, '備考')}
                       />
                     </td>
+
                     <td>
                       <button type="button" className="delete_button" onClick={() => removeForm(index)}>
                         削除
                       </button>
                     </td>
+
                   </tr>
                     
                 ))}

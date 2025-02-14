@@ -6,7 +6,6 @@ import '../css/ProductDetailDialog.css';
 
 interface DetailDialogProps {
   title: string;
-  message: string;
   Data: Array<any>;
   onConfirm: () => void;
   isOpen: boolean;
@@ -19,7 +18,7 @@ interface DetailDialogProps {
   addButtonName: string;
 }
 
-const DetailDialog: React.FC<DetailDialogProps> = ({ title, message, Data, onConfirm, isOpen, image, insert, searchtabledata, searchDataIndex, nextDatail, beforeDatail, addButtonName}) => {
+const DetailDialog: React.FC<DetailDialogProps> = ({ title, Data, onConfirm, isOpen, image, insert, searchtabledata, searchDataIndex, nextDatail, beforeDatail, addButtonName}) => {
   if (!isOpen) return null;
   const [isNextButton, setisNextButton] = useState(false);
   const [isBeforeButton, setisBeforeButton] = useState(false);
@@ -42,7 +41,6 @@ const DetailDialog: React.FC<DetailDialogProps> = ({ title, message, Data, onCon
       setPriceColumn(5)
     }
   },[])
-  //const DetailMessage = `業者名: ${searchData[0] || ''}　　||　　商品ナンバー: ${searchData[1] || ''}\n商品単価: ${(searchData[3] !== undefined && searchData[3] !== null) ? searchData[3].toLocaleString() : ''}円　　||　　店販価格: ${(searchData[5] !== undefined && searchData[5] !== null) ? searchData[5].toLocaleString() : ''}`
 
   return ReactDOM.createPortal(
     <div className="detail-dialog-overlay">

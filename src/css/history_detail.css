@@ -4,6 +4,7 @@
   min-width: 75px;
   max-width: 75px;
   overflow: hidden;
+  text-align: left;
 }
 
 .historycode {
@@ -13,12 +14,14 @@
 }
 
 .historyname {
+  text-align: left;
   max-width: 225px;
   overflow: hidden;
   min-width: 225px;
 }
 
 .historypersonal {
+  text-align: left;
   max-width: 80px;
   min-width: 80px;
 }
@@ -28,11 +31,13 @@
 }
 
 .historydetail {
+  text-align: left;
   max-width: 90px;
   min-width: 90px;
 }
 
 .historyremarks {
+  text-align: left;
   max-width: 100px;
   min-width: 100px;
 }

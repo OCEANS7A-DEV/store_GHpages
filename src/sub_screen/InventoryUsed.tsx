@@ -511,7 +511,6 @@ var match = 'https://lh3.googleusercontent.com/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFh
             <DetailDialog
               Data={searchData}
               title={searchData[2]}
-              message={DetailMessage}
               onConfirm={DetailhandleConfirm}
               isOpen={DetailisDialogOpen}
               image={DetailIMAGE}

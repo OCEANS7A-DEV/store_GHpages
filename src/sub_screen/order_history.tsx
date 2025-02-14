@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import '../css/store.css';
 import '../css/order_history.css';
-import { HistoryGet, ExplanationImageGet, proccessReceiving } from '../backend/Server_end.ts';
-import OutOfStockStatus from './Out_of_stock_status.tsx';
+import { HistoryGet, ExplanationImageGet, proccessReceiving } from '../backend/Server_end';
+import OutOfStockStatus from './Out_of_stock_status';
 
 
 const Yearlist = () => {
@@ -77,9 +77,7 @@ export default function OrderHistory({ setCurrentPage, setisLoading }: SettingPr
     setyears(selectedOption);
   };
 
-  const handlemonthChange = (selectedOption: SelectOption) => {
-    setmonths(selectedOption);
-  };
+
 
   const clickpage = () => {
     setCurrentPage('storePage');
@@ -94,7 +92,7 @@ export default function OrderHistory({ setCurrentPage, setisLoading }: SettingPr
     const searchDate = `${years.value}`;
     const result = await HistoryGet(searchDate, storename, '店舗へ', 'yyyy')
     const groupeddata = await groupDataByFirstColumn(result);
-    console.log(groupeddata);
+    //console.log(groupeddata);
     await sethistorydata(groupeddata);
     setisLoading(false);
   };
@@ -123,6 +121,7 @@ export default function OrderHistory({ setCurrentPage, setisLoading }: SettingPr
   };
 
   const progress = (data) => {
+    
     let processing = processlist[data][1];
     return processing;
   };
@@ -203,6 +202,7 @@ export default function OrderHistory({ setCurrentPage, setisLoading }: SettingPr
                     Dialogmaxprocess={progressmax}
                     progressdata={progress(historydata[key][0][historydata[key][0].length - progressColumnBehindNumber])}
                   />
+                  
                   <td className="history-progress">
                     <p className="progress">
                       {progress(historydata[key][0][historydata[key][0].length - progressColumnBehindNumber])}

@@ -1,4 +1,4 @@
-import { ColorListGet, AllData, ListGet } from '../backend/Server_end';
+import { ColorListGet, AllData, ListGet, processlistGet } from '../backend/Server_end';
 import * as jaconv from 'jaconv';
 
 
@@ -18,6 +18,9 @@ export const localStoreSet = async () => {
   
   //console.log(options)
   localStorage.setItem('storeData', JSON.stringify(options));
+
+  processlistGet();
+  
   return options;
 };
 

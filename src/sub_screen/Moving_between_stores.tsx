@@ -476,7 +476,6 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
             <DetailDialog
               Data={searchData}
               title={searchData[2]}
-              message={DetailMessage}
               onConfirm={DetailhandleConfirm}
               isOpen={DetailisDialogOpen}
               image={DetailIMAGE}
