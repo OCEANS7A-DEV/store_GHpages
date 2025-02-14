@@ -126,6 +126,8 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   const [orderdata, setorderdata] = useState<any>([]);
   const [processlist, setprocesslist] = useState([]);
   const [progressmax, setprogressmax] = useState<number>(0);
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [isDisabledTitle, setIsDisabledTitle] = useState('');
 
   const storeType = localStorage.getItem('StoreSetType');
   const progressColumnBehindNumber = 3;
@@ -593,12 +595,12 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
 
   const DisabledChange = async () => {
     const userType = await sessionStorage.getItem('authority');
-    console.log(userType);
     if(userType !== '店舗'){
-      console.log('許可')
-      //setIsDisabledInput(true);
+      setIsDisabled(false);
+      setIsDisabledTitle('操作可能');
     }else{
-      console.log('不許可')
+      setIsDisabled(true);
+      setIsDisabledTitle('自動で設定され、操作はできません。');
     }
   };
 
@@ -609,7 +611,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     const processlistdata = localStorage.getItem('processlist');
     setprocesslist(JSON.parse(processlistdata));
     setprogressmax(Object.keys(JSON.parse(processlistdata)).length);
-    DisabledChange()
+    DisabledChange();
   }, []);
 
   useEffect(() => {
@@ -659,10 +661,15 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
             className="insert_order_date"
             max="9999-12-31"
             value={defaultDate}
-            // disabled={isDisabledInput}
+            disabled={isDisabled}
+            title={isDisabledTitle}
             onChange={(e) => {handleDateChange(e)}}
           />
-          <div className="store_name_status" style={{ border: `1px solid ${OrderStatusColor}` }}><a className="buttonUnderlineD"  role="button" href="#" style={{ color: OrderStatusColor, fontSize: '20px' }} onClick={() => sethistoryDialogOpen(true)}>{OrderStatus}</a></div>
+          <div className="store_name_status" style={{ border: `1px solid ${OrderStatusColor}` }}>
+            <a className="buttonUnderlineD"  role="button" href="#" style={{ color: OrderStatusColor, fontSize: '20px' }} onClick={() => sethistoryDialogOpen(true)}>
+              {OrderStatus}
+            </a>
+          </div>
           <OutOfStockStatus
             title="注文確認"
             message={confirmationMessage}
