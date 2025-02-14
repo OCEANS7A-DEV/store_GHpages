@@ -33,8 +33,6 @@ const nullData = [
 
 
 
-
-
 const colorlistGet = async (code: any) => {
   let returnData = [];
   const colorData = await JSON.parse(sessionStorage.getItem(String(code)) ?? '');
