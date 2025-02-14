@@ -4,7 +4,7 @@ import '../css/InventoryUsed.css';
 import { InventorySearch, GASPostInsertStore, processlistGet, ProcessingMethodGet, ImageUrlSet } from '../backend/Server_end';
 import MovingDialog from './MovingDialog';
 import WordSearch from './ProductSearchWord';
-import DetailDialog from './ProductdetailDialog.tsx';
+import DetailDialog from './ProductdetailDialog';
 
 
 
@@ -110,7 +110,7 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
   const remarksRefs = useRef([]);
   const message = "店舗間移動は以下の通りです\n以下の内容でよろしければOKをクリックしてください\n内容の変更がある場合にはキャンセルをクリックしてください";
   const [searchData, setsearchData] = useState<any>([]);
-  const DetailMessage = `業者名: ${searchData[0] || ''}　　||　　商品ナンバー: ${searchData[1] || ''}\n商品単価: ${(searchData[3] !== undefined && searchData[3] !== null) ? searchData[3].toLocaleString() : ''}円　　||　　店販価格: ${(searchData[5] !== undefined && searchData[5] !== null) ? searchData[5].toLocaleString() : ''}`
+  //const DetailMessage = `業者名: ${searchData[0] || ''}　　||　　商品ナンバー: ${searchData[1] || ''}\n商品単価: ${(searchData[3] !== undefined && searchData[3] !== null) ? searchData[3].toLocaleString() : ''}円　　||　　店販価格: ${(searchData[5] !== undefined && searchData[5] !== null) ? searchData[5].toLocaleString() : ''}`
   const [DetailisDialogOpen, setDetailisDialogOpen] = useState(false);
   const [DetailIMAGE, setDetailIMAGE] = useState<string>('');
   const [searchtabledata, setsearchtabledata] = useState<any>([]);
@@ -133,9 +133,9 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
     setCurrentPage('topPage');
   };
 
-  const clickInventorypage = () => {
-    setCurrentPage('storeinventory');
-  };
+  // const clickInventorypage = () => {
+  //   setCurrentPage('storeinventory');
+  // };
 
   const handleChange = (
     index: number,
@@ -169,7 +169,7 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
     index: number,
     value: any
   ) => {
-    const searchresult = productSearch(value);
+    //const searchresult = productSearch(value);
     const newusedFormData = [...usedformData];
     const updateFormData = (ResultData: any) => {
       if (ResultData !== null) {

@@ -1,10 +1,10 @@
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Select from 'react-select';
 //import '../css/store.css';
 //import '../css/order_history.css';
 import '../css/MovingHistory.css';
-import { MovingHistoryGet } from '../backend/Server_end.ts';
+import { MovingHistoryGet } from '../backend/Server_end';
 
 
 const Yearlist = () => {

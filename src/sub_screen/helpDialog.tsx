@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import '../css/orderDialog.css';
 import { helpGet, ImageUrlSet } from '../backend/Server_end';

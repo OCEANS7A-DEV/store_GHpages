@@ -1,9 +1,8 @@
 import React, { useState, useEffect, ChangeEvent, useRef } from 'react';
 import Select from 'react-select';
 import '../css/store.css';
-import { StoreInventoryGet, PeriodDateGet, HistoryGet, CurrentlyAvailableDataGet, syncDataGet, GASPostInsertStore } from '../backend/Server_end';
+import { CurrentlyAvailableDataGet, syncDataGet, GASPostInsertStore } from '../backend/Server_end';
 import '../css/StoreInventory.css';
-import HistoryInsertCheck, {HistoryUsedCheck} from './historycheckDialog';
 import '../css/usedHistory.css';
 import toast from 'react-hot-toast';
 

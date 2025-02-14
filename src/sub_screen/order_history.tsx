@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Select from 'react-select';
 import '../css/store.css';
 import '../css/order_history.css';
-import { HistoryGet, ExplanationImageGet, proccessReceiving } from '../backend/Server_end';
+import { HistoryGet, proccessReceiving } from '../backend/Server_end';
 import OutOfStockStatus from './Out_of_stock_status';
 
 
@@ -22,19 +22,19 @@ const Yearlist = () => {
   return returnData;
 };
 
-const MonthList = () => {
-  let returnData: SelectOption[] = [];
-  for (let i = 0; i < 12; i++){
-    const setdata = i + 1;
-    const labeldata = setdata + "月";
-    const DefAsArray = {
-      value: setdata,
-      label: labeldata,
-    };
-    returnData.push(DefAsArray);
-  }
-  return returnData;
-};
+// const MonthList = () => {
+//   let returnData: SelectOption[] = [];
+//   for (let i = 0; i < 12; i++){
+//     const setdata = i + 1;
+//     const labeldata = setdata + "月";
+//     const DefAsArray = {
+//       value: setdata,
+//       label: labeldata,
+//     };
+//     returnData.push(DefAsArray);
+//   }
+//   return returnData;
+// };
 
 interface SelectOption {
   value: number;
@@ -68,7 +68,7 @@ export default function OrderHistory({ setCurrentPage, setisLoading }: SettingPr
   const [historyDialogOpen, sethistoryDialogOpen] = useState(false);
   const [historydate, sethistorydate] = useState<string>('');
   const message = `${historydate}の発注です`;
-  const [explanationIMAGE, setexplanationIMAGE] = useState<string>('');
+  //const [explanationIMAGE, setexplanationIMAGE] = useState<string>('');
   const [processlist, setprocesslist] = useState([]);
   const [progressmax, setprogressmax] = useState<number>(0);
   const progressColumnBehindNumber = 3;

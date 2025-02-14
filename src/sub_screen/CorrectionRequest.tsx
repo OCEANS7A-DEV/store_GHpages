@@ -1,4 +1,4 @@
-import React, { useState, useRef, ChangeEvent, useEffect } from 'react';
+import { useState, ChangeEvent, useEffect } from 'react';
 import { localCorrectionRequestListSet } from '../backend/WebStorage';
 
 import { GASPostInsert } from '../backend/Server_end';
