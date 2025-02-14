@@ -131,6 +131,8 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   const [processlist, setprocesslist] = useState([]);
   const [progressmax, setprogressmax] = useState<number>(0);
   const progressColumnBehindNumber = 3;
+
+  const [isDisabled, setIsDisabled] = useState(true);
   
   const confirmationMessage = `${new Date(defaultDate).toLocaleDateString("ja-JP")}の注文状況です`;
 
@@ -172,13 +174,6 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     }
   }
 
-  useEffect(() => {
-    if(orderdata.length > 0){
-      const test = orderdata[0][orderdata[0].length - progressColumnBehindNumber]
-      console.log(test)
-    }
-    
-  },[orderdata])
 
   const progress = () => {
     let processing = '';
@@ -604,11 +599,13 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     processlistGet();
     const setDate = getNearestMonday();
     setDefaultDate(setDate);
-
     const processlistdata = localStorage.getItem('processlist');
     setprocesslist(JSON.parse(processlistdata));
     setprogressmax(Object.keys(JSON.parse(processlistdata)).length);
-
+    const userType = sessionStorage.getItem('authority');
+    if(userType == '店舗用アカウント'){
+      setIsDisabled(false)
+    }
   }, []);
 
   useEffect(() => {
@@ -658,6 +655,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
             className="insert_order_date"
             max="9999-12-31"
             value={defaultDate}
+            disabled={isDisabled}
             onChange={(e) => {handleDateChange(e)}}
           />
           <div className="store_name_status" style={{ border: `1px solid ${OrderStatusColor}` }}><a className="buttonUnderlineD"  role="button" href="#" style={{ color: OrderStatusColor, fontSize: '20px' }} onClick={() => sethistoryDialogOpen(true)}>{OrderStatus}</a></div>
