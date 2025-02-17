@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, useEffect } from 'react';
 import '../css/ProductSearchWord.css';
 import { searchStr } from '../backend/WebStorage';
 import { InventorySearch, ImageUrlSet } from '../backend/Server_end';

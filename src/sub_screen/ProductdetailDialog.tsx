@@ -23,6 +23,12 @@ const DetailDialog: React.FC<DetailDialogProps> = ({ title, Data, onConfirm, isO
   const [isNextButton, setisNextButton] = useState(false);
   const [isBeforeButton, setisBeforeButton] = useState(false);
   const [priceColumn, setPriceColumn] = useState(4);
+  const [detailIndex, setDetailIndex] = useState(0);
+  const [choiceData, setChoiceData] = useState(['', 0, '', 0, 0, 0, '', '', '', '', '', '']);
+
+  useEffect(() => {
+    setDetailIndex(searchDataIndex)
+  },[])
 
   useEffect(() => {
     const index = searchtabledata.findIndex(subArray =>
@@ -40,19 +46,42 @@ const DetailDialog: React.FC<DetailDialogProps> = ({ title, Data, onConfirm, isO
     }else{
       setPriceColumn(5)
     }
-  },[])
+  },[detailIndex])
+
+  const DetailChange = (changenumber: number) => {
+    let nowIndex = detailIndex + (changenumber)
+    if (nowIndex >= 0 || nowIndex <= searchtabledata.length){
+      setDetailIndex(nowIndex)
+    }
+    if(nowIndex > 0){
+      console.log('true')
+      setisBeforeButton(true);
+    }else if (nowIndex == 0){
+      setisBeforeButton(false);
+    }
+    if(nowIndex < searchtabledata.length){
+      setisNextButton(true);
+    }else if (nowIndex == searchtabledata.length){
+      setisNextButton(false);
+    }
+  };
+
+  useEffect(() => {
+    const data = searchtabledata[detailIndex]
+    setChoiceData(data)
+  },[detailIndex])
 
   return ReactDOM.createPortal(
     <div className="detail-dialog-overlay">
       <div className="detail-dialog">
         <div className="detail-top">
           <div className='detail-title'>
-            <button disabled={!isBeforeButton} onClick={beforeDatail} style={{
+            <button disabled={!isBeforeButton} onClick={() => DetailChange(-1)} style={{
               backgroundColor: isBeforeButton ? '#4CAF50' : 'gray', // 状態に応じて色を変更
               cursor: isBeforeButton ? 'pointer' : 'not-allowed', // 無効時のカーソルを変更
             }}>前の商品へ</button>
-            <h2>{title}</h2>
-            <button disabled={!isNextButton} onClick={nextDatail} style={{
+            <h2>{choiceData[2]}</h2>
+            <button disabled={!isNextButton} onClick={() => DetailChange(1)} style={{
               backgroundColor: isNextButton ? '#4CAF50' : 'gray', // 状態に応じて色を変更
               cursor: isNextButton ? 'pointer' : 'not-allowed', // 無効時のカーソルを変更
             }}>次の商品へ</button>
@@ -60,12 +89,12 @@ const DetailDialog: React.FC<DetailDialogProps> = ({ title, Data, onConfirm, isO
           <div className="detail-top-main">
             <table>
               <tr>
-                <td>業者名: {Data[0]}</td>
-                <td>商品ナンバー: {Data[1]}</td>
+                <td>業者名: {choiceData[0]}</td>
+                <td>商品ナンバー: {choiceData[1]}</td>
               </tr>
               <tr>
-                <td>商品単価: {Data[priceColumn].toLocaleString()}円</td>
-                <td>店販価格: {Data[6].toLocaleString()}円</td>
+                <td>商品単価: {choiceData[priceColumn].toLocaleString()}円</td>
+                <td>店販価格: {choiceData[6].toLocaleString()}円</td>
               </tr>
             </table>
             <div className='detail-dialog-button'>

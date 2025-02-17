@@ -8,6 +8,7 @@ import WordSearch from './ProductSearchWord';
 import DetailDialog from './ProductdetailDialog';
 import NonConfirmDialog from './NonOrderDialog';
 import OutOfStockStatus from './Out_of_stock_status';
+import { handleChange } from '../backend/BackEnd';
 
 
 
@@ -110,6 +111,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   const [DetailisDialogOpen, setDetailisDialogOpen] = useState(false);
   const [DetailIMAGE, setDetailIMAGE] = useState<string>('');
   const [searchtabledata, setsearchtabledata] = useState<any>([]);
+  
   const [searchDataIndex, setsearchDataIndex] = useState<number>(0);
   const [NonisDialogOpen, setNonisDialogOpen] = useState(false);
   const [searchArea, setsearchArea] = useState(false);
@@ -189,15 +191,15 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     setCurrentPage('topPage');
   };
 
-  const handleChange = (
-    index: number,
-    field: keyof InsertData,
-    event: ChangeEvent<HTMLInputElement>,
-  ) => {
-    const newFormData = [...formData];
-    newFormData[index][field] = event.target.value;
-    setFormData(newFormData);
-  };
+  // const handleChange = (
+  //   index: number,
+  //   field: keyof InsertData,
+  //   event: ChangeEvent<HTMLInputElement>,
+  // ) => {
+  //   const newFormData = [...formData];
+  //   newFormData[index][field] = event.target.value;
+  //   setFormData(newFormData);
+  // };
 
   const addNewForm = () => {
     const newFormData = [...formData];
@@ -525,6 +527,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     await setsearchData(searchtabledata[updateindex]);
     await setDetailisDialogOpen(true);
     setisLoading(false);
+    console.log(searchtabledata[updateindex])
   };
 
 
@@ -612,6 +615,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     DisabledChange();
   }, []);
 
+
   useEffect(() => {
     if (addType){
       addNewForm()
@@ -619,9 +623,11 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     }
   },[addType])
 
+
   useEffect(() => {
     FormDataKeepSet(formData, storename);
   },[formData])
+
 
   const searchAreaconfirm = () => {
     setsearchArea((prevState) => !prevState);
@@ -634,9 +640,11 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     }
   };
 
+
   const historyhandleConfirm = () => {
     sethistoryDialogOpen(false);
   };
+
 
   const ExecuteGoodsReceipt = async () => {
     setisLoading(true)
@@ -715,6 +723,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
               searchtabledata={searchtabledata} searchDataIndex={0}
               addButtonName='注文に追加'
             />
+
           </div>
           <a
             className="buttonUnderlineOC"
@@ -756,7 +765,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
                         placeholder="業者"
                         className="insert_vendor"
                         value={data.業者}
-                        onChange={(e) => handleChange(index, '業者', e)}
+                        onChange={(e) => handleChange(index, '業者', e, formData)}
                       />
                     </td>
                     
@@ -782,7 +791,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
                         placeholder="商品名"
                         className="insert_name"
                         value={data.商品名}
-                        onChange={(e) => handleChange(index, '商品名', e)}
+                        onChange={(e) => handleChange(index, '商品名', e,formData)}
                       />
                     </td>
                     
@@ -839,7 +848,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
                         className="personal"
                         value={data.個人購入}
                         ref={(el) => (personalRefs.current[index] = el)}
-                        onChange={(e) => handleChange(index, '個人購入', e)}
+                        onChange={(e) => handleChange(index, '個人購入', e,formData)}
                         onKeyDown={(e) => handleKeyDown(index, e, '個人購入')}
                       />
                     </td>
@@ -851,7 +860,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
                         className="remarks"
                         value={data.備考}
                         ref={(el) => (remarksRefs.current[index] = el)}
-                        onChange={(e) => handleChange(index, '備考', e)}
+                        onChange={(e) => handleChange(index, '備考', e, formData)}
                         onKeyDown={(e) => handleKeyDown(index, e, '備考')}
                       />
                     </td>
@@ -868,10 +877,9 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
               </tbody>
             </table>
           </div>
-          
         </div>
-
       </div>
+
       <div className="button_area">
         <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>
           ＜＜ 店舗選択へ
@@ -905,3 +913,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
     </div>
   );
 }
+
+
+
+
