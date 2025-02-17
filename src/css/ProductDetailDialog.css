@@ -46,7 +46,6 @@
   background-color: white;
   padding: 20px;
   border-radius: 8px;
-  /* min-width: 650px; */
   max-width: 700px;
   width: calc(100vw - 10px);
   height: calc(100vh - 120px); /* 高さ制限を設定 */
@@ -65,9 +64,15 @@
   margin-bottom: 10px;
 }
 
+.detail-dialog-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .detail-dialog-image img {
   width: 100%;
-  max-height: 650px;
+  max-height: 630px;
 }
 
 .detail-top-main {
@@ -81,10 +86,24 @@
   text-align: left;
 }
 
-.detail-title {
+.detail-title-main {
+  font-size: 18px;
+  flex: 1;
+  width: 100%;
   text-align: center;
+  overflow: hidden;
+}
+
+.detail-title{
+  margin: 20px 10px;
+  margin-top: 0;
+  max-height: 100px;
+  flex: 1;
+  text-align: center;
+  align-items: center;
   display: flex;
 }
+
 
 
 .buttonUnderlineI {

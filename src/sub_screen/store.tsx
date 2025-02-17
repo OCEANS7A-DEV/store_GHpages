@@ -709,9 +709,13 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
               setsearchtabledata={setsearchtabledata}
               searchtabledata={searchtabledata}
               setsearchDataIndex={setsearchDataIndex}
+
               insert={DetailhandleConfirmAdd}
+              isOpen={DetailisDialogOpen}
+              onConfirm={DetailhandleConfirm}
+              addButtonName='注文に追加'
             />
-            <DetailDialog
+            {/* <DetailDialog
               Data={searchData}
               title={searchData[2]}
               onConfirm={DetailhandleConfirm}
@@ -722,7 +726,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
               beforeDatail={beforeDatail}
               searchtabledata={searchtabledata} searchDataIndex={0}
               addButtonName='注文に追加'
-            />
+            /> */}
 
           </div>
           <a

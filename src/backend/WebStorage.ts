@@ -61,14 +61,14 @@ export const localStorageSet = async (
   });
   const keys = Object.keys(groupedData);
   for (let i = 0; i < keys.length; i++){
-    sessionStorage.setItem(`${keys[i]}`, JSON.stringify(groupedData[keys[i]]))
+    localStorage.setItem(`${keys[i]}`, JSON.stringify(groupedData[keys[i]]))
   }
   const data = await AllData();
-  sessionStorage.setItem('data', JSON.stringify(data));
+  localStorage.setItem('data', JSON.stringify(data));
 };
 
 export const localExclusion = (store: string, pageName: string) => {
-  const data = JSON.parse(sessionStorage.getItem('data'));
+  const data = JSON.parse(localStorage.getItem('data') ?? "");
   let result = [];
   if(store !== "SQ" && pageName === 'used'){
     result = data.filter(row => row[0] !== "社外製品等" && Number.isInteger(row[1]));

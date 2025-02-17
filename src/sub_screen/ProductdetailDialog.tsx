@@ -1,30 +1,29 @@
 
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import { InventorySearch, ImageUrlSet } from '../backend/Server_end';
+import { MoonLoader } from "react-spinners";
 
 import '../css/ProductDetailDialog.css';
 
 interface DetailDialogProps {
-  title: string;
-  Data: Array<any>;
   onConfirm: () => void;
   isOpen: boolean;
-  image?: string;
   insert: (data: any) => void;
-  nextDatail: () => void;
-  beforeDatail: () => void;
   searchDataIndex: number;
   searchtabledata: any;
   addButtonName: string;
 }
 
-const DetailDialog: React.FC<DetailDialogProps> = ({ title, Data, onConfirm, isOpen, image, insert, searchtabledata, searchDataIndex, nextDatail, beforeDatail, addButtonName}) => {
+const DetailDialog: React.FC<DetailDialogProps> = ({ onConfirm, isOpen, insert, searchtabledata, searchDataIndex, addButtonName}) => {
   if (!isOpen) return null;
   const [isNextButton, setisNextButton] = useState(false);
   const [isBeforeButton, setisBeforeButton] = useState(false);
   const [priceColumn, setPriceColumn] = useState(4);
   const [detailIndex, setDetailIndex] = useState(0);
   const [choiceData, setChoiceData] = useState(['', 0, '', 0, 0, 0, '', '', '', '', '', '']);
+  const [ImgURL, setImgURL] = useState('');
+  const [imgload, setImgload] = useState(true);
 
   useEffect(() => {
     setDetailIndex(searchDataIndex)
@@ -32,8 +31,8 @@ const DetailDialog: React.FC<DetailDialogProps> = ({ title, Data, onConfirm, isO
 
   useEffect(() => {
     const index = searchtabledata.findIndex(subArray =>
-      subArray.length === Data.length &&
-      subArray.every((value, i) => value === Data[i])
+      subArray.length === choiceData.length &&
+      subArray.every((value, i) => value === choiceData[i])
     );
     if (index > 0){
       setisBeforeButton(true);
@@ -54,7 +53,6 @@ const DetailDialog: React.FC<DetailDialogProps> = ({ title, Data, onConfirm, isO
       setDetailIndex(nowIndex)
     }
     if(nowIndex > 0){
-      console.log('true')
       setisBeforeButton(true);
     }else if (nowIndex == 0){
       setisBeforeButton(false);
@@ -66,10 +64,31 @@ const DetailDialog: React.FC<DetailDialogProps> = ({ title, Data, onConfirm, isO
     }
   };
 
+
+
+
   useEffect(() => {
+    setImgload(true);
     const data = searchtabledata[detailIndex]
-    setChoiceData(data)
+    setChoiceData(data);
+    const imgSearch = async () => {
+      let match = '';
+      const image = await InventorySearch(searchtabledata[detailIndex][1],"商品コード","商品画像");
+      if (image[2] !== ''){
+        match = ImageUrlSet(image[2]);
+      }else {
+        match = 'https://lh3.googleusercontent.com/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFhbm'
+      }
+      setImgURL(match);
+    };
+    imgSearch()
   },[detailIndex])
+
+  useEffect(() => {
+    if(ImgURL !== '') {
+      setImgload(false);
+    }
+  },[ImgURL])
 
   return ReactDOM.createPortal(
     <div className="detail-dialog-overlay">
@@ -80,7 +99,7 @@ const DetailDialog: React.FC<DetailDialogProps> = ({ title, Data, onConfirm, isO
               backgroundColor: isBeforeButton ? '#4CAF50' : 'gray', // 状態に応じて色を変更
               cursor: isBeforeButton ? 'pointer' : 'not-allowed', // 無効時のカーソルを変更
             }}>前の商品へ</button>
-            <h2>{choiceData[2]}</h2>
+            <div className="detail-title-main">{choiceData[2]}</div>
             <button disabled={!isNextButton} onClick={() => DetailChange(1)} style={{
               backgroundColor: isNextButton ? '#4CAF50' : 'gray', // 状態に応じて色を変更
               cursor: isNextButton ? 'pointer' : 'not-allowed', // 無効時のカーソルを変更
@@ -98,12 +117,12 @@ const DetailDialog: React.FC<DetailDialogProps> = ({ title, Data, onConfirm, isO
               </tr>
             </table>
             <div className='detail-dialog-button'>
-              <button onClick={() => {insert(Data)}}>{addButtonName}</button>
+              <button onClick={() => {insert(choiceData)}}>{addButtonName}</button>
             </div>
           </div>
         </div>
         <div className="detail-dialog-image">
-          <img src={image} title="Product Image"/>
+          {imgload ? <MoonLoader loading={imgload} color="blue"/> : <img src={ImgURL} title="Product Image"/>}
         </div>
         <div>
           <div className='detail-dialog-button'>

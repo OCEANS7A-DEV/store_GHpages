@@ -3,6 +3,8 @@ import '../css/ProductSearchWord.css';
 import { searchStr } from '../backend/WebStorage';
 import { InventorySearch, ImageUrlSet } from '../backend/Server_end';
 
+import DetailDialog from './ProductdetailDialog';
+
 
 interface SearchProps {
   setsearchData: (data: any) => void;
@@ -14,10 +16,16 @@ interface SearchProps {
   setsearchDataIndex: (numberdata: number) => void;
   searchDataIndex: number,
   insert: (data: any) => void;
+  onConfirm: () => void;
+  isOpen: boolean;
+  addButtonName: string;
 }
 
-export default function WordSearch({ setsearchData, setDetailisDialogOpen, setDetailIMAGE, setisLoading, setsearchtabledata, searchtabledata, setsearchDataIndex ,insert }: SearchProps) {
+export default function WordSearch({ setsearchData, setDetailisDialogOpen, setDetailIMAGE, setisLoading, setsearchtabledata, searchtabledata, setsearchDataIndex, insert, isOpen, addButtonName, onConfirm }: SearchProps) {
   const [SWord, setSWord] = useState<string>('');
+  const [searchData, setsearchdata] = useState<any>([]);
+  const [Index, setIndex] = useState(0);
+
 
 
   // テキスト入力が変更されたときに実行される関数
@@ -27,12 +35,14 @@ export default function WordSearch({ setsearchData, setDetailisDialogOpen, setDe
 
   // 商品の再検索を行い、結果を状態に保存
   const productReSearch = async () => {
-    const result = await searchStr(SWord); // 検索関数を実行
-    setsearchtabledata(result); // 結果を状態にセット
+    const result = await searchStr(SWord);
+    setsearchdata(result);
+    setsearchtabledata(result);
   };
 
 
   const handleOpenDetailDialog = async (index: any) => {
+    setIndex(index)
     setsearchDataIndex(index);//ここでエラー
     setisLoading(true);
     var match = 'https://lh3.googleusercontent.com/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFhbm';// 画像がないとき用のURL
@@ -112,6 +122,14 @@ export default function WordSearch({ setsearchData, setDetailisDialogOpen, setDe
             </tbody>
           </table>
         </div>
+        <DetailDialog
+          onConfirm={onConfirm}
+          isOpen={isOpen}
+          insert={insert}
+          searchtabledata={searchData}
+          searchDataIndex={Index}
+          addButtonName={addButtonName}
+        />
       </div>
     </div>
   );
