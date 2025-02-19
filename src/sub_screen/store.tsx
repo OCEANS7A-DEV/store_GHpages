@@ -94,7 +94,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
   const remarksRefs = useRef<HTMLInputElement[]>([]);
   const nameRefs = useRef<HTMLInputElement[]>([]);
   const detailRefs = useRef([]);
-  
+
   const message = "注文内容は以下の通りです\n以下の内容でよろしければOKをクリックしてください\n内容の変更がある場合にはキャンセルをクリックしてください";
   const [DetailisDialogOpen, setDetailisDialogOpen] = useState(false);
   const [searchtabledata, setsearchtabledata] = useState<any>([]);
@@ -604,7 +604,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
                           }
                         }}
                         onKeyDown={(e) => handleKeyDown(index, e, '商品名')}
-                        onChange={(e) => handleChange(index, '商品名', e,formData)}
+                        onChange={(e) => setFormData(handleChange(index, '商品名', e, formData))}
                       />
                     </td>
                     
@@ -657,7 +657,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
                             quantityRefs.current[index] = el;
                           }
                         }}
-                        onChange={(e) => numberchange(index, '数量', e)}
+                        onChange={(e) => setFormData(handleChange(index, '数量', e, formData))}
                         onKeyDown={(e) => handleKeyDown(index, e, '数量')}
                       />
                     </td>
@@ -673,7 +673,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
                             personalRefs.current[index] = el
                           }
                         }}
-                        onChange={(e) => handleChange(index, '個人購入', e,formData)}
+                        onChange={(e) => setFormData(handleChange(index, '個人購入', e, formData))}
                         onKeyDown={(e) => handleKeyDown(index, e, '個人購入')}
                       />
                     </td>
@@ -689,7 +689,7 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
                             remarksRefs.current[index] = el;
                           }
                         }}
-                        onChange={(e) => handleChange(index, '備考', e, formData)}
+                        onChange={(e) => setFormData(handleChange(index, '備考', e, formData))}
                         onKeyDown={(e) => handleKeyDown(index, e, '備考')}
                       />
                     </td>
