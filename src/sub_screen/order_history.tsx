@@ -4,6 +4,7 @@ import '../css/store.css';
 import '../css/order_history.css';
 import { HistoryGet, proccessReceiving } from '../backend/Server_end';
 import OutOfStockStatus from './Out_of_stock_status';
+import { Link } from "react-router-dom";
 
 
 const Yearlist = () => {
@@ -42,7 +43,6 @@ interface SelectOption {
 }
 
 interface SettingProps {
-  setCurrentPage: (page: string) => void;
   setisLoading: (value: boolean) => void;
 }
 
@@ -59,7 +59,7 @@ function groupDataByFirstColumn(data) {
 }
 
 
-export default function OrderHistory({ setCurrentPage, setisLoading }: SettingProps) {
+export default function OrderHistory({ setisLoading }: SettingProps) {
   const [years, setyears] = useState<SelectOption>();
   const [yearsOptions, setyearsOptions] = useState<SelectOption[]>([]);
   const storename = localStorage.getItem('StoreSetName');
@@ -78,10 +78,6 @@ export default function OrderHistory({ setCurrentPage, setisLoading }: SettingPr
   };
 
 
-
-  const clickpage = () => {
-    setCurrentPage('storePage');
-  };
 
   const historysearch = async () => {
     if (!years) {
@@ -218,9 +214,15 @@ export default function OrderHistory({ setCurrentPage, setisLoading }: SettingPr
         </div>
       </div>
       <div className="button_area">
-        <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>
+        <Link
+          to="/store"
+          className="buttonUnderlineSt"
+        >
           ＜＜ 発注ページへ
-        </a>
+        </Link>
+        {/* <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>
+          ＜＜ 発注ページへ
+        </a> */}
       </div>
     </div>
   );

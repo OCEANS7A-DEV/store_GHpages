@@ -5,9 +5,9 @@ import { CurrentlyAvailableDataGet, syncDataGet, GASPostInsertStore } from '../b
 import '../css/StoreInventory.css';
 import '../css/usedHistory.css';
 import toast from 'react-hot-toast';
+import { Link } from "react-router-dom";
 
 interface SettingProps {
-  setCurrentPage: (page: string) => void;
   setisLoading: (value: boolean) => void;
 }
 
@@ -59,7 +59,7 @@ interface InsertData {
 
 
 
-export default function StoreInventoryNumsSet({ setCurrentPage, setisLoading }: SettingProps) {
+export default function StoreInventoryNumsSet({ setisLoading }: SettingProps) {
   const [years, setyears] = useState<SelectOption>();
   const [yearsOptions, setyearsOptions] = useState<SelectOption[]>([]);
   const [months, setmonths] = useState<SelectOption>();
@@ -311,15 +311,30 @@ const handleKeyDown = async (index: number, e: React.KeyboardEvent<HTMLInputElem
         </div>
       </div>
       <div className="button_area">
-        <a className="buttonUnderlineSt" id="main_back" type="button" onClick={() => setCurrentPage('topPage')}>
+        <Link
+          to="/top"
+          className="buttonUnderlineSt"
+        >
           ＜＜ 店舗選択へ
-        </a>
-        <a className="buttonUnderlineSt" type="button" onClick={() => setCurrentPage('storeinventory')}>
+        </Link>
+        {/* <a className="buttonUnderlineSt" id="main_back" type="button" onClick={() => setCurrentPage('topPage')}>
+          ＜＜ 店舗選択へ
+        </a> */}
+        <Link
+          to="/storeinventory"
+          className="buttonUnderlineSt"
+        >
           店舗在庫一覧
-        </a>
-        <a className="buttonUnderlineSt" id="main_back" type="button" onClick={() => setCurrentPage('usedHistory')}>
+        </Link>
+        {/* <a className="buttonUnderlineSt" type="button" onClick={() => setCurrentPage('storeinventory')}>
+          店舗在庫一覧
+        </a> */}
+        <Link
+          to="/usedhistory"
+          className="buttonUnderlineSt"
+        >
           履歴へ
-        </a>
+        </Link>
         <a className="buttonUnderlineSt" id="main_back" type="button" onClick={InventoryDifferenceNumber}>
           在庫数データ送信
         </a>

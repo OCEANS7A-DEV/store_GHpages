@@ -4,10 +4,9 @@ import { localCorrectionRequestListSet } from '../backend/WebStorage';
 import { GASPostInsert } from '../backend/Server_end';
 import Select from 'react-select';
 import '../css/Request.css';
-
+import { Link } from "react-router-dom";
 
 interface SettingProps {
-  setCurrentPage: (page: string) => void;
   setisLoading: (value: boolean) => void;
 }
 
@@ -17,14 +16,12 @@ interface SelectOption {
   label: string;
 }
 
-export default function CorrectionRequest({ setCurrentPage, setisLoading }: SettingProps) {
+export default function CorrectionRequest({ setisLoading }: SettingProps) {
   const [selectOptions, setSelectOptions] = useState<SelectOption[]>([]);
   const [subjectSelect, setSubjectSelect] = useState(null);
   const [RequestDetail, setRequestDetail] = useState('');
 
-  const clickpage = () => {
-    setCurrentPage('topPage');
-  };
+
 
   const RequestInsert = async () => {
     setisLoading(true);
@@ -52,9 +49,6 @@ export default function CorrectionRequest({ setCurrentPage, setisLoading }: Sett
     }
   };
 
-  const clickRequestHistory = () => {
-    setCurrentPage('RequestHistory');
-  };
 
   const handleSubjectChange= (selectedOption: SelectOption | []) => {
     setSubjectSelect(selectedOption);
@@ -96,12 +90,24 @@ export default function CorrectionRequest({ setCurrentPage, setisLoading }: Sett
         </div>
       </div>
       <div className="button_area">
-        <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>
+        <Link
+          to="/top"
+          className="buttonUnderlineSt"
+        >
           ＜＜ 戻る
-        </a>
-        <a className="buttonUnderlineSt" type="button" onClick={clickRequestHistory}>
+        </Link>
+        {/* <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>
+          ＜＜ 戻る
+        </a> */}
+        <Link
+          to="/requestHistory"
+          className="buttonUnderlineSt"
+        >
+          ＜＜ 修正依頼入力へ
+        </Link>
+        {/* <a className="buttonUnderlineSt" type="button" onClick={clickRequestHistory}>
           修正依頼履歴へ
-        </a>
+        </a> */}
         <a className="buttonUnderlineSt" type="button" onClick={RequestInsert}>修正依頼送信 ＞＞</a>
       </div>
     </div>

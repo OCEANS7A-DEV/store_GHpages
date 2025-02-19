@@ -4,16 +4,15 @@ import { InventorySearch, ImageUrlSet } from '../backend/Server_end';
 import WordSearch from './catalogSearch';
 import CatalogDetailDialog from './catalog_Dialog';
 import '../css/Ocean_catalog.css';
-
+import { Link } from "react-router-dom";
 
 
 interface SettingProps {
-  setCurrentPage: (page: string) => void;
   setisLoading: (value: boolean) => void;
 }
 
 
-export default function OceanCatalog({ setCurrentPage, setisLoading }: SettingProps) {
+export default function OceanCatalog({ setisLoading }: SettingProps) {
   const [searchData, setsearchData] = useState<any>([]);
   const DetailMessage = `業者名: ${searchData[0] || ''}　　||　　商品ナンバー: ${searchData[1] || ''}\n商品単価: ${(searchData[3] !== undefined && searchData[3] !== null) ? searchData[3].toLocaleString() : ''}円　　||　　店販価格: ${(searchData[5] !== undefined && searchData[5] !== null) ? searchData[5].toLocaleString() : ''}`
   const [DetailisDialogOpen, setDetailisDialogOpen] = useState(false);

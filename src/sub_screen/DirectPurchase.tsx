@@ -4,7 +4,7 @@ import '../css/Direct.css';
 import { GASPostInsertStore } from '../backend/Server_end';
 import DirectDialog from './DirectDialog';
 import WordSearch from './ProductSearchWord';
-
+import { Link } from "react-router-dom";
 
 
 interface UsedInsertData {
@@ -16,7 +16,6 @@ interface UsedInsertData {
 }
 
 interface SettingProps {
-  setCurrentPage: (page: string) => void;
   setisLoading: (value: boolean) => void;
 }
 
@@ -67,7 +66,7 @@ const getCurrentDateTimeJST = () => {
   return formattedDate;
 }
 
-export default function InventoryDirect({ setCurrentPage, setisLoading }: SettingProps) {
+export default function InventoryDirect({ setisLoading }: SettingProps) {
   const [isusedDialogOpen, setusedDialogOpen] = useState(false);
   const initialRowCount = 20;
   const initialusedFormData = Array.from({ length: initialRowCount }, () => ({
@@ -93,9 +92,6 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
 
 
 
-  const clickpage = () => {
-    setCurrentPage('topPage');
-  };
 
   const handleChange = (
     index: number,
@@ -451,9 +447,12 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
           </div>
         </div>
         <div className="button_area">
-          <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>
-            ＜＜ 戻る
-          </a>
+        <Link
+          to="/top"
+          className="buttonUnderlineSt"
+        >
+          ＜＜ 戻る
+        </Link>
           <a className="buttonUnderlineSt" type="button" onClick={addNewForm}>
             入力枠追加
           </a>

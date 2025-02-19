@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Link } from "react-router-dom";
 import Select from 'react-select';
 import '../css/InventoryUsed.css';
 import { GASPostInsertStore, processlistGet, ProcessingMethodGet } from '../backend/Server_end';
@@ -26,7 +27,6 @@ interface UsedInsertData {
 }
 
 interface SettingProps {
-  setCurrentPage: (page: string) => void;
   setisLoading: (value: boolean) => void;
 }
 
@@ -55,7 +55,7 @@ const ProcessingMethodList = async () => {
 
 
 
-export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingProps) {
+export default function InventoryUsed({ setisLoading }: SettingProps) {
   const FormatFormData: UsedInsertData = {
     月日: '',
     商品コード: '',
@@ -79,6 +79,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
   const remarksRefs = useRef([]);
   const HowToUseRefs = useRef([]);
   const dateRefs = useRef([]);
+  const nameRefs = useRef<HTMLInputElement[]>([]);
   const message = "使用商品は以下の通りです\n以下の内容でよろしければOKをクリックしてください\n内容の変更がある場合にはキャンセルをクリックしてください";
   const CautionaryNote = '日付の確認、使用商品の種類、使用方法、個人購入なら名前の入力など\n間違いがないかよく確認しておいてください。';
   const [DetailisDialogOpen, setDetailisDialogOpen] = useState(false);
@@ -92,22 +93,27 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
     index: number,
     value: any
   ) => {
-    if (typeof value === 'number') {
-      const newusedFormData = [...usedformData];
-      const updateFormData = (ResultData: any) => {
-        if (ResultData !== null) {
-          newusedFormData[index] = {
-            ...newusedFormData[index],
-            商品コード: ResultData[1],
-            商品名: ResultData[2],
-            商品単価: ResultData[4],
-          };
-        }
-      };
-      const ResultData = await productSearch(Number(value));
-      updateFormData(ResultData);
-      setusedFormData(newusedFormData);
+    const newusedFormData = [...usedformData];
+    const updateFormData = (ResultData: any) => {
+      if (ResultData !== null) {
+        newusedFormData[index] = {
+          ...newusedFormData[index],
+          商品コード: ResultData[1],
+          商品名: ResultData[2],
+          商品単価: ResultData[4],
+        };
+      }
+    };
+    const ResultData = await productSearch(Number(value));
+    if (!ResultData){
+      if (nameRefs.current[index]) {
+        nameRefs.current[index].focus();
+      }
+      return
     }
+    updateFormData(ResultData);
+    setusedFormData(newusedFormData);
+    
     
   };
 
@@ -395,6 +401,11 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
                         placeholder="商品名"
                         className="insert_name"
                         value={data.商品名}
+                        ref={(el) => {
+                          if (el) {
+                            nameRefs.current[index] = el
+                          }
+                        }}
                         onChange={(e) => setusedFormData(handleChange(index, '商品名', e, usedformData))}
                       />
                     </td>
@@ -478,18 +489,36 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
           
         </div>
         <div className="button_area">
-          <a className="buttonUnderlineSt" id="main_back" type="button" onClick={() => setCurrentPage('topPage')}>
+          <Link
+            to="/top"
+            className="buttonUnderlineSt"
+          >
             ＜＜ 店舗選択へ
-          </a>
+          </Link>
+          {/* <a className="buttonUnderlineSt" id="main_back" type="button" onClick={() => setCurrentPage('topPage')}>
+            ＜＜ 店舗選択へ
+          </a> */}
           <a className="buttonUnderlineSt" type="button" onClick={() => setusedFormData(addNewForm(usedformData, FormatFormData))}>
             入力枠追加
           </a>
-          <a className="buttonUnderlineSt" type="button" onClick={() => setCurrentPage('usedHistory')}>
+          <Link
+            to="/usedhistory"
+            className="buttonUnderlineSt"
+          >
             履歴へ
-          </a>
-          <a className="buttonUnderlineSt" type="button" onClick={() => setCurrentPage('storeinventory')}>
+          </Link>
+          {/* <a className="buttonUnderlineSt" type="button" onClick={() => setCurrentPage('usedHistory')}>
+            履歴へ
+          </a> */}
+          <Link
+            to="/storeinventory"
+            className="buttonUnderlineSt"
+          >
+            発注履歴へ
+          </Link>
+          {/* <a className="buttonUnderlineSt" type="button" onClick={() => setCurrentPage('storeinventory')}>
             店舗在庫一覧
-          </a>
+          </a> */}
           <a className="buttonUnderlineSt" type="button" onClick={() => setusedDialogOpen(true)}>使用商品送信 ＞＞</a>
           <UsedDialog
             title="確認"

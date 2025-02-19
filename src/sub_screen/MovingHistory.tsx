@@ -5,6 +5,7 @@ import Select from 'react-select';
 //import '../css/order_history.css';
 import '../css/MovingHistory.css';
 import { MovingHistoryGet } from '../backend/Server_end';
+import { Link } from "react-router-dom";
 
 
 const Yearlist = () => {
@@ -43,12 +44,11 @@ interface SelectOption {
 }
 
 interface SettingProps {
-  setCurrentPage: (page: string) => void;
   setisLoading: (value: boolean) => void;
 }
 
 
-export default function MovingHistory({ setCurrentPage, setisLoading }: SettingProps) {
+export default function MovingHistory({ setisLoading }: SettingProps) {
   const [years, setyears] = useState<SelectOption>();
   const [yearsOptions, setyearsOptions] = useState<SelectOption[]>([]);
   const [months, setmonths] = useState<SelectOption>();
@@ -64,9 +64,7 @@ export default function MovingHistory({ setCurrentPage, setisLoading }: SettingP
     setmonths(selectedOption);
   };
 
-  const clickpage = () => {
-    setCurrentPage('Moving');
-  };
+
 
   const historysearch = async () => {
     if (!years || !months) {
@@ -152,9 +150,15 @@ export default function MovingHistory({ setCurrentPage, setisLoading }: SettingP
         </div>
       </div>
       <div className="button_area">
-        <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>
+        <Link
+          to="/moving"
+          className="buttonUnderlineSt"
+        >
           ＜＜ 店舗間移動入力へ
-        </a>
+        </Link>
+        {/* <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>
+          ＜＜ 店舗間移動入力へ
+        </a> */}
       </div>
     </div>
   );

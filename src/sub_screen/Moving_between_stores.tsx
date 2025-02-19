@@ -1,10 +1,15 @@
-import React, { useState, useRef, ChangeEvent, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Select from 'react-select';
 import '../css/InventoryUsed.css';
-import { InventorySearch, GASPostInsertStore, processlistGet, ProcessingMethodGet, ImageUrlSet } from '../backend/Server_end';
+import { GASPostInsertStore, processlistGet, ProcessingMethodGet } from '../backend/Server_end';
 import MovingDialog from './MovingDialog';
 import WordSearch from './ProductSearchWord';
-import DetailDialog from './ProductdetailDialog';
+import { handleChange,
+  productSearch,
+  addNewForm,
+  removeForm,
+  getLoginInfoAndFormattedTime
+} from '../backend/BackEnd';
 
 
 
@@ -17,10 +22,10 @@ interface UsedInsertData {
   出庫店舗: { value: string; label: string }[];
   入庫店舗: { value: string; label: string }[];
   商品単価: number;
+  menuIsOpen: boolean;
 }
 
 interface SettingProps {
-  setCurrentPage: (page: string) => void;
   setisLoading: (value: boolean) => void;
 }
 
@@ -32,26 +37,6 @@ interface SelectOption {
 }
 
 
-const colorlistGet = async (code: any) => {
-  let returnData: SelectOption[] = [];
-  const colorData = await JSON.parse(sessionStorage.getItem(String(code)) ?? '');
-  for (let i = 0; i < colorData.length; i++) {
-    const DefAsArray = {
-      value: colorData[i],
-      label: colorData[i],
-    };
-    returnData.push(DefAsArray);
-  }
-  return returnData;
-};
-
-const usedfieldDataList = ['月日', '商品コード', '商品名', '商品詳細', '数量', '備考'];
-
-const productSearch = (code: number) => {
-  const storageGet = JSON.parse(sessionStorage.getItem('data') ?? '');
-  const product = storageGet.find(item => item[1] === code);
-  return product;
-};
 
 const ProcessingMethod: SelectOption[] = [];
 
@@ -67,30 +52,10 @@ const ProcessingMethodList = async () => {
   }
 };
 
-const getCurrentDateTimeJST = () => {
-  const date = new Date();
-  const options = {
-      timeZone: 'Asia/Tokyo',
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: false, // 24時間表記
-  };
-
-  const formatter = new Intl.DateTimeFormat('ja-JP', options);
-  const parts = formatter.formatToParts(date);
-  const formattedDate = `${parts[0].value}-${parts[2].value}-${parts[4].value} ${parts[6].value}:${parts[8].value}:${parts[10].value}`;
-  return formattedDate;
-}
 
 
-export default function InventoryMoving({ setCurrentPage, setisLoading }: SettingProps) {
-  const [isusedDialogOpen, setusedDialogOpen] = useState(false);
-  const initialRowCount = 20;
-  const initialusedFormData = Array.from({ length: initialRowCount }, () => ({
+export default function InventoryMoving({ setisLoading }: SettingProps) {
+  const FormatFormData: UsedInsertData = {
     月日: '',
     商品コード: '',
     商品名: '',
@@ -99,7 +64,11 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
     入庫店舗: [],
     備考: '',
     商品単価: 0,
-  }));
+    menuIsOpen: false
+  }
+  const [isusedDialogOpen, setusedDialogOpen] = useState(false);
+  const initialRowCount = 20;
+  const initialusedFormData = Array.from({ length: initialRowCount }, () => (FormatFormData));
   const [usedformData, setusedFormData] = useState<UsedInsertData[]>(initialusedFormData);
   const storename = localStorage.getItem('StoreSetName');
   const dateRefs = useRef([]);
@@ -108,47 +77,13 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
   const codeRefs = useRef([]);
   const quantityRefs = useRef([]);
   const remarksRefs = useRef([]);
+  const nameRefs = useRef<HTMLInputElement[]>([]);
   const message = "店舗間移動は以下の通りです\n以下の内容でよろしければOKをクリックしてください\n内容の変更がある場合にはキャンセルをクリックしてください";
   const [DetailisDialogOpen, setDetailisDialogOpen] = useState(false);
   const [searchtabledata, setsearchtabledata] = useState<any>([]);
   const [selectOptions, setSelectOptions] = useState<SelectOption[]>([]);
   const [addType, setADDType] = useState(false);
 
-
-
-
-
-  const clickpage = () => {
-    setCurrentPage('topPage');
-  };
-
-
-  const handleChange = (
-    index: number,
-    field: keyof UsedInsertData,
-    event: ChangeEvent<HTMLInputElement>,
-  ) => {
-    const newusedFormData = [...usedformData];
-    newusedFormData[index][field] = event.target.value;
-    setusedFormData(newusedFormData);
-  };
-
-  const addNewForm = () => {
-    const newusedFormData = [...usedformData];
-    for (let i = 0; i < 20; i++) {
-      newusedFormData.push({
-        月日: '',
-        商品コード: '',
-        商品名: '',
-        数量: '',
-        出庫店舗: [],
-        入庫店舗: [],
-        備考: '',
-        商品単価: 0,
-      });
-    }
-    setusedFormData(newusedFormData);
-  };
 
 
   const usedsearchDataChange = async (
@@ -166,34 +101,23 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
         };
       }
     };
-    try {
-      const [ResultData, options] = await Promise.all([
-        productSearch(Number(value)),
-        colorlistGet(Number(value)),
-      ]);
-      updateFormData(ResultData);
-    } catch (error) {
-      const ResultData = await productSearch(Number(value));
-      updateFormData(ResultData);
+    const ResultData = await productSearch(Number(value));
+    if (!ResultData){
+      if (nameRefs.current[index]) {
+        nameRefs.current[index].focus();
+      }
+      return
     }
+    updateFormData(ResultData);
     setusedFormData(newusedFormData);
+    
   };
 
-  const numberchange = async (
-    index: number,
-    field: keyof UsedInsertData,
-    event: ChangeEvent<HTMLInputElement>,
-  ) => {
-    const CodeValue = event.target.value.replace(/[^0-9]/g, '');
-    const newusedFormData = [...usedformData];
-    newusedFormData[index][field] = CodeValue;
-    setusedFormData(newusedFormData);
-  };
+
 
   const insertPost = async () => {
     const formResult = [];
-    const date = getCurrentDateTimeJST();
-    const id = sessionStorage.getItem('LoginID');
+    const [id, date] = await getLoginInfoAndFormattedTime()
     const filterData = usedformData.filter(row => row.商品コード !== "");
 
     for (let i = 0; i < filterData.length; i++){
@@ -215,22 +139,6 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
     GASPostInsertStore('insert', '店舗間移動', formResult);
   };
 
-  const removeForm = (index: number) => {
-    const newusedFormData = usedformData.filter((_, i) => i !== index);
-    newusedFormData.push({
-      月日: '',
-      商品コード: '',
-      商品名: '',
-      数量: '',
-      出庫店舗: [],
-      入庫店舗: [],
-      備考: '',
-      商品単価: 0
-    });
-    setusedFormData(newusedFormData);
-    codeRefs.current.splice(index, 1);
-    quantityRefs.current.splice(index, 1);
-  };
 
   const handleKeyDown = async (index: number, e: React.KeyboardEvent<HTMLInputElement>, fieldType: string) => {
     if (e.key === 'Enter') {
@@ -278,9 +186,6 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
     }
   };
 
-  const handleOpenDialog = () => {
-    setusedDialogOpen(true);
-  };
 
   const handleConfirm = async () => {
     setisLoading(true);
@@ -329,9 +234,6 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
     setusedDialogOpen(false);
   };
 
-  const DetailhandleConfirm = () => {
-    setDetailisDialogOpen(false);
-  };
 
   const DetailhandleConfirmAdd = async (data: any) => {
     const Vacant = usedformData.findIndex(({ 商品コード }) => 商品コード === '');
@@ -373,15 +275,10 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
 
   useEffect(() => {
     if (addType){
-      addNewForm()
+      setusedFormData(addNewForm(usedformData, FormatFormData));
       setADDType(false);
     }
   },[addType])
-
-  const clickcheckpage = () => {
-    setCurrentPage('MovingHistory');
-  };
-
 
   useEffect(() => {
     processlistGet();
@@ -406,7 +303,7 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
             searchtabledata={searchtabledata}
             insert={DetailhandleConfirmAdd}
             isOpen={DetailisDialogOpen}
-            onConfirm={DetailhandleConfirm}
+            onConfirm={() => setDetailisDialogOpen(false)}
             addButtonName='商品移動に追加'
           />
         </div>
@@ -440,7 +337,7 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
                         value={data.月日}
                         ref={(el) => (dateRefs.current[index] = el)}
                         onKeyDown={(e) => handleKeyDown(index, e, '月日')}
-                        onChange={(e) => handleChange(index, '月日', e)}
+                        onChange={(e) => setusedFormData(handleChange(index, '月日', e, usedformData))}
                       />
                     </td>
                     <td>
@@ -516,7 +413,7 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
                         className="insert_code"
                         value={data.商品コード}
                         ref={(el) => (codeRefs.current[index] = el)}
-                        onChange={(e) => numberchange(index, '商品コード', e)}
+                        onChange={(e) => setusedFormData(handleChange(index, '商品コード', e, usedformData))}
                         onKeyDown={(e) => handleKeyDown(index, e, '商品コード')}
                         onBlur={() => handleBlur(index, '商品コード')}
                         inputMode="numeric"
@@ -528,7 +425,12 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
                         placeholder="商品名"
                         className="insert_name"
                         value={data.商品名}
-                        onChange={(e) => handleChange(index, '商品名', e)}
+                        ref={(el) => {
+                          if (el) {
+                            nameRefs.current[index] = el
+                          }
+                        }}
+                        onChange={(e) => setusedFormData(handleChange(index, '商品名', e, usedformData))}
                       />
                     </td>
                     <td>
@@ -540,7 +442,7 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
                         inputMode="numeric"
                         value={data.数量}
                         ref={(el) => (quantityRefs.current[index] = el)}
-                        onChange={(e) => numberchange(index, '数量', e)}
+                        onChange={(e) => setusedFormData(handleChange(index, '数量', e, usedformData))}
                         onKeyDown={(e) => handleKeyDown(index, e, '数量')}
                       />
                     </td>
@@ -551,12 +453,12 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
                         className="remarks"
                         value={data.備考}
                         ref={(el) => (remarksRefs.current[index] = el)}
-                        onChange={(e) => handleChange(index, '備考', e)}
+                        onChange={(e) => setusedFormData(handleChange(index, '備考', e, usedformData))}
                         onKeyDown={(e) => handleKeyDown(index, e, '備考')}
                       />
                     </td>
                     <td>
-                      <button type="button" className="delete_button" onClick={() => removeForm(index)}>
+                      <button type="button" className="delete_button" onClick={() => setusedFormData(removeForm(index, usedformData, FormatFormData))}>
                         削除
                       </button>
                     </td>
@@ -567,16 +469,16 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
           </div>
       </div>
       <div className="button_area">
-        <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>
+        <a className="buttonUnderlineSt" id="main_back" type="button" onClick={() => setCurrentPage('topPage')}>
           ＜＜ 戻る
         </a>
-        <a className="buttonUnderlineSt" type="button" onClick={addNewForm}>
+        <a className="buttonUnderlineSt" type="button" onClick={() => setusedFormData(addNewForm(usedformData, FormatFormData))}>
           入力枠追加
         </a>
-        <a className="buttonUnderlineSt" type="button" onClick={clickcheckpage}>
+        <a className="buttonUnderlineSt" type="button" onClick={() => setCurrentPage('MovingHistory')}>
           履歴へ
         </a>
-        <a className="buttonUnderlineSt" type="button" onClick={handleOpenDialog}>入力内容送信 ＞＞</a>
+        <a className="buttonUnderlineSt" type="button" onClick={() => setusedDialogOpen(true)}>入力内容送信 ＞＞</a>
         <MovingDialog
           title="確認"
           message={message}

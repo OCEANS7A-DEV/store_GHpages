@@ -8,7 +8,7 @@ export const handleChange = (
   formData: any
 ) => {
   let value = event.target.value;
-  if (field === '商品コード'){
+  if (field === '商品コード' || field === '数量'){
     value = value.replace(/[^0-9A-Za-z\-]/g, '');
   }
   const newFormData = [...formData];

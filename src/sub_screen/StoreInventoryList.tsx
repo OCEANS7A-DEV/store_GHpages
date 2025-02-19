@@ -3,10 +3,9 @@ import '../css/store.css';
 import { StoreInventoryGet, PeriodDateGet, HistoryGet } from '../backend/Server_end.ts';
 import '../css/StoreInventory.css';
 import HistoryInsertCheck, {HistoryUsedCheck} from './historycheckDialog.tsx';
-
+import { Link } from "react-router-dom";
 
 interface SettingProps {
-  setCurrentPage: (page: string) => void;
   setisLoading: (value: boolean) => void;
 }
 
@@ -16,7 +15,7 @@ interface InventoryRow {
   DInumber: number;
 }
 
-export default function StoreInventoryList({ setCurrentPage, setisLoading }: SettingProps) {
+export default function StoreInventoryList({ setisLoading }: SettingProps) {
   const [InventoryData, setInventoryData] = useState<InventoryRow[]>([]);
   const storename = localStorage.getItem('StoreSetName');
   const [periodDate, setPeriodDate] = useState([]);
@@ -28,9 +27,6 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
   const [DialogdataU, setDialogdataU] = useState([]);
   const [message, setmessage] = useState<string>('');
 
-  const clickpage = () => {
-    setCurrentPage('InventoryNumsSet');
-  };
 
   const colorset = (value) => {
     if (value[0] == '+'){
@@ -201,9 +197,15 @@ export default function StoreInventoryList({ setCurrentPage, setisLoading }: Set
         </div>
       </div>
       <div className="button_area">
-        <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>
+        <Link
+          to="/inventoryNumsSet"
+          className="buttonUnderlineSt"
+        >
+          ＜＜ 店舗間移動入力へ
+        </Link>
+        {/* <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>
           ＜＜ 在庫数入力へ
-        </a>
+        </a> */}
       </div>
     </div>
   );

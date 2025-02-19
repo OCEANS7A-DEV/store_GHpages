@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 
+import { Link } from "react-router-dom";
+
 import Select from 'react-select';
 
 import '../css/store.css';
@@ -15,6 +17,8 @@ import WordSearch from './ProductSearchWord';
 import NonConfirmDialog from './NonOrderDialog';
 
 import OutOfStockStatus from './Out_of_stock_status';
+
+import LoadingDisplay from "./loading";
 
 import { handleChange,
   productSearch,
@@ -42,7 +46,6 @@ interface InsertData {
 }
 
 interface SettingProps {
-  setCurrentPage: (page: string) => void;
   setisLoading: (value: boolean) => void;
 }
 
@@ -69,7 +72,7 @@ const getNearestMonday = () => {
 
 
 
-export default function StorePage({ setCurrentPage, setisLoading }: SettingProps) {
+export default function StorePage({ setisLoading }: SettingProps) {
   const FormatFormData: InsertData = {
     業者: '',
     商品コード: '',
@@ -488,261 +491,276 @@ export default function StorePage({ setCurrentPage, setisLoading }: SettingProps
 
 
   return (
-    <div className="window_area">
-      <div className='window_top'>
-        <div className="order_top_area">
-          <h2 className='store_name'> 注文日:</h2>
-          <input
-            type="date"
-            className="insert_order_date"
-            max="9999-12-31"
-            value={defaultDate}
-            disabled={isDisabled}
-            title={isDisabledTitle}
-            onChange={(e) => setDefaultDate(e.target.value)}
-          />
-          <div className="store_name_status" style={{ border: `1px solid ${OrderStatusColor}` }}>
-            <a className="buttonUnderlineD"  role="button" href="#" style={{ color: OrderStatusColor, fontSize: '20px' }} onClick={() => sethistoryDialogOpen(true)}>
-              {OrderStatus}
-            </a>
+    <>
+      <div className="window_area">
+        <div className='window_top'>
+          <div className="order_top_area">
+            <h2 className='store_name'> 注文日:</h2>
+            <input
+              type="date"
+              className="insert_order_date"
+              max="9999-12-31"
+              value={defaultDate}
+              disabled={isDisabled}
+              title={isDisabledTitle}
+              onChange={(e) => setDefaultDate(e.target.value)}
+            />
+            <div className="store_name_status" style={{ border: `1px solid ${OrderStatusColor}` }}>
+              <a className="buttonUnderlineD"  role="button" href="#" style={{ color: OrderStatusColor, fontSize: '20px' }} onClick={() => sethistoryDialogOpen(true)}>
+                {OrderStatus}
+              </a>
+            </div>
+            <OutOfStockStatus
+              title="注文確認"
+              message={confirmationMessage}
+              tableData={orderdata}
+              onConfirm={historyhandleConfirm}
+              isOpen={historyDialogOpen}
+              processlistdata={processlist}
+              ExecuteGoodsReceipt={ExecuteGoodsReceipt}
+              Dialogmaxprocess={progressmax}
+              progressdata={progress}
+            />
+            <h2 className='store_name'> 注文商品入力: {storename} 店</h2>
           </div>
-          <OutOfStockStatus
-            title="注文確認"
-            message={confirmationMessage}
-            tableData={orderdata}
-            onConfirm={historyhandleConfirm}
-            isOpen={historyDialogOpen}
-            processlistdata={processlist}
-            ExecuteGoodsReceipt={ExecuteGoodsReceipt}
-            Dialogmaxprocess={progressmax}
-            progressdata={progress}
-          />
-          <h2 className='store_name'> 注文商品入力: {storename} 店</h2>
         </div>
-      </div>
-      <div className='form_area'>
-        <div className="searchArea">
-          <WordSearch
-            className="searcharea"
-            setDetailisDialogOpen={setDetailisDialogOpen}
-            setisLoading={setisLoading}
-            setsearchtabledata={setsearchtabledata}
-            searchtabledata={searchtabledata}
-            insert={DetailhandleConfirmAdd}
-            isOpen={DetailisDialogOpen}
-            onConfirm={() => setDetailisDialogOpen(false)}
-            addButtonName='注文に追加'
-          />
-        </div>
-        
-        <div className='in-area'>
-
-          <div className="in-area-header">
-            <table className="order_table_header">
-              <thead>
-                <tr>
-                  <th className="insert_vendor_header">業者</th>
-                  <th className="insert_code_header">商品ナンバー</th>
-                  <th className="insert_name_header">商品名</th>
-                  <th className="insert_Select_header">商品詳細</th>
-                  <th className="insert_quantity_header">数量</th>
-                  <th className="personal_header">個人購入</th>
-                  <th className="remarks_header">備考</th>
-                  <th className="delete_button_header">削除<br/>ボタン</th>
-                </tr>
-              </thead>
-            </table>
+        <div className='form_area'>
+          <div className="searchArea">
+            <WordSearch
+              className="searcharea"
+              setDetailisDialogOpen={setDetailisDialogOpen}
+              setisLoading={setisLoading}
+              setsearchtabledata={setsearchtabledata}
+              searchtabledata={searchtabledata}
+              insert={DetailhandleConfirmAdd}
+              isOpen={DetailisDialogOpen}
+              onConfirm={() => setDetailisDialogOpen(false)}
+              addButtonName='注文に追加'
+            />
           </div>
+          
+          <div className='in-area'>
 
-          <div className="in-area-table">
-            <table className="order_table">
-              <tbody>
-                {formData.map((data, index) => (
-                  <tr key={index}>
-                    <td>
-                      <input
-                        type="text"
-                        placeholder="業者"
-                        title="商品ナンバーが商品一覧にあれば自動で入力されます"
-                        className="insert_vendor"
-                        value={data.業者}
-                        onKeyDown={(e) => handleKeyDown(index, e, '業者')}
-                        onChange={(e) => setFormData(handleChange(index, '業者', e, formData))}
-                      />
-                    </td>
-                    
-                    <td className="insert_code_td">
-                      <input
-                        title="入力は半角のみです"
-                        type="tel"
-                        pattern="^[0-9\-\/]+$"
-                        placeholder="商品ナンバー"
-                        className="insert_code"
-                        value={data.商品コード}
-                        ref={(el) => {
-                          if (el) {
-                            codeRefs.current[index] = el;
-                          }
-                        }}
-                        onChange={(e) => setFormData(handleChange(index, '商品コード', e, formData))}
-                        onKeyDown={(e) => handleKeyDown(index, e, '商品コード')}
-                        onBlur={(e) => handleBlur(index, '商品コード', e)}
-                        inputMode="numeric"
-                      />
-                    </td>
-                    
-                    <td>
-                      <input
-                        type="text"
-                        placeholder="商品名"
-                        className="insert_name"
-                        value={data.商品名}
-                        title="商品一覧にない時に入力してください"
-                        ref={(el) => {
-                          if (el) {
-                            nameRefs.current[index] = el
-                          }
-                        }}
-                        onKeyDown={(e) => handleKeyDown(index, e, '商品名')}
-                        onChange={(e) => setFormData(handleChange(index, '商品名', e, formData))}
-                      />
-                    </td>
-                    
-                    <td>
-                      <Select
-                        className="insert_Select"
-                        key={index}
-                        options={data.selectOptions}
-                        value={formData[index].商品詳細}
-                        isSearchable={true}
-                        ref={(el) => {
-                          if(el) {
-                            detailRefs.current[index] = el;
-                          }
-                        }}
-                        menuIsOpen={formData[index].menuIsOpen}
-                        onChange={(selectedOption) => {
-                          const newFormData = [...formData];
-                          newFormData[index].商品詳細 = selectedOption ? [{ ...selectedOption }] : [];
-                          setFormData(newFormData);
-                          newFormData[index].menuIsOpen = false;
-                        }}
-                        onFocus={() => {
-                          const newFormData = [...formData];
-                          newFormData[index].menuIsOpen = true; // フォーカス時にメニューを開く
-                          setFormData(newFormData);
-                        }}
-                        onBlur={() => {
-                          const newFormData = [...formData];
-                          newFormData[index].menuIsOpen = false; // フォーカス外れ時にメニューを閉じる
-                          setFormData(newFormData);
-                        }}
-                        onKeyDown={(e) => handleKeyDown(index, e, '商品詳細')}
-                        menuPlacement="auto"
-                        menuPortalTarget={document.body}
-                        placeholder="詳細を選択"
-                      />
-                    </td>
-                    
-                    <td>
-                      <input
-                        type="text"
-                        pattern="^[0-9]+$"
-                        placeholder="数量"
-                        className="insert_quantity"
-                        inputMode="numeric"
-                        value={data.数量}
-                        ref={(el) => {
-                          if (el) {
-                            quantityRefs.current[index] = el;
-                          }
-                        }}
-                        onChange={(e) => setFormData(handleChange(index, '数量', e, formData))}
-                        onKeyDown={(e) => handleKeyDown(index, e, '数量')}
-                      />
-                    </td>
-                    
-                    <td>
-                      <input
-                        type="text"
-                        placeholder="個人購入"
-                        className="personal"
-                        value={data.個人購入}
-                        ref={(el) => {
-                          if (el) {
-                            personalRefs.current[index] = el
-                          }
-                        }}
-                        onChange={(e) => setFormData(handleChange(index, '個人購入', e, formData))}
-                        onKeyDown={(e) => handleKeyDown(index, e, '個人購入')}
-                      />
-                    </td>
-
-                    <td>
-                      <input
-                        type="text"
-                        placeholder="備考"
-                        className="remarks"
-                        value={data.備考}
-                        ref={(el) => {
-                          if (el) {
-                            remarksRefs.current[index] = el;
-                          }
-                        }}
-                        onChange={(e) => setFormData(handleChange(index, '備考', e, formData))}
-                        onKeyDown={(e) => handleKeyDown(index, e, '備考')}
-                      />
-                    </td>
-
-                    <td>
-                      <button type="button" className="delete_button" onClick={() => setFormData(removeForm(index,formData,FormatFormData))}>
-                        削除
-                      </button>
-                    </td>
-
+            <div className="in-area-header">
+              <table className="order_table_header">
+                <thead>
+                  <tr>
+                    <th className="insert_vendor_header">業者</th>
+                    <th className="insert_code_header">商品ナンバー</th>
+                    <th className="insert_name_header">商品名</th>
+                    <th className="insert_Select_header">商品詳細</th>
+                    <th className="insert_quantity_header">数量</th>
+                    <th className="personal_header">個人購入</th>
+                    <th className="remarks_header">備考</th>
+                    <th className="delete_button_header">削除<br/>ボタン</th>
                   </tr>
-                    
-                ))}
-              </tbody>
-            </table>
+                </thead>
+              </table>
+            </div>
+
+            <div className="in-area-table">
+              <table className="order_table">
+                <tbody>
+                  {formData.map((data, index) => (
+                    <tr key={index}>
+                      <td>
+                        <input
+                          type="text"
+                          placeholder="業者"
+                          title="商品ナンバーが商品一覧にあれば自動で入力されます"
+                          className="insert_vendor"
+                          value={data.業者}
+                          onKeyDown={(e) => handleKeyDown(index, e, '業者')}
+                          onChange={(e) => setFormData(handleChange(index, '業者', e, formData))}
+                        />
+                      </td>
+                      
+                      <td className="insert_code_td">
+                        <input
+                          title="入力は半角のみです"
+                          type="tel"
+                          pattern="^[0-9\-\/]+$"
+                          placeholder="商品ナンバー"
+                          className="insert_code"
+                          value={data.商品コード}
+                          ref={(el) => {
+                            if (el) {
+                              codeRefs.current[index] = el;
+                            }
+                          }}
+                          onChange={(e) => setFormData(handleChange(index, '商品コード', e, formData))}
+                          onKeyDown={(e) => handleKeyDown(index, e, '商品コード')}
+                          onBlur={(e) => handleBlur(index, '商品コード', e)}
+                          inputMode="numeric"
+                        />
+                      </td>
+                      
+                      <td>
+                        <input
+                          type="text"
+                          placeholder="商品名"
+                          className="insert_name"
+                          value={data.商品名}
+                          title="商品一覧にない時に入力してください"
+                          ref={(el) => {
+                            if (el) {
+                              nameRefs.current[index] = el
+                            }
+                          }}
+                          onKeyDown={(e) => handleKeyDown(index, e, '商品名')}
+                          onChange={(e) => setFormData(handleChange(index, '商品名', e, formData))}
+                        />
+                      </td>
+                      
+                      <td>
+                        <Select
+                          className="insert_Select"
+                          key={index}
+                          options={data.selectOptions}
+                          value={formData[index].商品詳細}
+                          isSearchable={true}
+                          ref={(el) => {
+                            if(el) {
+                              detailRefs.current[index] = el;
+                            }
+                          }}
+                          menuIsOpen={formData[index].menuIsOpen}
+                          onChange={(selectedOption) => {
+                            const newFormData = [...formData];
+                            newFormData[index].商品詳細 = selectedOption ? [{ ...selectedOption }] : [];
+                            setFormData(newFormData);
+                            newFormData[index].menuIsOpen = false;
+                          }}
+                          onFocus={() => {
+                            const newFormData = [...formData];
+                            newFormData[index].menuIsOpen = true; // フォーカス時にメニューを開く
+                            setFormData(newFormData);
+                          }}
+                          onBlur={() => {
+                            const newFormData = [...formData];
+                            newFormData[index].menuIsOpen = false; // フォーカス外れ時にメニューを閉じる
+                            setFormData(newFormData);
+                          }}
+                          onKeyDown={(e) => handleKeyDown(index, e, '商品詳細')}
+                          menuPlacement="auto"
+                          menuPortalTarget={document.body}
+                          placeholder="詳細を選択"
+                        />
+                      </td>
+                      
+                      <td>
+                        <input
+                          type="text"
+                          pattern="^[0-9]+$"
+                          placeholder="数量"
+                          className="insert_quantity"
+                          inputMode="numeric"
+                          value={data.数量}
+                          ref={(el) => {
+                            if (el) {
+                              quantityRefs.current[index] = el;
+                            }
+                          }}
+                          onChange={(e) => setFormData(handleChange(index, '数量', e, formData))}
+                          onKeyDown={(e) => handleKeyDown(index, e, '数量')}
+                        />
+                      </td>
+                      
+                      <td>
+                        <input
+                          type="text"
+                          placeholder="個人購入"
+                          className="personal"
+                          value={data.個人購入}
+                          ref={(el) => {
+                            if (el) {
+                              personalRefs.current[index] = el
+                            }
+                          }}
+                          onChange={(e) => setFormData(handleChange(index, '個人購入', e, formData))}
+                          onKeyDown={(e) => handleKeyDown(index, e, '個人購入')}
+                        />
+                      </td>
+
+                      <td>
+                        <input
+                          type="text"
+                          placeholder="備考"
+                          className="remarks"
+                          value={data.備考}
+                          ref={(el) => {
+                            if (el) {
+                              remarksRefs.current[index] = el;
+                            }
+                          }}
+                          onChange={(e) => setFormData(handleChange(index, '備考', e, formData))}
+                          onKeyDown={(e) => handleKeyDown(index, e, '備考')}
+                        />
+                      </td>
+
+                      <td>
+                        <button type="button" className="delete_button" onClick={() => setFormData(removeForm(index,formData,FormatFormData))}>
+                          削除
+                        </button>
+                      </td>
+
+                    </tr>
+                      
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="button_area">
-        <a className="buttonUnderlineSt" id="main_back" type="button" onClick={() => setCurrentPage('topPage')}>
-          ＜＜ 店舗選択へ
-        </a>
-        <a className="buttonUnderlineSt" type="button" onClick={() => setFormData(addNewForm(formData, FormatFormData))}>
-          注文枠追加
-        </a>
-        <a className="buttonUnderlineSt" type="button" onClick={() => setCurrentPage('History')}>
-          発注履歴へ
-        </a>
-        <a className="buttonUnderlineSt" type="button" onClick={NonhandleOpenDialog}>
-          注文無しの場合
-        </a>
-        <a className="buttonUnderlineSt" type="button" onClick={() => setDialogOpen(true)}>本部へ注文 ＞＞</a>
-        <ConfirmDialog
-          title="確認"
-          message={message}
-          tableData={formData}
-          onConfirm={handleConfirm}
-          onCancel={() => {
-            alert('キャンセルされました');
-            setDialogOpen(false);
-          }}
-          isOpen={isDialogOpen}
-        />
-        <NonConfirmDialog
-          title="確認"
-          message={new Date().toLocaleDateString("ja-JP", {year: "numeric",month: "2-digit",day: "2-digit"})}
-          onConfirm={NonhandleConfirm}
-          onCancel={() => setNonisDialogOpen(false)}
-          isOpen={NonisDialogOpen}
-        />
+        <div className="button_area">
+          <Link
+            to="/top"
+            className="buttonUnderlineSt"
+          >
+            ＜＜ 店舗選択へ
+          </Link>
+          {/* <a className="buttonUnderlineSt" id="main_back" type="button" onClick={() => setCurrentPage('topPage')}>
+            ＜＜ 店舗選択へ
+          </a> */}
+          <a className="buttonUnderlineSt" type="button" onClick={() => setFormData(addNewForm(formData, FormatFormData))}>
+            注文枠追加
+          </a>
+          <Link
+            to="/history"
+            className="buttonUnderlineSt"
+          >
+            発注履歴へ
+          </Link>
+          {/* <a className="buttonUnderlineSt" type="button" onClick={() => setCurrentPage('History')}>
+            発注履歴へ
+          </a> */}
+          <a className="buttonUnderlineSt" type="button" onClick={NonhandleOpenDialog}>
+            注文無しの場合
+          </a>
+          <a className="buttonUnderlineSt" type="button" onClick={() => setDialogOpen(true)}>本部へ注文 ＞＞</a>
+          <ConfirmDialog
+            title="確認"
+            message={message}
+            tableData={formData}
+            onConfirm={handleConfirm}
+            onCancel={() => {
+              alert('キャンセルされました');
+              setDialogOpen(false);
+            }}
+            isOpen={isDialogOpen}
+          />
+          <NonConfirmDialog
+            title="確認"
+            message={new Date().toLocaleDateString("ja-JP", {year: "numeric",month: "2-digit",day: "2-digit"})}
+            onConfirm={NonhandleConfirm}
+            onCancel={() => setNonisDialogOpen(false)}
+            isOpen={NonisDialogOpen}
+          />
+        </div>
       </div>
-    </div>
+    </>
+    
   );
 }
 

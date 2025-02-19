@@ -5,6 +5,8 @@ import Select from 'react-select';
 //import '../css/order_history.css';
 import '../css/usedHistory.css';
 import { HistoryGet } from '../backend/Server_end';
+import OutOfStockStatus from './Out_of_stock_status';
+import { Link } from "react-router-dom";
 
 
 const Yearlist = () => {
@@ -43,12 +45,11 @@ interface SelectOption {
 }
 
 interface SettingProps {
-  setCurrentPage: (page: string) => void;
   setisLoading: (value: boolean) => void;
 }
 
 
-export default function UsedHistory({ setCurrentPage, setisLoading }: SettingProps) {
+export default function UsedHistory({ setisLoading }: SettingProps) {
   const [years, setyears] = useState<SelectOption>();
   const [yearsOptions, setyearsOptions] = useState<SelectOption[]>([]);
   const [months, setmonths] = useState<SelectOption>();
@@ -66,9 +67,7 @@ export default function UsedHistory({ setCurrentPage, setisLoading }: SettingPro
     setmonths(selectedOption);
   };
 
-  const clickpage = () => {
-    setCurrentPage('used');
-  };
+
 
   const historysearch = async () => {
     if (!years || !months) {
@@ -168,9 +167,12 @@ export default function UsedHistory({ setCurrentPage, setisLoading }: SettingPro
         </div>
       </div>
       <div className="button_area">
-        <a className="buttonUnderlineSt" id="main_back" type="button" onClick={() => {setCurrentPage('InventoryNumsSet')}}>
+        <Link
+          to="/store"
+          className="buttonUnderlineSt"
+        >
           ＜＜ 在庫数入力へ
-        </a>
+        </Link>
       </div>
     </div>
   );

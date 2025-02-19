@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import '../css/RequestHistory.css';
 import { RequestHistoryGet } from '../backend/Server_end';
-
+import { Link } from "react-router-dom";
 
 
 //　次回以降作成
@@ -44,12 +44,11 @@ interface SelectOption {
 }
 
 interface SettingProps {
-  setCurrentPage: (page: string) => void;
   setisLoading: (value: boolean) => void;
 }
 
 
-export default function RequestHistory({ setCurrentPage, setisLoading }: SettingProps) {
+export default function RequestHistory({ setisLoading }: SettingProps) {
   const [years, setyears] = useState<SelectOption>();
   const [yearsOptions, setyearsOptions] = useState<SelectOption[]>([]);
   const [months, setmonths] = useState<SelectOption>();
@@ -63,10 +62,6 @@ export default function RequestHistory({ setCurrentPage, setisLoading }: Setting
 
   const handlemonthChange = (selectedOption: SelectOption | []) => {
     setmonths(selectedOption);
-  };
-
-  const clickpage = () => {
-    setCurrentPage('Request');
   };
 
   const historysearch = async () => {
@@ -162,9 +157,15 @@ export default function RequestHistory({ setCurrentPage, setisLoading }: Setting
         </div>
       </div>
       <div className="button_area">
-        <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>
+        <Link
+          to="/request"
+          className="buttonUnderlineSt"
+        >
           ＜＜ 修正依頼入力へ
-        </a>
+        </Link>
+        {/* <a className="buttonUnderlineSt" id="main_back" type="button" onClick={clickpage}>
+          ＜＜ 修正依頼入力へ
+        </a> */}
       </div>
     </div>
   );
