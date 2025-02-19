@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Select from 'react-select';
 import { localStorageSet, localStoreSet, localExclusion, localCorrectionRequestListSet } from './backend/WebStorage';
 
@@ -26,6 +26,7 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
     localCorrectionRequestListSet()
     const getLocalStorageSize = async () => {
       const cachedData = await localStorage.getItem('storeData');
+      //console.log(cachedData ? JSON.parse(cachedData) : [])
       setSelectOptions(cachedData ? JSON.parse(cachedData) : []);
       const storeSelectupdate = await localStoreSet();
       const authorityType = sessionStorage.getItem('authority');
@@ -40,14 +41,14 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
       setSelectOptions(storeSelectupdate);
       const setStore = localStorage.getItem('StoreSetName') ?? '';
       const setType = localStorage.getItem('StoreSetType') ?? '';
-      //console.log(setType)
-      const setSelect: SelectOption = {
-        value: setStore,
-        label: setStore,
-        type: setType
+      if(setStore !== '' && setType !== ''){
+        const setSelect: SelectOption = {
+          value: setStore,
+          label: setStore,
+          type: setType
+        }
+        setStoreSelect(setSelect);
       }
-      
-      setStoreSelect(setSelect);
     }
     getLocalStorageSize()
     
@@ -57,11 +58,10 @@ export default function TopPage({ setCurrentPage }: SettingProps) {
     setStoreSelect(selectedOption);
   };
 
-  const setPage = (pageName) => {
+  const setPage = (pageName: string) => {
     if (storeSelect) {
       const set = storeSelect.value;
       localExclusion(set, pageName);
-      
       localStorage.setItem('StoreSetName', set);
       localStorage.setItem('StoreSetType', storeSelect.type);
       setCurrentPage(pageName);

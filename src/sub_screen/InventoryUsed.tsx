@@ -18,6 +18,7 @@ interface UsedInsertData {
   使用方法: { value: string; label: string }[];
   ProcessingMethod: { value: string; label: string }[];
   商品単価: number;
+  menuIsOpen: boolean;
 }
 
 interface SettingProps {
@@ -73,9 +74,7 @@ const ProcessingMethodList = async () => {
 
 
 export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingProps) {
-  const [isusedDialogOpen, setusedDialogOpen] = useState(false);
-  const initialRowCount = 20;
-  const initialusedFormData = Array.from({ length: initialRowCount }, () => ({
+  const FormatFormData: UsedInsertData = {
     月日: '',
     商品コード: '',
     商品名: '',
@@ -84,8 +83,12 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
     個人購入: '',
     備考: '',
     ProcessingMethod: [],
-    商品単価: 0
-  }));
+    商品単価: 0,
+    menuIsOpen: false
+  }
+  const [isusedDialogOpen, setusedDialogOpen] = useState(false);
+  const initialRowCount = 20;
+  const initialusedFormData = Array.from({ length: initialRowCount }, () => (FormatFormData));
   const [usedformData, setusedFormData] = useState<UsedInsertData[]>(initialusedFormData);
   const storename = localStorage.getItem('StoreSetName');
   const codeRefs = useRef([]);
@@ -133,17 +136,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
     console.log('空データ追加')
     const newusedFormData = [...usedformData];
     for (let i = 0; i < 20; i++) {
-      newusedFormData.push({
-        月日: '',
-        商品コード: '',
-        商品名: '',
-        数量: '',
-        使用方法: [],
-        個人購入: '',
-        備考: '',
-        ProcessingMethod: [],
-        商品単価: 0
-      });
+      newusedFormData.push(FormatFormData);
     }
     setusedFormData(newusedFormData);
   };
@@ -230,17 +223,7 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
 
   const removeForm = (index: number) => {
     const newusedFormData = usedformData.filter((_, i) => i !== index);
-    newusedFormData.push({
-      月日: '',
-      商品コード: '',
-      商品名: '',
-      数量: '',
-      使用方法: [],
-      個人購入: '',
-      備考: '',
-      ProcessingMethod: [],
-      商品単価: 0
-    });
+    newusedFormData.push(FormatFormData);
     setusedFormData(newusedFormData);
     codeRefs.current.splice(index, 1);
     quantityRefs.current.splice(index, 1);
@@ -390,7 +373,8 @@ export default function InventoryUsed({ setCurrentPage, setisLoading }: SettingP
         個人購入: '',
         備考: '',
         ProcessingMethod: [],
-        商品単価: 0
+        商品単価: 0,
+        menuIsOpen: false
       });
     }
   

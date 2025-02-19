@@ -1,15 +1,12 @@
 import React, { useState, ChangeEvent, useEffect } from 'react';
 import '../css/ProductSearchWord.css';
 import { searchStr } from '../backend/WebStorage';
-import { InventorySearch, ImageUrlSet } from '../backend/Server_end';
 
 import DetailDialog from './ProductdetailDialog';
 
 
 interface SearchProps {
-  setsearchData: (data: any) => void;
   setDetailisDialogOpen: (result: boolean) => void;
-  setDetailIMAGE: (imageresult: string) => void;
   setisLoading: (loading: boolean) => void;
   setsearchtabledata: (tabledata:any) => void;
   searchtabledata: any;
@@ -21,10 +18,13 @@ interface SearchProps {
   addButtonName: string;
 }
 
-export default function WordSearch({ setsearchData, setDetailisDialogOpen, setDetailIMAGE, setisLoading, setsearchtabledata, searchtabledata, setsearchDataIndex, insert, isOpen, addButtonName, onConfirm }: SearchProps) {
+export default function WordSearch({ setDetailisDialogOpen, setisLoading, setsearchtabledata, searchtabledata, insert, isOpen, addButtonName, onConfirm }: SearchProps) {
   const [SWord, setSWord] = useState<string>('');
   const [searchData, setsearchdata] = useState<any>([]);
   const [Index, setIndex] = useState(0);
+  const [OCtitle,setOCtitle] = useState<string>('商品検索ウィンドウを開きます');
+  const [searchArea, setsearchArea] = useState(false);
+  const [OCcondition, setOCcondition] = useState<string>(">>");
 
 
 
@@ -43,15 +43,7 @@ export default function WordSearch({ setsearchData, setDetailisDialogOpen, setDe
 
   const handleOpenDetailDialog = async (index: any) => {
     setIndex(index)
-    setsearchDataIndex(index);//ここでエラー
     setisLoading(true);
-    var match = 'https://lh3.googleusercontent.com/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFhbm';// 画像がないとき用のURL
-    const image = await InventorySearch(searchtabledata[index][1],"商品コード","商品画像");// 商品画像検索
-    if (image[2] !== ''){// 商品画像のURLがあればそのURLを上書き
-      match = ImageUrlSet(image[2]);
-    }
-    await setDetailIMAGE(match);//画像をセット
-    await setsearchData(searchtabledata[index]);
     await setDetailisDialogOpen(true);
     setisLoading(false);
   };
@@ -62,75 +54,107 @@ export default function WordSearch({ setsearchData, setDetailisDialogOpen, setDe
     }
   };
 
+  const searchAreaconfirm = () => {
+    setsearchArea((prevState) => !prevState);
+    if (searchArea == true){
+      setOCcondition('>>');
+      setOCtitle('商品検索ウィンドウを開きます');
+    }else{
+      setOCcondition('<<');
+      setOCtitle('商品検索ウィンドウを閉じます');
+    }
+  };
+
 
 
 
 
   return (
-    <div className="WordSearch-area">
-      <div className="search-input">
-        <input
-          type="text"
-          value={SWord}
-          pattern="^[ぁ-ん]+$"
-          onChange={handlewordchange}
-          placeholder="検索ワードを入力"
-          onKeyDown={(e) => handleKeyDown(e)}
-        />
-        <a className="buttonUnderlineSe" onClick={productReSearch}>
-          検索
-        </a>
-      </div>
-      <div className="search-head">
-        <table className="search-head">
-          <thead>
-            <tr>
-              <th className="stcode">商品ナンバー</th>
-              <th className="stname">商品名</th>
-            </tr>
-          </thead>
-        </table>
-      </div>
-      <div className="search-table">
-        <div className="scrollable-table">
-          <table className="search-data-table">
-            <tbody className="datail">
-              {searchtabledata.map((row, index) => (
-                <tr key={index}>
-                  <td className="scode">
-                    <a
-                      className="buttonUnderlineDR"
-                      role="button"
-                      href="#"
-                      onClick={() => insert(row)}
-                    >
-                      {row[1]}
-                    </a>
-                  </td>
-                  <td className="sname">
-                    <a
-                      className="buttonUnderlineD"
-                      role="button"
-                      href="#"
-                      onClick={() => handleOpenDetailDialog(index)}
-                    >
-                      {row[2]}
-                    </a>
-                  </td>
+    <>
+      <div
+        className="searchareawindow"
+        style={{
+          width: searchArea ? "360px" : "0px", // 表示状態で幅を変える
+          overflow: "hidden",
+          transition: "width 0.3s ease", // スムーズな変更
+        }}
+      >
+        <div className="WordSearch-area">
+          <div className="search-input">
+            <input
+              type="text"
+              value={SWord}
+              pattern="^[ぁ-ん]+$"
+              onChange={handlewordchange}
+              placeholder="検索ワードを入力"
+              onKeyDown={(e) => handleKeyDown(e)}
+            />
+            <a className="buttonUnderlineSe" onClick={productReSearch}>
+              検索
+            </a>
+          </div>
+          <div className="search-head">
+            <table className="search-head">
+              <thead>
+                <tr>
+                  <th className="stcode">商品ナンバー</th>
+                  <th className="stname">商品名</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+            </table>
+          </div>
+          <div className="search-table">
+            <div className="scrollable-table">
+              <table className="search-data-table">
+                <tbody className="datail">
+                  {searchtabledata.map((row, index) => (
+                    <tr key={index}>
+                      <td className="scode">
+                        <a
+                          className="buttonUnderlineDR"
+                          role="button"
+                          href="#"
+                          onClick={() => insert(row)}
+                        >
+                          {row[1]}
+                        </a>
+                      </td>
+                      <td className="sname">
+                        <a
+                          className="buttonUnderlineD"
+                          role="button"
+                          href="#"
+                          onClick={() => handleOpenDetailDialog(index)}
+                        >
+                          {row[2]}
+                        </a>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <DetailDialog
+              onConfirm={onConfirm}
+              isOpen={isOpen}
+              insert={insert}
+              searchtabledata={searchData}
+              searchDataIndex={Index}
+              addButtonName={addButtonName}
+            />
+          </div>
         </div>
-        <DetailDialog
-          onConfirm={onConfirm}
-          isOpen={isOpen}
-          insert={insert}
-          searchtabledata={searchData}
-          searchDataIndex={Index}
-          addButtonName={addButtonName}
-        />
+        
       </div>
-    </div>
+      <a
+        className="buttonUnderlineOC"
+        type="button"
+        onClick={searchAreaconfirm}
+        title={OCtitle}
+      >
+        {OCcondition}
+      </a>
+    </>
+    
   );
 }

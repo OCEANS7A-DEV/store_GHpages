@@ -15,12 +15,8 @@ export const localStoreSet = async () => {
       label: store[0],
       type: store[1]
     }));
-  
-  //console.log(options)
   localStorage.setItem('storeData', JSON.stringify(options));
-
   processlistGet();
-  
   return options;
 };
 
@@ -61,7 +57,9 @@ export const localStorageSet = async (
   });
   const keys = Object.keys(groupedData);
   for (let i = 0; i < keys.length; i++){
-    localStorage.setItem(`${keys[i]}`, JSON.stringify(groupedData[keys[i]]))
+    if (keys[i] !== ''){
+      localStorage.setItem(`${keys[i]}`, JSON.stringify(groupedData[keys[i]]))
+    }
   }
   const data = await AllData();
   localStorage.setItem('data', JSON.stringify(data));
@@ -78,7 +76,7 @@ export const localExclusion = (store: string, pageName: string) => {
     result = data.filter(row => Number.isInteger(row[1]));
   }
   
-  sessionStorage.setItem('data', JSON.stringify(result));
+  localStorage.setItem('data', JSON.stringify(result));
 };
 
 

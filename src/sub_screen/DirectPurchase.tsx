@@ -1,10 +1,9 @@
 import React, { useState, useRef, ChangeEvent, useEffect } from 'react';
 import '../css/InventoryUsed.css';
 import '../css/Direct.css';
-import { InventorySearch, GASPostInsertStore, ImageUrlSet } from '../backend/Server_end';
+import { GASPostInsertStore } from '../backend/Server_end';
 import DirectDialog from './DirectDialog';
 import WordSearch from './ProductSearchWord';
-import DetailDialog from './ProductdetailDialog';
 
 
 
@@ -85,15 +84,9 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
   const dateRefs = useRef([]);
   const remarksRefs = useRef([]);
   const message = "店舗直接購入のデータは以下の通りです\n以下の内容でよろしければOKをクリックしてください\n内容の変更がある場合にはキャンセルをクリックしてください";
-  const [searchData, setsearchData] = useState<any>([]);
-  //const DetailMessage = `業者名: ${searchData[0] || ''}　　||　　商品ナンバー: ${searchData[1] || ''}\n商品単価: ${(searchData[3] !== undefined && searchData[3] !== null) ? searchData[3].toLocaleString() : ''}円　　||　　店販価格: ${(searchData[5] !== undefined && searchData[5] !== null) ? searchData[5].toLocaleString() : ''}`
   const [DetailisDialogOpen, setDetailisDialogOpen] = useState(false);
-  const [DetailIMAGE, setDetailIMAGE] = useState<string>('');
   const [searchtabledata, setsearchtabledata] = useState<any>([]);
   const [searchDataIndex, setsearchDataIndex] = useState<any>(0);
-  const [searchArea, setsearchArea] = useState(false);
-  const [OCcondition, setOCcondition] = useState<string>(">>");
-  const [OCtitle,setOCtitle] = useState<string>('商品検索ウィンドウを開きます');
   const [addType, setADDType] = useState(false);
 
 
@@ -133,7 +126,6 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
     index: number,
     value: any
   ) => {
-    //const searchresult = productSearch(value);
     const newusedFormData = [...usedformData];
     const updateFormData = (ResultData: any) => {
       if (ResultData !== null) {
@@ -339,49 +331,7 @@ export default function InventoryDirect({ setCurrentPage, setisLoading }: Settin
     }
   },[addType])
 
-  const nextDatail = async () => {
-    const updateindex = searchDataIndex + 1
-    setDetailisDialogOpen(false);
-    setsearchDataIndex(updateindex);
-    setisLoading(true);
-    var match = 'https://lh3.googleusercontent.com/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFhbm';// 画像がないとき用のURL
-    const image = await InventorySearch(searchtabledata[updateindex][1],"商品コード","商品画像");// 商品画像検索
-    if (image[2] !== ''){// 商品画像のURLがあればそのURLを上書き
-      match = ImageUrlSet(image[2]);
-    }
-    await setDetailIMAGE(match);
-    await setsearchData(searchtabledata[updateindex]);
-    await setDetailisDialogOpen(true);
-    setisLoading(false);
-  };
 
-  const beforeDatail = async () => {
-    const updateindex = searchDataIndex - 1
-    setDetailisDialogOpen(false);
-    setsearchDataIndex(updateindex);
-    setisLoading(true);
-var match = 'https://lh3.googleusercontent.com/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFhbm';// 画像がないとき用のURL
-    const image = await InventorySearch(searchtabledata[updateindex][1],"商品コード","商品画像");// 商品画像検索
-    if (image[2] !== ''){// 商品画像のURLがあればそのURLを上書き
-      match = ImageUrlSet(image[2]);
-    }
-    await setDetailIMAGE(match);
-    await setsearchData(searchtabledata[updateindex]);
-    await setDetailisDialogOpen(true);
-    setisLoading(false);
-  };
-
-
-  const searchAreaconfirm = () => {
-    setsearchArea((prevState) => !prevState);
-    if (searchArea == true){
-      setOCcondition('>>');
-      setOCtitle('商品検索ウィンドウを開きます');
-    }else{
-      setOCcondition('<<');
-      setOCtitle('商品検索ウィンドウを閉じます');
-    }
-  };
 
   return (
     <div className="window_area">
@@ -390,142 +340,114 @@ var match = 'https://lh3.googleusercontent.com/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFh
       </div>
       <div className='form_area'>
         <div className="searchArea">
-            <div
-              className="searchareawindow"
-              style={{
-                width: searchArea ? "360px" : "0px", // 表示状態で幅を変える
-                overflow: "hidden",
-                transition: "width 0.3s ease", // スムーズな変更
-              }}
-            >
-              <WordSearch
-                className="searcharea"
-                setsearchData={setsearchData}
-                setDetailisDialogOpen={setDetailisDialogOpen}
-                setDetailIMAGE={setDetailIMAGE}
-                setisLoading={setisLoading}
-                setsearchtabledata={setsearchtabledata}
-                searchtabledata={searchtabledata}
-                setsearchDataIndex={setsearchDataIndex}
-                insert={DetailhandleConfirmAdd}
-              />
-              <DetailDialog
-                Data={searchData}
-                title={searchData[2]}
-                onConfirm={DetailhandleConfirm}
-                isOpen={DetailisDialogOpen}
-                image={DetailIMAGE}
-                insert={DetailhandleConfirmAdd}
-                nextDatail={nextDatail}
-                beforeDatail={beforeDatail}
-                searchtabledata={searchtabledata} searchDataIndex={0}
-                addButtonName='入庫に追加'
-              />
-            </div>
-            <a
-              className="buttonUnderlineOC"
-              type="button"
-              onClick={searchAreaconfirm}
-              title={OCtitle}
-              >
-              {OCcondition}
-            </a>
-          </div>
-          <div className='in-area' id='Direct'>
-            <div className="in-area-header">
-              <table className="order_table_header">
-                <thead>
-                  <tr>
-                    <th className="insert_date_header">月日</th>
-                    <th className="insert_code_header">商品ナンバー</th>
-                    <th className="insert_name_header">商品名</th>
-                    <th className="insert_quantity_header">数量</th>
-                    <th className="remarks_header">備考</th>
-                    <th className="delete_button_header">削除<br/>ボタン</th>
-                  </tr>
-                </thead>
-              </table>
-            </div>
-            <div className="in-area-table">
-            <table className="order_table">
-              <tbody>
-                {usedformData.map((data, index) => (
-                  <tr key={index}>
-                    <td>
-                      <input
-                        type="date"
-                        className="insert_date"
-                        value={data.月日}
-                        max="9999-12-31"
-                        ref={(el) => (dateRefs.current[index] = el)}
-                        onChange={(e) => handleChange(index, '月日', e)}
-                        onKeyDown={(e) => handleKeyDown(index, e, '月日')}
-                      />
-                    </td>
-                    <td className="insert_code_td">
-                      <input
-                        title="入力は半角のみです"
-                        type="tel"
-                        pattern="^[0-9\-\/]+$"
-                        placeholder="商品ナンバー"
-                        className="insert_code"
-                        value={data.商品コード}
-                        ref={(el) => (codeRefs.current[index] = el)}
-                        onChange={(e) => numberchange(index, '商品コード', e)}
-                        onKeyDown={(e) => handleKeyDown(index, e, '商品コード')}
-                        onBlur={() => handleBlur(index, '商品コード')}
-                        onFocus={() => {
-                          const newusedFormData = [...usedformData];
-                          if(!usedformData[index].月日 && index > 0){
-                            newusedFormData[index].月日 = usedformData[index-1].月日
-                            setusedFormData(newusedFormData);
-                          }
-                        }}
-                        inputMode="numeric"
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        placeholder="商品名"
-                        className="insert_name"
-                        value={data.商品名}
-                        onChange={(e) => handleChange(index, '商品名', e)}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        pattern="^[0-9]+$"
-                        placeholder="数量"
-                        className="insert_quantity"
-                        inputMode="numeric"
-                        value={data.数量}
-                        ref={(el) => (quantityRefs.current[index] = el)}
-                        onChange={(e) => numberchange(index, '数量', e)}
-                        onKeyDown={(e) => handleKeyDown(index, e, '数量')}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        placeholder="備考"
-                        className="remarks"
-                        value={data.備考}
-                        ref={(el) => (remarksRefs.current[index] = el)}
-                        onChange={(e) => handleChange(index, '備考', e)}
-                        onKeyDown={(e) => handleKeyDown(index, e, '備考')}
-                      />
-                    </td>
-                    <td>
-                      <button type="button" className="delete_button" onClick={() => removeForm(index)}>
-                        削除
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
+          <WordSearch
+            className="searcharea"
+            setDetailisDialogOpen={setDetailisDialogOpen}
+            setisLoading={setisLoading}
+            setsearchtabledata={setsearchtabledata}
+            searchtabledata={searchtabledata}
+            setsearchDataIndex={setsearchDataIndex}
+            insert={DetailhandleConfirmAdd}
+            isOpen={DetailisDialogOpen}
+            onConfirm={DetailhandleConfirm}
+            addButtonName='注文に追加'
+          />
+        </div>
+        <div className='in-area' id='Direct'>
+          <div className="in-area-header">
+            <table className="order_table_header">
+              <thead>
+                <tr>
+                  <th className="insert_date_header">月日</th>
+                  <th className="insert_code_header">商品ナンバー</th>
+                  <th className="insert_name_header">商品名</th>
+                  <th className="insert_quantity_header">数量</th>
+                  <th className="remarks_header">備考</th>
+                  <th className="delete_button_header">削除<br/>ボタン</th>
+                </tr>
+              </thead>
             </table>
+          </div>
+          <div className="in-area-table">
+          <table className="order_table">
+            <tbody>
+              {usedformData.map((data, index) => (
+                <tr key={index}>
+                  <td>
+                    <input
+                      type="date"
+                      className="insert_date"
+                      value={data.月日}
+                      max="9999-12-31"
+                      ref={(el) => (dateRefs.current[index] = el)}
+                      onChange={(e) => handleChange(index, '月日', e)}
+                      onKeyDown={(e) => handleKeyDown(index, e, '月日')}
+                    />
+                  </td>
+                  <td className="insert_code_td">
+                    <input
+                      title="入力は半角のみです"
+                      type="tel"
+                      pattern="^[0-9\-\/]+$"
+                      placeholder="商品ナンバー"
+                      className="insert_code"
+                      value={data.商品コード}
+                      ref={(el) => (codeRefs.current[index] = el)}
+                      onChange={(e) => numberchange(index, '商品コード', e)}
+                      onKeyDown={(e) => handleKeyDown(index, e, '商品コード')}
+                      onBlur={() => handleBlur(index, '商品コード')}
+                      onFocus={() => {
+                        const newusedFormData = [...usedformData];
+                        if(!usedformData[index].月日 && index > 0){
+                          newusedFormData[index].月日 = usedformData[index-1].月日
+                          setusedFormData(newusedFormData);
+                        }
+                      }}
+                      inputMode="numeric"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      placeholder="商品名"
+                      className="insert_name"
+                      value={data.商品名}
+                      onChange={(e) => handleChange(index, '商品名', e)}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      pattern="^[0-9]+$"
+                      placeholder="数量"
+                      className="insert_quantity"
+                      inputMode="numeric"
+                      value={data.数量}
+                      ref={(el) => (quantityRefs.current[index] = el)}
+                      onChange={(e) => numberchange(index, '数量', e)}
+                      onKeyDown={(e) => handleKeyDown(index, e, '数量')}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      placeholder="備考"
+                      className="remarks"
+                      value={data.備考}
+                      ref={(el) => (remarksRefs.current[index] = el)}
+                      onChange={(e) => handleChange(index, '備考', e)}
+                      onKeyDown={(e) => handleKeyDown(index, e, '備考')}
+                    />
+                  </td>
+                  <td>
+                    <button type="button" className="delete_button" onClick={() => removeForm(index)}>
+                      削除
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
           </div>
         </div>
         <div className="button_area">

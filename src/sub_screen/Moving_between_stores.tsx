@@ -109,21 +109,10 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
   const quantityRefs = useRef([]);
   const remarksRefs = useRef([]);
   const message = "店舗間移動は以下の通りです\n以下の内容でよろしければOKをクリックしてください\n内容の変更がある場合にはキャンセルをクリックしてください";
-  const [searchData, setsearchData] = useState<any>([]);
-  //const DetailMessage = `業者名: ${searchData[0] || ''}　　||　　商品ナンバー: ${searchData[1] || ''}\n商品単価: ${(searchData[3] !== undefined && searchData[3] !== null) ? searchData[3].toLocaleString() : ''}円　　||　　店販価格: ${(searchData[5] !== undefined && searchData[5] !== null) ? searchData[5].toLocaleString() : ''}`
   const [DetailisDialogOpen, setDetailisDialogOpen] = useState(false);
-  const [DetailIMAGE, setDetailIMAGE] = useState<string>('');
   const [searchtabledata, setsearchtabledata] = useState<any>([]);
-  const [searchDataIndex, setsearchDataIndex] = useState<any>(0);
   const [selectOptions, setSelectOptions] = useState<SelectOption[]>([]);
-  const [searchArea, setsearchArea] = useState(false);
-  const [OCcondition, setOCcondition] = useState<string>(">>");
-  const [OCtitle,setOCtitle] = useState<string>('商品検索ウィンドウを開きます');
   const [addType, setADDType] = useState(false);
-  const [menuIsOpen, setMenuIsOpen] = useState<{ [key: string]: { [index: number]: boolean } }>({
-    出庫: {},
-    入庫: {}
-  });
 
 
 
@@ -133,9 +122,6 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
     setCurrentPage('topPage');
   };
 
-  // const clickInventorypage = () => {
-  //   setCurrentPage('storeinventory');
-  // };
 
   const handleChange = (
     index: number,
@@ -169,7 +155,6 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
     index: number,
     value: any
   ) => {
-    //const searchresult = productSearch(value);
     const newusedFormData = [...usedformData];
     const updateFormData = (ResultData: any) => {
       if (ResultData !== null) {
@@ -397,37 +382,6 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
     setCurrentPage('MovingHistory');
   };
 
-  const nextDatail = async () => {
-    const updateindex = searchDataIndex + 1
-    setDetailisDialogOpen(false);
-    setsearchDataIndex(updateindex);
-    setisLoading(true);
-    var match = 'https://lh3.googleusercontent.com/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFhbm';// 画像がないとき用のURL
-    const image = await InventorySearch(searchtabledata[updateindex][1],"商品コード","商品画像");// 商品画像検索
-    if (image[2] !== ''){// 商品画像のURLがあればそのURLを上書き
-      match = ImageUrlSet(image[2]);
-    }
-    await setDetailIMAGE(match);
-    await setsearchData(searchtabledata[updateindex]);
-    await setDetailisDialogOpen(true);
-    setisLoading(false);
-  };
-
-  const beforeDatail = async () => {
-    const updateindex = searchDataIndex - 1
-    setDetailisDialogOpen(false);
-    setsearchDataIndex(updateindex);
-    setisLoading(true);
-    var match = 'https://lh3.googleusercontent.com/d/1RNZ4G8tfPg7dyKvGABKBM88-tKIEFhbm';// 画像がないとき用のURL
-    const image = await InventorySearch(searchtabledata[updateindex][1],"商品コード","商品画像");// 商品画像検索
-    if (image[2] !== ''){// 商品画像のURLがあればそのURLを上書き
-      match = ImageUrlSet(image[2]);
-    }
-    await setDetailIMAGE(match);
-    await setsearchData(searchtabledata[updateindex]);
-    await setDetailisDialogOpen(true);
-    setisLoading(false);
-  };
 
   useEffect(() => {
     processlistGet();
@@ -436,16 +390,6 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
     setSelectOptions(cachedData ? JSON.parse(cachedData) : []);
   }, []);
 
-  const searchAreaconfirm = () => {
-    setsearchArea((prevState) => !prevState);
-    if (searchArea == true){
-      setOCcondition('>>');
-      setOCtitle('商品検索ウィンドウを開きます');
-    }else{
-      setOCcondition('<<');
-      setOCtitle('商品検索ウィンドウを閉じます');
-    }
-  };
 
   return (
     <div className="window_area">
@@ -454,46 +398,17 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
       </div>
       <div className='form_area'>
         <div className="searchArea">
-          <div
-            className="searchareawindow"
-            style={{
-              width: searchArea ? "360px" : "0px", // 表示状態で幅を変える
-              overflow: "hidden",
-              transition: "width 0.3s ease", // スムーズな変更
-            }}
-          >
-            <WordSearch
-              className="searcharea"
-              setsearchData={setsearchData}
-              setDetailisDialogOpen={setDetailisDialogOpen}
-              setDetailIMAGE={setDetailIMAGE}
-              setisLoading={setisLoading}
-              setsearchtabledata={setsearchtabledata}
-              searchtabledata={searchtabledata}
-              setsearchDataIndex={setsearchDataIndex}
-              insert={DetailhandleConfirmAdd}
-            />
-            <DetailDialog
-              Data={searchData}
-              title={searchData[2]}
-              onConfirm={DetailhandleConfirm}
-              isOpen={DetailisDialogOpen}
-              image={DetailIMAGE}
-              insert={DetailhandleConfirmAdd}
-              nextDatail={nextDatail}
-              beforeDatail={beforeDatail}
-              searchtabledata={searchtabledata} searchDataIndex={0}
-              addButtonName='商品移動に追加'
-            />
-          </div>
-          <a
-            className="buttonUnderlineOC"
-            type="button"
-            onClick={searchAreaconfirm}
-            title={OCtitle}
-            >
-            {OCcondition}
-          </a>
+          <WordSearch
+            className="searcharea"
+            setDetailisDialogOpen={setDetailisDialogOpen}
+            setisLoading={setisLoading}
+            setsearchtabledata={setsearchtabledata}
+            searchtabledata={searchtabledata}
+            insert={DetailhandleConfirmAdd}
+            isOpen={DetailisDialogOpen}
+            onConfirm={DetailhandleConfirm}
+            addButtonName='商品移動に追加'
+          />
         </div>
         <div className='in-area'>
           <div className="in-area-header">
@@ -503,7 +418,7 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
                   <th className="insert_date_header">月日</th>
                   <th className="insert_store_header">出庫店舗</th>
                   <th className="insert_store_header">入庫店舗</th>
-                  <th className="insert_code_header">商品コード</th>
+                  <th className="insert_code_header">商品ナンバー</th>
                   <th className="insert_name_header">商品名</th>
                   <th className="insert_quantity_header">数量</th>
                   <th className="remarks_header">備考</th>
@@ -592,7 +507,7 @@ export default function InventoryMoving({ setCurrentPage, setisLoading }: Settin
                         placeholder="入庫店舗選択"
                       />
                     </td>
-                    <td>
+                    <td className="insert_code_td">
                       <input
                         title="入力は半角のみです"
                         type="tel"
