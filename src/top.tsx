@@ -28,7 +28,6 @@ export default function TopPage({ setisLoading }: SettingProps) {
     localCorrectionRequestListSet()
     const getLocalStorageSize = async () => {
       const cachedData = await localStorage.getItem('storeData');
-      //console.log(cachedData ? JSON.parse(cachedData) : [])
       setSelectOptions(cachedData ? JSON.parse(cachedData) : []);
       const storeSelectupdate = await localStoreSet();
       const authorityType = sessionStorage.getItem('authority');
@@ -67,7 +66,6 @@ export default function TopPage({ setisLoading }: SettingProps) {
       localStorage.setItem('StoreSetName', set);
       localStorage.setItem('StoreSetType', storeSelect.type);
       navigate(`/${pageName}`)
-      //setCurrentPage(pageName);
     } else {
       alert('店舗を選択してください。');
     }

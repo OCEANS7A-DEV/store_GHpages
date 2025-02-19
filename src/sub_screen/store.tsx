@@ -18,7 +18,6 @@ import NonConfirmDialog from './NonOrderDialog';
 
 import OutOfStockStatus from './Out_of_stock_status';
 
-import LoadingDisplay from "./loading";
 
 import { handleChange,
   productSearch,

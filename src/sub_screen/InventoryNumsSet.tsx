@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Select from 'react-select';
 import '../css/store.css';
 import { CurrentlyAvailableDataGet, syncDataGet, GASPostInsertStore } from '../backend/Server_end';
@@ -6,6 +6,8 @@ import '../css/StoreInventory.css';
 import '../css/usedHistory.css';
 import toast from 'react-hot-toast';
 import { Link } from "react-router-dom";
+import { handleChange
+} from '../backend/BackEnd';
 
 interface SettingProps {
   setisLoading: (value: boolean) => void;
@@ -65,14 +67,14 @@ export default function StoreInventoryNumsSet({ setisLoading }: SettingProps) {
   const [months, setmonths] = useState<SelectOption>();
   const [monthsOptions, setmonthsOptions] = useState<SelectOption[]>([]);
   const storename = localStorage.getItem('StoreSetName');
-  const [AvailableData, setAvailableData] = useState([]);
+  const [AvailableData, setAvailableData] = useState<any[]>([]);
 
   const quantityRefs = useRef([]);
   const [InventoryNumsData, setInventoryNumsData] = useState([])
 
 
   
-  const storageGet = JSON.parse(sessionStorage.getItem('data') ?? '');
+  const storageGet = JSON.parse(localStorage.getItem('data') ?? '');
 
 
 
@@ -96,6 +98,7 @@ export default function StoreInventoryNumsSet({ setisLoading }: SettingProps) {
         在庫数: rowdata[column],
       })
     }
+    
     setInventoryNumsData(searchData);
   };
 
@@ -104,7 +107,6 @@ export default function StoreInventoryNumsSet({ setisLoading }: SettingProps) {
     try {
       // データ取得
       const data = await CurrentlyAvailableDataGet();
-      //console.log(data)
       if (!data || data.length < 2) {
         console.error("Data is invalid or empty.");
         return;
@@ -225,18 +227,6 @@ const handleKeyDown = async (index: number, e: React.KeyboardEvent<HTMLInputElem
 
 
 
-  const numberchange = async (
-    index: number,
-    field: keyof InsertData,
-    event: ChangeEvent<HTMLInputElement>,
-  ) => {
-    const CodeValue = event.target.value.replace(/[^0-9A-Za-z\-]/g, '');
-    const newFormData = [...AvailableData];
-    newFormData[index][field] = CodeValue;
-    setAvailableData(newFormData);
-  };
-
-
   useEffect(() => {
     const fetchData = async () => {
       setisLoading(true);
@@ -301,7 +291,7 @@ const handleKeyDown = async (index: number, e: React.KeyboardEvent<HTMLInputElem
                       value={row.在庫数}
                       ref={(el) => (quantityRefs.current[index] = el)}
                       onKeyDown={(e) => handleKeyDown(index, e)}
-                      onChange={(e) => numberchange(index, '在庫数', e)}
+                      onChange={(e) => setAvailableData(handleChange(index, '在庫数', e, AvailableData))}
                     />
                   </td>
                 </tr>
