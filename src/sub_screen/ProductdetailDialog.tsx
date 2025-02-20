@@ -13,12 +13,12 @@ interface DetailDialogProps {
   addButtonName: string;
 }
 
-const DetailDialog: React.FC<DetailDialogProps> = ({ 
-  onConfirm, 
-  isOpen, 
-  insert, 
-  searchtabledata, 
-  searchDataIndex, 
+const DetailDialog: React.FC<DetailDialogProps> = ({
+  onConfirm,
+  isOpen,
+  insert,
+  searchtabledata,
+  searchDataIndex,
   addButtonName
 }) => {
   if (!isOpen) return null;
@@ -66,8 +66,8 @@ const DetailDialog: React.FC<DetailDialogProps> = ({
   };
 
   return ReactDOM.createPortal(
-    <div className="detail-dialog-overlay">
-      <div className="detail-dialog">
+    <div className="detail-dialog-overlay" onClick={onConfirm}>
+      <div className="detail-dialog" onClick={(e) => e.stopPropagation()}>
         <div className="detail-top">
           <div className='detail-title'>
             <button 
@@ -81,9 +81,9 @@ const DetailDialog: React.FC<DetailDialogProps> = ({
               前の商品へ
             </button>
             <div className="detail-title-main">{choiceData[2]}</div>
-            <button 
-              disabled={!isNextButton} 
-              onClick={() => DetailChange(1)} 
+            <button
+              disabled={!isNextButton}
+              onClick={() => DetailChange(1)}
               style={{
                 backgroundColor: isNextButton ? '#4CAF50' : 'gray',
                 cursor: isNextButton ? 'pointer' : 'not-allowed',

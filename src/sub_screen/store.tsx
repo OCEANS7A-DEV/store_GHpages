@@ -98,8 +98,6 @@ export default function StorePage({ setisLoading }: SettingProps) {
   const detailRefs = useRef([]);
 
   const message = "注文内容は以下の通りです\n以下の内容でよろしければOKをクリックしてください\n内容の変更がある場合にはキャンセルをクリックしてください";
-  const [DetailisDialogOpen, setDetailisDialogOpen] = useState(false);
-  const [searchtabledata, setsearchtabledata] = useState<any>([]);
   const [NonisDialogOpen, setNonisDialogOpen] = useState(false);
   const [addType, setADDType] = useState(false);
   const [defaultDate, setDefaultDate] = useState('');
@@ -159,7 +157,7 @@ export default function StorePage({ setisLoading }: SettingProps) {
       const data = orderdata[0][orderdata[0].length - progressColumnBehindNumber]
       processing = processlist[data][1];
     }
-    
+    console.log(processing);
     return processing;
   };
 
@@ -393,7 +391,7 @@ export default function StorePage({ setisLoading }: SettingProps) {
 
     
     setFormData(returnData);
-    setDetailisDialogOpen(false);
+    //setDetailisDialogOpen(false);
   };
 
 
@@ -526,18 +524,11 @@ export default function StorePage({ setisLoading }: SettingProps) {
         <div className='form_area'>
           <div className="searchArea">
             <WordSearch
-              className="searcharea"
-              setDetailisDialogOpen={setDetailisDialogOpen}
               setisLoading={setisLoading}
-              setsearchtabledata={setsearchtabledata}
-              searchtabledata={searchtabledata}
               insert={DetailhandleConfirmAdd}
-              isOpen={DetailisDialogOpen}
-              onConfirm={() => setDetailisDialogOpen(false)}
               addButtonName='注文に追加'
             />
           </div>
-          
           <div className='in-area'>
 
             <div className="in-area-header">

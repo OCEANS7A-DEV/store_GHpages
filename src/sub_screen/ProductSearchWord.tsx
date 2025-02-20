@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useEffect } from 'react';
+import { useState, ChangeEvent, useEffect } from 'react';
 import '../css/ProductSearchWord.css';
 import { searchStr } from '../backend/WebStorage';
 
@@ -6,37 +6,26 @@ import DetailDialog from './ProductdetailDialog';
 
 
 interface SearchProps {
-  setDetailisDialogOpen: (result: boolean) => void;
   setisLoading: (loading: boolean) => void;
-  setsearchtabledata: (tabledata:any) => void;
-  searchtabledata: any;
-  setsearchDataIndex: (numberdata: number) => void;
-  searchDataIndex: number,
   insert: (data: any) => void;
-  onConfirm: () => void;
-  isOpen: boolean;
   addButtonName: string;
 }
 
-export default function WordSearch({ setDetailisDialogOpen, setisLoading, setsearchtabledata, searchtabledata, insert, isOpen, addButtonName, onConfirm }: SearchProps) {
-  const [SWord, setSWord] = useState<string>('');
-  const [searchData, setsearchdata] = useState<any>([]);
-  const [Index, setIndex] = useState(0);
+export default function WordSearch({ setisLoading, insert, addButtonName }: SearchProps) {
+  const [DetailisDialogOpen, setDetailisDialogOpen] = useState(false);// ダイアログの開閉
+  const [searchWord, setSearchWord] = useState<string>('');//　検索ワード
+  const [Index, setIndex] = useState(0);// 対象商品の行番号
+  const [searchtabledata, setsearchtabledata] = useState<any>([]);// 検索結果
+
   const [OCtitle,setOCtitle] = useState<string>('商品検索ウィンドウを開きます');
   const [searchArea, setsearchArea] = useState(false);
   const [OCcondition, setOCcondition] = useState<string>(">>");
 
 
 
-  // テキスト入力が変更されたときに実行される関数
-  const handlewordchange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSWord(event.target.value); // 入力された値をSWordにセット
-  };
 
-  // 商品の再検索を行い、結果を状態に保存
   const productReSearch = async () => {
-    const result = await searchStr(SWord);
-    setsearchdata(result);
+    const result = await searchStr(searchWord);
     setsearchtabledata(result);
   };
 
@@ -83,9 +72,9 @@ export default function WordSearch({ setDetailisDialogOpen, setisLoading, setsea
           <div className="search-input">
             <input
               type="text"
-              value={SWord}
+              value={searchWord}
               pattern="^[ぁ-ん]+$"
-              onChange={handlewordchange}
+              onChange={(e) => setSearchWord(e.target.value)}
               placeholder="検索ワードを入力"
               onKeyDown={(e) => handleKeyDown(e)}
             />
@@ -135,16 +124,15 @@ export default function WordSearch({ setDetailisDialogOpen, setisLoading, setsea
               </table>
             </div>
             <DetailDialog
-              onConfirm={onConfirm}
-              isOpen={isOpen}
+              onConfirm={() => setDetailisDialogOpen(false)}
+              isOpen={DetailisDialogOpen}
               insert={insert}
-              searchtabledata={searchData}
+              searchtabledata={searchtabledata}
               searchDataIndex={Index}
               addButtonName={addButtonName}
             />
           </div>
         </div>
-        
       </div>
       <a
         className="buttonUnderlineOC"
@@ -155,6 +143,5 @@ export default function WordSearch({ setDetailisDialogOpen, setisLoading, setsea
         {OCcondition}
       </a>
     </>
-    
   );
 }

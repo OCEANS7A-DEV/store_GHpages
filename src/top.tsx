@@ -17,7 +17,7 @@ interface SettingProps {
 }
 
 
-export default function TopPage({ setisLoading }: SettingProps) {
+export default function TopPage() {
   const [storeSelect, setStoreSelect] = useState<SelectOption>();
   const [selectOptions, setSelectOptions] = useState<SelectOption[]>([]);
   const [isHelpDialogOpen, setHelpDialogOpen] = useState(false);

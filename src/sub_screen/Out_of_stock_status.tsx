@@ -26,7 +26,9 @@ const OutOfStockStatus: React.FC<ConfirmDialogProps> = ({ title, message, tableD
   const [buttontext, setbuttontext] = useState('');
 
   useEffect(() => {
+    //console.log(tableData)
     //console.log(progressdata)
+    //console.log(Dialogmaxprocess)
     if (progressdata !== Dialogmaxprocess && title !== "注文確認"){
       setIsEnabled(true)
       setbuttontext('入庫実行')
@@ -38,6 +40,7 @@ const OutOfStockStatus: React.FC<ConfirmDialogProps> = ({ title, message, tableD
       setbuttontext('入庫済み')
     }
   })
+
 
   const processingdata = (data) => {
     let processing = processlistdata[data][0];

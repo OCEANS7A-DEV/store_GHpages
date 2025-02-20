@@ -93,7 +93,7 @@ export default function WordSearch({ setsearchData, setDetailisDialogOpen, setDe
                       className="buttonUnderlineDR"
                       role="button"
                       href="#"
-                      onClick={() => insert(row)}
+                      onClick={() => handleOpenDetailDialog(index)}
                     >
                       {row[1]}
                     </a>
