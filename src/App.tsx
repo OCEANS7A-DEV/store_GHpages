@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { useRef, useState } from "react";
 import "./App.css";
@@ -29,7 +29,7 @@ const AnimatedRoutes = () => {
 
   const handleConfirm = () => setHelpDialogOpen(false);
   const handleCancel = () => setHelpDialogOpen(false);
-  //ヘルプ表示がマダ
+
   return (
     <>
       <Toaster />
@@ -51,7 +51,7 @@ const AnimatedRoutes = () => {
           isOpen={isHelpDialogOpen}
         />
       </div>
-      
+
       <TransitionGroup component={null}>
         <CSSTransition key={location.pathname} timeout={500} classNames="fade" nodeRef={nodeRef} unmountOnExit>
           <div ref={nodeRef} className="page">
@@ -81,13 +81,6 @@ const AnimatedRoutes = () => {
   );
 };
 
-export default function App() {
-  return (
-    <Router>
-      <AnimatedRoutes />
-    </Router>
-  );
-}
-
+export default AnimatedRoutes;
 
 
