@@ -57,7 +57,7 @@ const AnimatedRoutes = () => {
           <div ref={nodeRef} className="page">
             <Routes location={location}>
               <Route path="/" element={<LoginPage setisLoading={setisLoading} />} />
-              <Route path="/top" element={<TopPage setisLoading={setisLoading} />} />
+              <Route path="/top" element={<TopPage />} />
               <Route path="/store" element={<StorePage setisLoading={setisLoading} />} />
               <Route path="/history" element={<OrderHistory setisLoading={setisLoading} />} />
               <Route path="/used" element={<InventoryUsed setisLoading={setisLoading} />} />
