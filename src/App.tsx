@@ -29,7 +29,7 @@ const AnimatedRoutes = () => {
 
   const handleConfirm = () => setHelpDialogOpen(false);
   const handleCancel = () => setHelpDialogOpen(false);
-
+  //ヘルプ表示がマダ
   return (
     <>
       <Toaster />
