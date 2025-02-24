@@ -117,6 +117,7 @@ export default function StorePage({ setisLoading }: SettingProps) {
 
 
   const DateStatedata = async () => {
+    //const status = sessionStorage.getItem()
     setOrderStatus('更新中...');
     setOrderStatusColor('black');
     const date = new Date(defaultDate);
@@ -124,30 +125,38 @@ export default function StorePage({ setisLoading }: SettingProps) {
     const result = await HistoryGet(String(year), storename, '店舗へ', 'yyyy');
     const groupeddata = await groupDataByFirstColumn(result);
     const Dates = Object.keys(groupeddata);
-    const japanDates = Dates.map(Dates => {
-      const date = new Date(Dates);
-      return date.toLocaleDateString("ja-JP");
-    });
-    const researchDate = date.toLocaleDateString("ja-JP");
-    const dateIndex = japanDates.indexOf(researchDate);
-
-    if (dateIndex !== -1) {  // 修正: `-1` かどうかをチェック
-      const targetOrderDate = Dates[dateIndex];  // `dateIndex` が -1 のときエラー防止
-      if (targetOrderDate) {  // `undefined` のチェック
-        setorderdata(groupeddata[targetOrderDate]);
-      }else {
-        setorderdata([])
-      }
-      
-    }
-
-    if(japanDates.includes(researchDate)){
+    const status = sessionStorage.getItem(storename)
+    if(status && status == date.toLocaleDateString("ja-JP")){
+      console.log(status)
       setOrderStatus('注文有');
       setOrderStatusColor('green');
     }else{
-      setOrderStatus('未注文');
-      setOrderStatusColor('red');
+      const japanDates = Dates.map(Dates => {
+        const date = new Date(Dates);
+        return date.toLocaleDateString("ja-JP");
+      });
+      const researchDate = date.toLocaleDateString("ja-JP");
+      const dateIndex = japanDates.indexOf(researchDate);
+
+      if (dateIndex !== -1) {  // 修正: `-1` かどうかをチェック
+        const targetOrderDate = Dates[dateIndex];  // `dateIndex` が -1 のときエラー防止
+        if (targetOrderDate) {  // `undefined` のチェック
+          setorderdata(groupeddata[targetOrderDate]);
+        }else {
+          setorderdata([])
+        }
+        
+      }
+
+      if(japanDates.includes(researchDate)){
+        setOrderStatus('注文有');
+        setOrderStatusColor('green');
+      }else{
+        setOrderStatus('未注文');
+        setOrderStatusColor('red');
+      }
     }
+    
   }
 
 
@@ -249,12 +258,14 @@ export default function StorePage({ setisLoading }: SettingProps) {
       InsertData.push(setdata);
     }
     GASPostInsertStore('insert', '店舗へ', InsertData);
+    const date = new Date(defaultDate);
+    sessionStorage.setItem(storename,date.toLocaleDateString("ja-JP"))
   };
 
 
   const handleKeyDown = async (index: number, e: React.KeyboardEvent<HTMLInputElement>, fieldType: string,) => {
     
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && fieldType !== '商品詳細') {
       e.preventDefault();
       if (fieldType === '商品コード') {
         searchDataChange(index, formData[index][fieldType])
@@ -263,10 +274,6 @@ export default function StorePage({ setisLoading }: SettingProps) {
           codeRefs.current[index].focus();
         }
       }else if (fieldType === '商品名'){
-        if (quantityRefs.current[index]) {
-          quantityRefs.current[index].focus();
-        }
-      }else if (fieldType === '商品詳細'){
         if (quantityRefs.current[index]) {
           quantityRefs.current[index].focus();
         }
@@ -292,6 +299,10 @@ export default function StorePage({ setisLoading }: SettingProps) {
             }
           }, 0);
         }
+      }
+    }else if (e.key === 'Enter' && fieldType === '商品詳細') {
+      if (quantityRefs.current[index]) {
+        quantityRefs.current[index].focus();
       }
     }
   };
@@ -378,16 +389,15 @@ export default function StorePage({ setisLoading }: SettingProps) {
       selectOptions: colordata,
       商品単価: data[4],
     };
-
     if (Vacant !== -1){
       returnData[Vacant] = pushdata
     }else{
       setADDType(true);
       returnData.push(pushdata);
     }
-    if (detailRefs.current[Vacant]) {
-      detailRefs.current[Vacant].focus();
-    }
+    // if (detailRefs.current[Vacant]) {
+    //   detailRefs.current[Vacant].focus();
+    // }
 
     
     setFormData(returnData);

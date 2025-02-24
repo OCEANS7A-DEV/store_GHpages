@@ -1,6 +1,7 @@
 //同じ動きをする関数をここでまとめる
 import { processlistGet } from '../backend/Server_end';
 
+
 export const handleChange = (
   index: number,
   field: any,

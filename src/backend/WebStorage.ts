@@ -68,9 +68,9 @@ export const localStorageSet = async (
 export const localExclusion = (store: string, pageName: string) => {
   const data = JSON.parse(localStorage.getItem('data') ?? "");
   let result = [];
-  if(store !== "SQ" && pageName === 'used'){
+  if(store !== "SQ" && pageName === '/used'){
     result = data.filter(row => row[0] !== "社外製品等" && Number.isInteger(row[1]));
-  }else if(pageName === 'storePage' || pageName === 'DirectPage'){
+  }else if(pageName === '/store' || pageName === '/direct'){
     result = data.filter(row => row[0] !== "社外製品等" && Number.isInteger(row[1]));
   }else{
     result = data.filter(row => Number.isInteger(row[1]));

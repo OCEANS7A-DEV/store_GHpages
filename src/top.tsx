@@ -65,7 +65,8 @@ export default function TopPage() {
       localExclusion(set, pageName);
       localStorage.setItem('StoreSetName', set);
       localStorage.setItem('StoreSetType', storeSelect.type);
-      navigate(`/${pageName}`)
+      //console.log(pageName)
+      navigate(pageName)
     } else {
       alert('店舗を選択してください。');
     }
@@ -95,10 +96,10 @@ export default function TopPage() {
               />
               <div className="SelectMethod">
                 <div>
-                  <a className="buttonUnderline" type="button" onClick={() => {setPage('store')}}>注文発注</a>
+                  <a className="buttonUnderline" type="button" onClick={() => {setPage('/store')}}>注文発注</a>
                   {/* <a className="buttonUnderline" type="button" onClick={() => {setPage('used')}}>使用商品</a> */}
-                  <a className="buttonUnderline" type="button" onClick={() => {setPage('inventoryNumsSet')}}>在庫数入力</a>
-                  <a className="buttonUnderline" type="button" onClick={() => {setPage('direct')}}>直接購入</a>
+                  <a className="buttonUnderline" type="button" onClick={() => {setPage('/inventoryNumsSet')}}>在庫数入力</a>
+                  <a className="buttonUnderline" type="button" onClick={() => {setPage('/direct')}}>直接購入</a>
                 </div>
               </div>
             </div>

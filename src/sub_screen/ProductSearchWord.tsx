@@ -102,7 +102,6 @@ export default function WordSearch({ setisLoading, insert, addButtonName }: Sear
                         <a
                           className="buttonUnderlineDR"
                           role="button"
-                          href="#"
                           onClick={() => insert(row)}
                         >
                           {row[1]}
@@ -112,7 +111,6 @@ export default function WordSearch({ setisLoading, insert, addButtonName }: Sear
                         <a
                           className="buttonUnderlineD"
                           role="button"
-                          href="#"
                           onClick={() => handleOpenDetailDialog(index)}
                         >
                           {row[2]}
