@@ -239,13 +239,14 @@ export default function StorePage({ setisLoading }: SettingProps) {
     const InsertData = [];
     const formfilter = formData.filter(row => row.商品コード !== "" && row.商品名 !== "");
     for (let i = 0; i < formfilter.length; i++) {
+      const detail = formfilter[i].商品詳細[0]?.value || '';
       let setdata = [
         defaultDate,
         storename,
         formfilter[i].業者,
         formfilter[i].商品コード,
         formfilter[i].商品名,
-        formfilter[i].商品詳細[0].value,
+        detail,
         formfilter[i].数量,
         "",
         Number(formfilter[i].商品単価),

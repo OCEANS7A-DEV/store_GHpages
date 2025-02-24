@@ -24,12 +24,14 @@ export const productSearch = (code: number) => {
 };
 
 export const addNewForm = (formdata: any, pushdata: any) => {
-  const newFormData = [...formdata];
+  const newFormData = [...formdata]; // 元のデータをコピー
   for (let i = 0; i < 20; i++) {
-    newFormData.push(pushdata);
+    // pushdataのコピーを作成してから新しい行として追加
+    newFormData.push({...pushdata});  // ここでコピーを作成
   }
-  return newFormData
+  return newFormData;
 };
+
 
 export const removeForm = (index: number, formdata: any, pushdata: any) => {
   const newFormData = formdata.filter((_, i) => i !== index);
