@@ -245,7 +245,7 @@ export default function StorePage({ setisLoading }: SettingProps) {
         formfilter[i].業者,
         formfilter[i].商品コード,
         formfilter[i].商品名,
-        formfilter[i].商品詳細.value,
+        formfilter[i].商品詳細[0].value,
         formfilter[i].数量,
         "",
         Number(formfilter[i].商品単価),
