@@ -20,9 +20,10 @@ interface UsedInsertData {
   数量: string;
   備考: string;
   出庫店舗: { value: string; label: string }[];
+  出庫Open: boolean;
   入庫店舗: { value: string; label: string }[];
+  入庫Open: boolean;
   商品単価: number;
-  menuIsOpen: boolean;
 }
 
 interface SettingProps {
@@ -61,14 +62,17 @@ export default function InventoryMoving({ setisLoading }: SettingProps) {
     商品名: '',
     数量: '',
     出庫店舗: [],
+    出庫Open: false,
     入庫店舗: [],
+    入庫Open: false,
     備考: '',
     商品単価: 0,
-    menuIsOpen: false
   }
   const [isusedDialogOpen, setusedDialogOpen] = useState(false);
   const initialRowCount = 20;
-  const initialusedFormData = Array.from({ length: initialRowCount }, () => (FormatFormData));
+  //const initialusedFormData = Array.from({ length: initialRowCount }, () => (FormatFormData));
+  //console.log(initialusedFormData)
+  const initialusedFormData = addNewForm([],FormatFormData)
   const [usedformData, setusedFormData] = useState<UsedInsertData[]>(initialusedFormData);
   const storename = localStorage.getItem('StoreSetName');
   const dateRefs = useRef([]);
@@ -169,7 +173,7 @@ export default function InventoryMoving({ setisLoading }: SettingProps) {
             dateRefs.current[nextIndex].focus();
           }
         } else {
-          addNewForm();
+          addNewForm(usedformData,FormatFormData);
           setTimeout(() => {
             if (dateRefs.current[nextIndex]) {
               dateRefs.current[nextIndex].focus();
@@ -351,7 +355,9 @@ export default function InventoryMoving({ setisLoading }: SettingProps) {
                         onKeyDown={(e) => handleKeyDown(index, e, '出庫')}
                         onChange={(selectOptions) => {
                           const newusedFormData = [...usedformData];
-                          newusedFormData[index].出庫店舗 = selectOptions || [];
+                          console.log(newusedFormData)
+                          newusedFormData[index].出庫店舗 = selectOptions ? [{ ...selectOptions }] : [];
+                          usedformData[index].出庫Open = false;
                           setusedFormData(newusedFormData);
                         }}
                         onFocus={() => {
@@ -360,17 +366,17 @@ export default function InventoryMoving({ setisLoading }: SettingProps) {
                             newusedFormData[index].月日 = usedformData[index-1].月日
                             setusedFormData(newusedFormData);
                           }
-                          newusedFormData[index].出庫店舗.menuIsOpen = true; // フォーカス時にメニューを開く
+                          usedformData[index].出庫Open = true; // フォーカス時にメニューを開く
                           setusedFormData(newusedFormData);
                         }}
                         onBlur={() => {
                           const newusedFormData = [...usedformData];
-                          newusedFormData[index].出庫店舗.menuIsOpen = false; // フォーカス外れ時にメニューを閉じる
+                          usedformData[index].出庫Open = false; // フォーカス外れ時にメニューを閉じる
                           setusedFormData(newusedFormData);
                         }}
                         menuPlacement="auto"
                         menuPortalTarget={document.body}
-                        menuIsOpen={usedformData[index].出庫店舗.menuIsOpen}
+                        menuIsOpen={usedformData[index].出庫Open}
                         placeholder="出庫店舗選択"
                       />
                     </td>
@@ -386,21 +392,22 @@ export default function InventoryMoving({ setisLoading }: SettingProps) {
                         onChange={(selectOptions) => {
                           const newusedFormData = [...usedformData];
                           newusedFormData[index].入庫店舗 = selectOptions || [];
+                          usedformData[index].入庫Open = false;
                           setusedFormData(newusedFormData);
                         }}
                         onFocus={() => {
                           const newusedFormData = [...usedformData];
-                          newusedFormData[index].入庫店舗.menuIsOpen = true; // フォーカス時にメニューを開く
+                          usedformData[index].入庫Open = true; // フォーカス時にメニューを開く
                           setusedFormData(newusedFormData);
                         }}
                         onBlur={() => {
                           const newusedFormData = [...usedformData];
-                          newusedFormData[index].入庫店舗.menuIsOpen = false; // フォーカス外れ時にメニューを閉じる
+                          usedformData[index].入庫Open = false; // フォーカス外れ時にメニューを閉じる
                           setusedFormData(newusedFormData);
                         }}
                         menuPlacement="auto"
                         menuPortalTarget={document.body}
-                        menuIsOpen={usedformData[index].入庫店舗.menuIsOpen}
+                        menuIsOpen={usedformData[index].入庫Open}
                         placeholder="入庫店舗選択"
                       />
                     </td>
