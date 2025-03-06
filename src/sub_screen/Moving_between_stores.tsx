@@ -267,7 +267,9 @@ export default function InventoryMoving({ setisLoading }: SettingProps) {
         数量: '',
         商品単価: 0,
         出庫店舗: [],
+        出庫Open: false,
         入庫店舗: [],
+        入庫Open: false,
         備考: '',
       });
     }
