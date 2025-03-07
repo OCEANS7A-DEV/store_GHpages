@@ -148,8 +148,6 @@ export default function InventoryMoving({ setisLoading }: SettingProps) {
         e.preventDefault();
       }
       if (fieldType === '商品コード') {
-        console.log(usedformData[index-1].商品コード)
-        console.log(index)
 
         if(index >= 1 && usedformData[index].商品コード === "" && usedformData[index-1].商品コード !== ""){
           const newusedFormData = [...usedformData];
