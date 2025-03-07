@@ -69,9 +69,6 @@ export default function InventoryMoving({ setisLoading }: SettingProps) {
     商品単価: 0,
   }
   const [isusedDialogOpen, setusedDialogOpen] = useState(false);
-  const initialRowCount = 20;
-  //const initialusedFormData = Array.from({ length: initialRowCount }, () => (FormatFormData));
-  //console.log(initialusedFormData)
   const initialusedFormData = addNewForm([],FormatFormData)
   const [usedformData, setusedFormData] = useState<UsedInsertData[]>(initialusedFormData);
   const storename = localStorage.getItem('StoreSetName');
@@ -123,11 +120,11 @@ export default function InventoryMoving({ setisLoading }: SettingProps) {
     const formResult = [];
     const [id, date] = await getLoginInfoAndFormattedTime()
     const filterData = usedformData.filter(row => row.商品コード !== "");
-
+    console.log(usedformData)
     for (let i = 0; i < filterData.length; i++){
       let setData = [
         filterData[i].月日,
-        filterData[i].出庫店舗.value,
+        filterData[i].出庫店舗[0].value,
         filterData[i].入庫店舗.value,
         filterData[i].商品コード,
         filterData[i].商品名,
@@ -140,6 +137,7 @@ export default function InventoryMoving({ setisLoading }: SettingProps) {
       ];
       formResult.push(setData)
     }
+    
     GASPostInsertStore('insert', '店舗間移動', formResult);
   };
 
