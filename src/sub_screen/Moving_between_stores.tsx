@@ -120,11 +120,10 @@ export default function InventoryMoving({ setisLoading }: SettingProps) {
     const formResult = [];
     const [id, date] = await getLoginInfoAndFormattedTime()
     const filterData = usedformData.filter(row => row.商品コード !== "");
-    console.log(usedformData)
     for (let i = 0; i < filterData.length; i++){
       let setData = [
         filterData[i].月日,
-        filterData[i].出庫店舗[0].value,
+        filterData[i].出庫店舗.value,
         filterData[i].入庫店舗.value,
         filterData[i].商品コード,
         filterData[i].商品名,
@@ -143,7 +142,11 @@ export default function InventoryMoving({ setisLoading }: SettingProps) {
 
 
   const handleKeyDown = async (index: number, e: React.KeyboardEvent<HTMLInputElement>, fieldType: string) => {
-    if (e.key === 'Enter') {
+    console.log(e.key)
+    if (e.key === 'Enter' || e.key === 'Tab') {
+      if(e.key === 'Tab'){
+        e.preventDefault();
+      }
       if (fieldType === '商品コード') {
         if (quantityRefs.current[index]) {
           quantityRefs.current[index].focus();
@@ -349,14 +352,15 @@ export default function InventoryMoving({ setisLoading }: SettingProps) {
                         className="insert_Select"
                         key={index}
                         options={selectOptions}
-                        value={data.出庫店舗 || []}
+                        value={data.出庫店舗}
                         isSearchable={true}
                         ref={(el) => (outputStoreRefs.current[index] = el)}
                         onKeyDown={(e) => handleKeyDown(index, e, '出庫')}
+                        defaultValue={{value:'会議室',label:'会議室'}}
                         onChange={(selectOptions) => {
                           const newusedFormData = [...usedformData];
-                          console.log(newusedFormData)
-                          newusedFormData[index].出庫店舗 = selectOptions ? [{ ...selectOptions }] : [];
+                          //console.log(newusedFormData)
+                          newusedFormData[index].出庫店舗 =  selectOptions || [];
                           usedformData[index].出庫Open = false;
                           setusedFormData(newusedFormData);
                         }}
@@ -366,6 +370,10 @@ export default function InventoryMoving({ setisLoading }: SettingProps) {
                             newusedFormData[index].月日 = usedformData[index-1].月日
                             setusedFormData(newusedFormData);
                           }
+                          if(index >= 1 && !newusedFormData[index-1].出庫店舗){
+                            newusedFormData[index].出庫店舗 = newusedFormData[index-1].出庫店舗
+                          }
+                          
                           usedformData[index].出庫Open = true; // フォーカス時にメニューを開く
                           setusedFormData(newusedFormData);
                         }}
@@ -397,6 +405,10 @@ export default function InventoryMoving({ setisLoading }: SettingProps) {
                         }}
                         onFocus={() => {
                           const newusedFormData = [...usedformData];
+                          if(index >= 1 && !newusedFormData[index-1].入庫店舗){
+                            newusedFormData[index].入庫店舗 = newusedFormData[index-1].入庫店舗
+                          }
+                          
                           usedformData[index].入庫Open = true; // フォーカス時にメニューを開く
                           setusedFormData(newusedFormData);
                         }}
