@@ -370,7 +370,7 @@ export default function InventoryMoving({ setisLoading }: SettingProps) {
                             newusedFormData[index].月日 = usedformData[index-1].月日
                             setusedFormData(newusedFormData);
                           }
-                          if(index >= 1 && !newusedFormData[index-1].出庫店舗){
+                          if(index >= 1 && newusedFormData[index-1].出庫店舗){
                             newusedFormData[index].出庫店舗 = newusedFormData[index-1].出庫店舗
                           }
                           
@@ -405,7 +405,7 @@ export default function InventoryMoving({ setisLoading }: SettingProps) {
                         }}
                         onFocus={() => {
                           const newusedFormData = [...usedformData];
-                          if(index >= 1 && !newusedFormData[index-1].入庫店舗){
+                          if(index >= 1 && newusedFormData[index-1].入庫店舗){
                             newusedFormData[index].入庫店舗 = newusedFormData[index-1].入庫店舗
                           }
                           
