@@ -142,12 +142,21 @@ export default function InventoryMoving({ setisLoading }: SettingProps) {
 
 
   const handleKeyDown = async (index: number, e: React.KeyboardEvent<HTMLInputElement>, fieldType: string) => {
-    console.log(e.key)
+    //console.log(e.key)
     if (e.key === 'Enter' || e.key === 'Tab') {
       if(e.key === 'Tab'){
         e.preventDefault();
       }
       if (fieldType === '商品コード') {
+        console.log(usedformData[index-1].商品コード)
+        console.log(index)
+
+        if(index >= 1 && usedformData[index].商品コード === "" && usedformData[index-1].商品コード !== ""){
+          const newusedFormData = [...usedformData];
+          newusedFormData[index].商品コード = usedformData[index-1].商品コード
+          setusedFormData(newusedFormData);
+          usedsearchDataChange(index, usedformData[index-1].商品コード)
+        }
         if (quantityRefs.current[index]) {
           quantityRefs.current[index].focus();
         }
