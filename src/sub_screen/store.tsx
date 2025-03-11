@@ -238,6 +238,8 @@ export default function StorePage({ setisLoading }: SettingProps) {
 
     const InsertData = [];
     const formfilter = formData.filter(row => row.商品コード !== "" && row.商品名 !== "");
+    console.log(formfilter)
+    console.log(Number(formfilter[0].商品単価))
     for (let i = 0; i < formfilter.length; i++) {
       const detail = formfilter[i].商品詳細[0]?.value || '';
       let setdata = [
@@ -249,7 +251,7 @@ export default function StorePage({ setisLoading }: SettingProps) {
         detail,
         formfilter[i].数量,
         "",
-        Number(formfilter[i].商品単価),
+        formfilter[i].商品単価,
         '=SUM(INDIRECT("G"&ROW()) * INDIRECT("I"&ROW()))',
         formfilter[i].個人購入,
         formfilter[i].備考,
@@ -357,7 +359,8 @@ export default function StorePage({ setisLoading }: SettingProps) {
       setisLoading(false);
       alert('発注が完了しました\n保存してあるデータは自動で削除されます');
       localStorage.setItem('Already_ordered', JSON.stringify(formData));
-      setFormData(initialFormData);
+      //addNewForm([],FormatFormData)
+      setFormData(addNewForm([],FormatFormData));
       localStorage.removeItem(storename);
     }
     setisLoading(false);
