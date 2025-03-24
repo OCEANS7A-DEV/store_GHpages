@@ -95,7 +95,7 @@ export default function StorePage({ setisLoading }: SettingProps) {
   const personalRefs = useRef<HTMLInputElement[]>([]);
   const remarksRefs = useRef<HTMLInputElement[]>([]);
   const nameRefs = useRef<HTMLInputElement[]>([]);
-  const detailRefs = useRef([]);
+  const detailRefs = useRef<HTMLInputElement[]>([]);
 
   const message = "注文内容は以下の通りです\n以下の内容でよろしければOKをクリックしてください\n内容の変更がある場合にはキャンセルをクリックしてください";
   const [NonisDialogOpen, setNonisDialogOpen] = useState(false);
@@ -179,8 +179,9 @@ export default function StorePage({ setisLoading }: SettingProps) {
     index: number,
     value: any
   ) => {
-    
+
     const newFormData: InsertData[] = [...formData];
+
     const updateFormData = (resultData: any) => {
       let price = 0;
       if (storeType === "DM" || storeType === "FC"){
@@ -200,17 +201,20 @@ export default function StorePage({ setisLoading }: SettingProps) {
         };
       }
     };
+    
 
     const [ResultData, options] = await Promise.all([
       productSearch(Number(value)),
       colorlistGet(Number(value)),
     ]);
+
     if (!ResultData){
       if (nameRefs.current[index]) {
         nameRefs.current[index].focus();
       }
       return
     }
+
     if(ResultData[9] === false){
       alert(`商品ナンバー: ${ResultData[1]}, 商品名: ${ResultData[2]}\nこの商品は本部への注文ができません。`)
       const DataIndex = formData.findIndex(({商品コード}) => 商品コード == ResultData[1])
@@ -227,11 +231,14 @@ export default function StorePage({ setisLoading }: SettingProps) {
     }else{
       if (detailRefs.current[index]) {
         detailRefs.current[index].focus(); 
+        newFormData[index].menuIsOpen = true;
       };
     }
     setFormData(newFormData);
   
   };
+
+
 
   const insertPost = async () => {
     const [id, formatted] = await getLoginInfoAndFormattedTime()
@@ -263,13 +270,23 @@ export default function StorePage({ setisLoading }: SettingProps) {
     sessionStorage.setItem(storename,date.toLocaleDateString("ja-JP"))
   };
 
+  const valueset = (index:number) => {
+    let searchValue = formData[index].商品コード;
+    if(index >= 1 && formData[index].商品コード === ''){
+      searchValue = formData[index - 1].商品コード
+    }
+
+    return searchValue;
+  }
+
 
   const handleKeyDown = async (index: number, e: React.KeyboardEvent<HTMLInputElement>, fieldType: string,) => {
     
     if (e.key === 'Enter' && fieldType !== '商品詳細') {
       e.preventDefault();
       if (fieldType === '商品コード') {
-        searchDataChange(index, formData[index][fieldType])
+        let searchValue = await valueset(index);
+        searchDataChange(index, searchValue)
       }else if (fieldType === '業者') {
         if (codeRefs.current[index]) {
           codeRefs.current[index].focus();
@@ -634,8 +651,9 @@ export default function StorePage({ setisLoading }: SettingProps) {
                           }}
                           onFocus={() => {
                             const newFormData = [...formData];
-                            newFormData[index].menuIsOpen = true; // フォーカス時にメニューを開く
+                            newFormData[index].menuIsOpen = true;
                             setFormData(newFormData);
+
                           }}
                           onBlur={() => {
                             const newFormData = [...formData];
