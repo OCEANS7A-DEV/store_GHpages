@@ -616,9 +616,10 @@ export const syncDataGet = async () => {
         body: JSON.stringify({
           action: 'CurrentlyAvailableDataGet',
           sub_action: 'get',
-          sheetName: '全店舗同期',
+          sheetName: '全店舗同期',//シート名修正
         })
       },
+      
     );
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
