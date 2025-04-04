@@ -107,6 +107,7 @@ export default function StoreInventoryNumsSet({ setisLoading }: SettingProps) {
     try {
       // データ取得
       const data = await CurrentlyAvailableDataGet();
+      //console.log(data)
       if (!data || data.length < 2) {
         console.error("Data is invalid or empty.");
         return;
@@ -121,6 +122,7 @@ export default function StoreInventoryNumsSet({ setisLoading }: SettingProps) {
   
       // 条件に一致する行をフィルタ
       const ResultData = data.filter(row => row[columnIndex] === true);
+      //console.log(ResultData)
       syncData(columnIndex,ResultData)
       // 在庫データ作成
       const InventoryData = ResultData.map(row => {
@@ -190,6 +192,7 @@ const handleKeyDown = async (index: number, e: React.KeyboardEvent<HTMLInputElem
     const id = sessionStorage.getItem('LoginID');
 
     const ResultData = []
+    console.log(InventoryNumsData)
     for (let i = 0; i < InventoryNumsData.length; i++){
 
       let resultrow = AvailableData.find(row => row["商品コード"] == InventoryNumsData[i]["商品コード"])
@@ -217,8 +220,8 @@ const handleKeyDown = async (index: number, e: React.KeyboardEvent<HTMLInputElem
         ])
       }
     }
-    //console.log(ResultData)
-    //return
+    // console.log(ResultData)
+    // return
     GASPostInsertStore('insert', '店舗使用商品', ResultData)
     findColumnIndex()
     setisLoading(false);

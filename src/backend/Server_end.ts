@@ -616,7 +616,7 @@ export const syncDataGet = async () => {
         body: JSON.stringify({
           action: 'CurrentlyAvailableDataGet',
           sub_action: 'get',
-          sheetName: '同期在庫',
+          sheetName: '全店舗同期',
         })
       },
     );
