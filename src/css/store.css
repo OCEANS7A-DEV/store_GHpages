@@ -9,6 +9,8 @@
   z-index: 1;
 }
 
+
+
 .searchareawindow {
   display: flex;
 }
@@ -333,3 +335,11 @@ a {
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, .5);
 }
 
+.insertRowNumber{
+  padding: 0px 2px;
+  min-width: 22px;
+  max-width: 22px;
+}
+.in-area-header {
+  margin-left: 27px;
+}

@@ -583,7 +583,9 @@ export default function StorePage({ setisLoading }: SettingProps) {
               <table className="order_table">
                 <tbody>
                   {formData.map((data, index) => (
+                    
                     <tr key={index}>
+                      <td className="insertRowNumber">{index}</td>
                       <td>
                         <input
                           type="text"
