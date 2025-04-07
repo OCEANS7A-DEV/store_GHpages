@@ -585,7 +585,7 @@ export default function StorePage({ setisLoading }: SettingProps) {
                   {formData.map((data, index) => (
                     
                     <tr key={index}>
-                      <td className="insertRowNumber">{index}</td>
+                      <td className="insertRowNumber">{index + 1}</td>
                       <td>
                         <input
                           type="text"

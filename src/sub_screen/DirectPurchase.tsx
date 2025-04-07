@@ -369,6 +369,7 @@ export default function InventoryDirect({ setisLoading }: SettingProps) {
             <tbody>
               {usedformData.map((data, index) => (
                 <tr key={index}>
+                  <td className="insertRowNumber">{index + 1}</td>
                   <td>
                     <input
                       type="date"
