@@ -298,9 +298,7 @@ export default function InventoryMoving({ setisLoading }: SettingProps) {
     processlistGet();
     ProcessingMethodList();
     const cachedData = localStorage.getItem('storeData');
-    
     const storesData = cachedData ? JSON.parse(cachedData) : [];
-    //console.log(storesData)
     storesData.push(
       {value: '本部', label: '本部', type: 'DM'}
     )
