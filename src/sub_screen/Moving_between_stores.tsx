@@ -298,7 +298,13 @@ export default function InventoryMoving({ setisLoading }: SettingProps) {
     processlistGet();
     ProcessingMethodList();
     const cachedData = localStorage.getItem('storeData');
-    setSelectOptions(cachedData ? JSON.parse(cachedData) : []);
+    
+    const storesData = cachedData ? JSON.parse(cachedData) : [];
+    //console.log(storesData)
+    storesData.push(
+      {value: '本部', label: '本部', type: 'DM'}
+    )
+    setSelectOptions(storesData);
   }, []);
 
 
