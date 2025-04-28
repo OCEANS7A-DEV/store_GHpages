@@ -245,10 +245,22 @@ export default function StorePage({ setisLoading }: SettingProps) {
 
     const InsertData = [];
     const formfilter = formData.filter(row => row.商品コード !== "" && row.商品名 !== "");
-    console.log(formfilter)
-    console.log(Number(formfilter[0].商品単価))
+
     for (let i = 0; i < formfilter.length; i++) {
       const detail = formfilter[i].商品詳細[0]?.value || '';
+      let service = ''
+      let ordernum = 0
+      let count = 0
+      if(storename == '会議室'){
+        const data = await productSearch(formfilter[i].商品コード)
+        if(data[10] !== ""){
+          while(ordernum < formfilter[i].数量){
+            ordernum = ordernum + data[11] + data[10]
+            count ++
+          }
+          service = count * data[10]
+        }
+      }
       let setdata = [
         defaultDate,
         storename,
@@ -257,7 +269,7 @@ export default function StorePage({ setisLoading }: SettingProps) {
         formfilter[i].商品名,
         detail,
         formfilter[i].数量,
-        "",
+        service,
         formfilter[i].商品単価,
         '=SUM(INDIRECT("G"&ROW()) * INDIRECT("I"&ROW()))',
         formfilter[i].個人購入,
@@ -267,6 +279,7 @@ export default function StorePage({ setisLoading }: SettingProps) {
         formatted];
       InsertData.push(setdata);
     }
+
     GASPostInsertStore('insert', '店舗へ', InsertData);
     const date = new Date(defaultDate);
     sessionStorage.setItem(storename,date.toLocaleDateString("ja-JP"))
